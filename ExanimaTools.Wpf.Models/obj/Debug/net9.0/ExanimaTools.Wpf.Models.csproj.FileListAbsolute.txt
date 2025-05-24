@@ -1,0 +1,12 @@
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\bin\Debug\net9.0\ExanimaTools.Wpf.Models.deps.json
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\bin\Debug\net9.0\ExanimaTools.Wpf.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\bin\Debug\net9.0\ExanimaTools.Wpf.Models.pdb
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.AssemblyInfoInputs.cache
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.AssemblyInfo.cs
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.csproj.CoreCompileInputs.cache
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.sourcelink.json
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\refint\ExanimaTools.Wpf.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ExanimaTools.Wpf.Models.pdb
+D:\Dev\GameSupport\Exanima\ExanimaTools.Wpf.Models\obj\Debug\net9.0\ref\ExanimaTools.Wpf.Models.dll
