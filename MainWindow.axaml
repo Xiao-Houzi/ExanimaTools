@@ -18,7 +18,7 @@
                     <TextBlock Text="Team Manager content goes here." Margin="16"/>
                 </TabItem>
                 <TabItem Header="Equipment Manager">
-                    <TextBlock Text="Equipment Manager content goes here." Margin="16"/>
+                    <controls:EquipmentManagerControl/>
                 </TabItem>
             </TabControl>
             <!-- Main Content -->
