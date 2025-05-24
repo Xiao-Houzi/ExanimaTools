@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExanimaTools")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33b79f963cef3c50a4e1f2f4af30f86009a447ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExanimaTools")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExanimaTools")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

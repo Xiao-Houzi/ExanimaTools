@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Launch ExanimaTools",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build ExanimaTools",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/ExanimaTools.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
