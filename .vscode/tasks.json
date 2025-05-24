@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Run ExanimaTools",
+			"command": "dotnet run",
+			"args": [],
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": true
+		},
+		{
+			"type": "shell",
+			"label": "Build ExanimaTools",
+			"command": "dotnet build",
+			"group": "build",
+			"problemMatcher": ["$msCompile"]
+		}
+	]
+}

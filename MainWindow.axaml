@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:ExanimaTools.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ExanimaTools.MainWindow"
+        Title="ExanimaTools"
+        SystemDecorations="None"
+        CanResize="False">
+    <Border CornerRadius="0">
+        <DockPanel LastChildFill="True">
+            <!-- Header Bar -->
+            <controls:HeaderBar DockPanel.Dock="Top" Height="128"/>
+            <!-- Tabbed Panel Area -->
+            <TabControl DockPanel.Dock="Top" Margin="24,24,24,24" x:Name="MainTabControl">
+                <TabItem Header="Team Manager">
+                    <TextBlock Text="Team Manager content goes here." Margin="16"/>
+                </TabItem>
+                <TabItem Header="Equipment Manager">
+                    <TextBlock Text="Equipment Manager content goes here." Margin="16"/>
+                </TabItem>
+            </TabControl>
+            <!-- Main Content -->
+            <ContentPresenter/>
+        </DockPanel>
+    </Border>
+</Window>

@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ExanimaTools.Controls.HeaderBar">
+    <Grid Background="#183C4C">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="56"/>
+        </Grid.ColumnDefinitions>
+        <!-- Logo (orange square) -->
+        <Border Grid.Column="0" Width="32" Height="32" Margin="12,8,12,8" Background="#FFA500" CornerRadius="6"/>
+        <!-- Spacer -->
+        <Panel Grid.Column="1"/>
+        <!-- Close Button -->
+        <Button Grid.Column="2" Width="32" Height="32" Margin="12,8,12,8" Background="#224B5E" Foreground="White" Content="✕" Click="OnCloseButtonClick" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>
