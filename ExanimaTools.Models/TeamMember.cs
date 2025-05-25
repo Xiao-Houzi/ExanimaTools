@@ -11,18 +11,21 @@ public enum Sex
 
 public enum Role
 {
-    Leader,
-    Fighter,
-    Support,
-    Custom
+    Manager = 0,
+    Fighter = 1,
+    Physician = 2,
+    Merchant = 3,
+    Trainer = 4
 }
 
 public enum Rank
 {
+    Inept,
+    Aspirant,
     Novice,
-    Veteran,
-    Elite,
-    Custom
+    Adept,
+    Expert,
+    Master
 }
 
 public enum MemberType

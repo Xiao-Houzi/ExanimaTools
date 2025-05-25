@@ -1,2 +1,55 @@
 # Ignore scripts and automation files
 scripts/
+
+# .NET build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+
+# Test results
+TestResults/
+
+# Build results
+*.dll
+*.exe
+*.app
+*.pdb
+*.cache
+*.log
+*.vspscc
+*.vssscc
+*.dbmdl
+*.db
+*.bak
+*.mdf
+*.ldf
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+# Packages folder can be ignored if using package restore
+packages/
+
+# Others
+*.swp
+*.tmp
+.vs/
+
+# Exclude any local config or secrets
+secrets.json
+appsettings.Development.json
