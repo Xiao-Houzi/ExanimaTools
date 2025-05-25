@@ -50,13 +50,13 @@ public class TeamMemberRepositoryTests
     public async Task UpdateAndDeleteAsync_Works()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Leader, Rank = Rank.Elite, Sex = Sex.Female, Type = MemberType.Hireling };
+        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Master, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         // Update
-        member.Rank = Rank.Veteran;
+        member.Rank = Rank.Adept;
         await repo.UpdateAsync(member);
         var updated = (await repo.GetAllAsync())[0];
-        Assert.AreEqual(Rank.Veteran, updated.Rank);
+        Assert.AreEqual(Rank.Adept, updated.Rank);
         // Delete
         await repo.DeleteAsync(member.Name);
         var all = await repo.GetAllAsync();
@@ -67,25 +67,25 @@ public class TeamMemberRepositoryTests
     public async Task GetByIdAsync_Works()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Carl", Role = Role.Support, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
+        var member = new TeamMember { Name = "Carl", Role = Role.Physician, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
         await repo.AddAsync(member);
         var found = await repo.GetByIdAsync("Carl");
         Assert.IsNotNull(found);
         Assert.AreEqual("Carl", found.Name);
-        Assert.AreEqual(Role.Support, found.Role);
+        Assert.AreEqual(Role.Physician, found.Role);
     }
 
     [TestMethod]
     public async Task GetByIdAsync_ReturnsCorrectMember()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Support, Rank = Rank.Veteran, Sex = Sex.Female, Type = MemberType.Hireling };
+        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Adept, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         var result = await repo.GetByIdAsync("Alice");
         Assert.IsNotNull(result);
         Assert.AreEqual("Alice", result.Name);
-        Assert.AreEqual(Role.Support, result.Role);
-        Assert.AreEqual(Rank.Veteran, result.Rank);
+        Assert.AreEqual(Role.Fighter, result.Role);
+        Assert.AreEqual(Rank.Adept, result.Rank);
         Assert.AreEqual(Sex.Female, result.Sex);
         Assert.AreEqual(MemberType.Hireling, result.Type);
     }
@@ -96,15 +96,15 @@ public class TeamMemberRepositoryTests
         var repo = new TeamMemberRepository(_connectionString);
         var member = new TeamMember { Name = "Carl", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
         await repo.AddAsync(member);
-        member.Role = Role.Support;
-        member.Rank = Rank.Elite;
+        member.Role = Role.Physician;
+        member.Rank = Rank.Expert;
         member.Sex = Sex.Female;
         member.Type = MemberType.Hireling;
         await repo.UpdateAsync(member);
         var updated = await repo.GetByIdAsync("Carl");
         Assert.IsNotNull(updated);
-        Assert.AreEqual(Role.Support, updated.Role);
-        Assert.AreEqual(Rank.Elite, updated.Rank);
+        Assert.AreEqual(Role.Physician, updated.Role);
+        Assert.AreEqual(Rank.Expert, updated.Rank);
         Assert.AreEqual(Sex.Female, updated.Sex);
         Assert.AreEqual(MemberType.Hireling, updated.Type);
     }
