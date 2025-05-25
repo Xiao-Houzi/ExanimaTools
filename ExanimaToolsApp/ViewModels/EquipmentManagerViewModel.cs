@@ -34,6 +34,9 @@ namespace ExanimaTools.ViewModels
         [ObservableProperty]
         private string newStatInput = string.Empty;
 
+        [ObservableProperty]
+        private bool isAddFormVisible;
+
         public ObservableCollection<EquipmentType> EquipmentTypes { get; } = new(Enum.GetValues(typeof(EquipmentType)).Cast<EquipmentType>());
         public ObservableCollection<EquipmentSlot> EquipmentSlots { get; } = new(Enum.GetValues(typeof(EquipmentSlot)).Cast<EquipmentSlot>());
         public ObservableCollection<ArmourLayer> ArmourLayers { get; } = new(Enum.GetValues(typeof(ArmourLayer)).Cast<ArmourLayer>());
@@ -175,6 +178,72 @@ namespace ExanimaTools.ViewModels
             ErrorMessage = null;
             NewEquipment = new EquipmentPiece();
             NewStatInput = string.Empty;
+        }
+
+        [RelayCommand]
+        private void ShowAddWeaponForm()
+        {
+            NewEquipment = new EquipmentPiece
+            {
+                Type = EquipmentType.Weapon,
+                Slot = EquipmentSlot.Hands, // Default for weapon
+                Layer = null,
+                Stats = new Dictionary<StatType, float>
+                {
+                    { StatType.Balance, 0 },
+                    { StatType.Thrust, 0 },
+                    { StatType.Weight, 0 }
+                }
+            };
+            IsAddFormVisible = true;
+        }
+
+        [RelayCommand]
+        private void ShowAddArmourForm()
+        {
+            NewEquipment = new EquipmentPiece
+            {
+                Type = EquipmentType.Armour,
+                Slot = EquipmentSlot.Body, // Default for armour
+                Layer = ArmourLayer.Padding,
+                Stats = new Dictionary<StatType, float>
+                {
+                    { StatType.Coverage, 0 },
+                    { StatType.ImpactResistance, 0 },
+                    { StatType.SlashProtection, 0 },
+                    { StatType.CrushProtection, 0 },
+                    { StatType.PierceProtection, 0 },
+                    { StatType.Encumbrance, 0 },
+                    { StatType.Weight, 0 }
+                }
+            };
+            IsAddFormVisible = true;
+        }
+
+        [RelayCommand]
+        private void SaveNewEquipment()
+        {
+            if (!ValidateEquipment(NewEquipment, out var error))
+            {
+                ErrorMessage = error;
+                ConfirmationMessage = null;
+                return;
+            }
+            EquipmentList.Add(new EquipmentPiece
+            {
+                Name = NewEquipment.Name,
+                Type = NewEquipment.Type,
+                Slot = NewEquipment.Slot,
+                Layer = NewEquipment.Layer,
+                Stats = new Dictionary<StatType, float>(NewEquipment.Stats),
+                Description = NewEquipment.Description,
+                Quality = NewEquipment.Quality,
+                Condition = NewEquipment.Condition
+            });
+            ConfirmationMessage = $"Saved '{NewEquipment.Name}'.";
+            ErrorMessage = null;
+            NewEquipment = new EquipmentPiece();
+            IsAddFormVisible = false;
         }
 
         // TODO: Add persistence hooks
