@@ -11,13 +11,13 @@ namespace ETModels.Tests;
 [TestClass]
 public class TeamMemberRepositoryTests
 {
-    private string _dbPath = "TestTeamMembers.db";
+    private string? _dbPath;
     private string _connectionString => $"Data Source={_dbPath}";
 
     [TestInitialize]
     public void Init()
     {
-        if (File.Exists(_dbPath)) File.Delete(_dbPath);
+        _dbPath = $"TestTeamMembers_{System.Guid.NewGuid()}.db";
         using var conn = new SqliteConnection(_connectionString);
         conn.Open();
         var cmd = conn.CreateCommand();
@@ -26,9 +26,19 @@ public class TeamMemberRepositoryTests
             Role INTEGER,
             Rank INTEGER,
             Sex INTEGER,
-            Type INTEGER
+            Type INTEGER,
+            EquipmentProfiles TEXT
         )";
         cmd.ExecuteNonQuery();
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        if (File.Exists(_dbPath))
+        {
+            try { File.Delete(_dbPath); } catch { /* ignore */ }
+        }
     }
 
     [TestMethod]
@@ -50,13 +60,13 @@ public class TeamMemberRepositoryTests
     public async Task UpdateAndDeleteAsync_Works()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Leader, Rank = Rank.Elite, Sex = Sex.Female, Type = MemberType.Hireling };
+        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Master, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         // Update
-        member.Rank = Rank.Veteran;
+        member.Rank = Rank.Adept;
         await repo.UpdateAsync(member);
         var updated = (await repo.GetAllAsync())[0];
-        Assert.AreEqual(Rank.Veteran, updated.Rank);
+        Assert.AreEqual(Rank.Adept, updated.Rank);
         // Delete
         await repo.DeleteAsync(member.Name);
         var all = await repo.GetAllAsync();
@@ -67,25 +77,25 @@ public class TeamMemberRepositoryTests
     public async Task GetByIdAsync_Works()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Carl", Role = Role.Support, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
+        var member = new TeamMember { Name = "Carl", Role = Role.Physician, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
         await repo.AddAsync(member);
         var found = await repo.GetByIdAsync("Carl");
         Assert.IsNotNull(found);
         Assert.AreEqual("Carl", found.Name);
-        Assert.AreEqual(Role.Support, found.Role);
+        Assert.AreEqual(Role.Physician, found.Role);
     }
 
     [TestMethod]
     public async Task GetByIdAsync_ReturnsCorrectMember()
     {
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Support, Rank = Rank.Veteran, Sex = Sex.Female, Type = MemberType.Hireling };
+        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Adept, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         var result = await repo.GetByIdAsync("Alice");
         Assert.IsNotNull(result);
         Assert.AreEqual("Alice", result.Name);
-        Assert.AreEqual(Role.Support, result.Role);
-        Assert.AreEqual(Rank.Veteran, result.Rank);
+        Assert.AreEqual(Role.Fighter, result.Role);
+        Assert.AreEqual(Rank.Adept, result.Rank);
         Assert.AreEqual(Sex.Female, result.Sex);
         Assert.AreEqual(MemberType.Hireling, result.Type);
     }
@@ -96,15 +106,15 @@ public class TeamMemberRepositoryTests
         var repo = new TeamMemberRepository(_connectionString);
         var member = new TeamMember { Name = "Carl", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
         await repo.AddAsync(member);
-        member.Role = Role.Support;
-        member.Rank = Rank.Elite;
+        member.Role = Role.Physician;
+        member.Rank = Rank.Expert;
         member.Sex = Sex.Female;
         member.Type = MemberType.Hireling;
         await repo.UpdateAsync(member);
         var updated = await repo.GetByIdAsync("Carl");
         Assert.IsNotNull(updated);
-        Assert.AreEqual(Role.Support, updated.Role);
-        Assert.AreEqual(Rank.Elite, updated.Rank);
+        Assert.AreEqual(Role.Physician, updated.Role);
+        Assert.AreEqual(Rank.Expert, updated.Rank);
         Assert.AreEqual(Sex.Female, updated.Sex);
         Assert.AreEqual(MemberType.Hireling, updated.Type);
     }
@@ -149,5 +159,60 @@ public class TeamMemberRepositoryTests
         await repo.DeleteAsync("Ghost");
         // No exception expected
         Assert.IsTrue(true);
+    }
+
+    [TestMethod]
+    public async Task EquipmentProfiles_PersistsAndLoadsCorrectly()
+    {
+        var repo = new TeamMemberRepository(_connectionString);
+        var member = new TeamMember
+        {
+            Name = "LayeredGuy",
+            Role = Role.Fighter,
+            Rank = Rank.Expert,
+            Sex = Sex.Male,
+            Type = MemberType.Hireling,
+            EquipmentProfiles = new Dictionary<Rank, EquipmentProfile>
+            {
+                [Rank.Expert] = new EquipmentProfile
+                {
+                    Name = "Expert Loadout",
+                    EquippedItems = new Dictionary<EquipmentSlot, List<EquipmentPiece>>
+                    {
+                        [EquipmentSlot.Body] = new List<EquipmentPiece>
+                        {
+                            new EquipmentPiece { Name = "Gambeson", Type = EquipmentType.Armour, Slot = EquipmentSlot.Body, Layer = ArmourLayer.Padding, Stats = new Dictionary<StatType, float> { [StatType.CrushProtection] = 5 } },
+                            new EquipmentPiece { Name = "Mail Hauberk", Type = EquipmentType.Armour, Slot = EquipmentSlot.Body, Layer = ArmourLayer.Chainmail, Stats = new Dictionary<StatType, float> { [StatType.SlashProtection] = 10 } },
+                            new EquipmentPiece { Name = "Cuirass", Type = EquipmentType.Armour, Slot = EquipmentSlot.Body, Layer = ArmourLayer.Armour, Stats = new Dictionary<StatType, float> { [StatType.PierceProtection] = 15 } }
+                        },
+                        [EquipmentSlot.Head] = new List<EquipmentPiece>
+                        {
+                            new EquipmentPiece { Name = "Armet", Type = EquipmentType.Armour, Slot = EquipmentSlot.Head, Layer = ArmourLayer.Armour, Stats = new Dictionary<StatType, float> { [StatType.CrushProtection] = 8 } }
+                        }
+                    }
+                }
+            }
+        };
+        await repo.AddAsync(member);
+        var loaded = await repo.GetByIdAsync("LayeredGuy");
+        Assert.IsNotNull(loaded);
+        Assert.IsNotNull(loaded.EquipmentProfiles);
+        Assert.IsTrue(loaded.EquipmentProfiles.ContainsKey(Rank.Expert));
+        var torso = loaded.EquipmentProfiles[Rank.Expert].EquippedItems[EquipmentSlot.Body];
+        Assert.AreEqual(3, torso.Count);
+        Assert.AreEqual("Gambeson", torso[0].Name);
+        Assert.AreEqual(ArmourLayer.Padding, torso[0].Layer);
+        Assert.AreEqual(5, torso[0].Stats[StatType.CrushProtection]);
+        Assert.AreEqual("Mail Hauberk", torso[1].Name);
+        Assert.AreEqual(ArmourLayer.Chainmail, torso[1].Layer);
+        Assert.AreEqual(10, torso[1].Stats[StatType.SlashProtection]);
+        Assert.AreEqual("Cuirass", torso[2].Name);
+        Assert.AreEqual(ArmourLayer.Armour, torso[2].Layer);
+        Assert.AreEqual(15, torso[2].Stats[StatType.PierceProtection]);
+        var head = loaded.EquipmentProfiles[Rank.Expert].EquippedItems[EquipmentSlot.Head];
+        Assert.AreEqual(1, head.Count);
+        Assert.AreEqual("Armet", head[0].Name);
+        Assert.AreEqual(ArmourLayer.Armour, head[0].Layer);
+        Assert.AreEqual(8, head[0].Stats[StatType.CrushProtection]);
     }
 }
