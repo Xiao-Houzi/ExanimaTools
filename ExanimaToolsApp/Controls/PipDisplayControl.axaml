@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ExanimaTools.Controls"
+             x:Class="ExanimaTools.Controls.PipDisplayControl">
+    <UserControl.Resources>
+        <local:PipStateToColorConverter x:Key="PipStateToColorConverter"/>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal" Spacing="2">
+        <!-- Bind to PipDisplayViewModel.Pips, which is a collection of PipState (Empty, Half, Full) -->
+        <ItemsControl ItemsSource="{Binding Pips}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl>
+                        <ContentControl.Styles>
+                            <Style Selector="ContentControl">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Path Width="16" Height="16" Stretch="Uniform" Stroke="Black" StrokeThickness="1">
+                                            <Path.Data>
+                                                <EllipseGeometry Center="8,8" RadiusX="7" RadiusY="7"/>
+                                            </Path.Data>
+                                            <Path.Fill>
+                                                <SolidColorBrush Color="{Binding Converter={StaticResource PipStateToColorConverter}}"/>
+                                            </Path.Fill>
+                                        </Path>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ContentControl.Styles>
+                    </ContentControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

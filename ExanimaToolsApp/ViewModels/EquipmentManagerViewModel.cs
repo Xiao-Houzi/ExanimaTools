@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +27,16 @@ namespace ExanimaTools.ViewModels
 
         [ObservableProperty]
         private string? confirmationMessage;
+
+        // Fields for new equipment form
+        [ObservableProperty]
+        private EquipmentPiece newEquipment = new EquipmentPiece();
+        [ObservableProperty]
+        private string newStatInput = string.Empty;
+
+        public ObservableCollection<EquipmentType> EquipmentTypes { get; } = new(Enum.GetValues(typeof(EquipmentType)).Cast<EquipmentType>());
+        public ObservableCollection<EquipmentSlot> EquipmentSlots { get; } = new(Enum.GetValues(typeof(EquipmentSlot)).Cast<EquipmentSlot>());
+        public ObservableCollection<ArmourLayer> ArmourLayers { get; } = new(Enum.GetValues(typeof(ArmourLayer)).Cast<ArmourLayer>());
 
         // Async stub for loading equipment (for future persistence)
         public async Task LoadEquipmentAsync()
@@ -120,6 +132,49 @@ namespace ExanimaTools.ViewModels
                     ErrorMessage = null;
                 });
             }
+        }
+
+        [RelayCommand]
+        private void AddStat()
+        {
+            // Parse stat input as "StatType:Value"
+            if (string.IsNullOrWhiteSpace(NewStatInput)) return;
+            var parts = NewStatInput.Split(':');
+            if (parts.Length == 2 && Enum.TryParse<StatType>(parts[0], true, out var statType) && float.TryParse(parts[1], out var value))
+            {
+                NewEquipment.Stats[statType] = value;
+                NewStatInput = string.Empty;
+            }
+            else
+            {
+                ErrorMessage = "Invalid stat format. Use e.g. Impact:5";
+            }
+        }
+
+        [RelayCommand]
+        private void AddNewEquipment()
+        {
+            if (!ValidateEquipment(NewEquipment, out var error))
+            {
+                ErrorMessage = error;
+                ConfirmationMessage = null;
+                return;
+            }
+            EquipmentList.Add(new EquipmentPiece
+            {
+                Name = NewEquipment.Name,
+                Type = NewEquipment.Type,
+                Slot = NewEquipment.Slot,
+                Layer = NewEquipment.Layer,
+                Stats = new Dictionary<StatType, float>(NewEquipment.Stats),
+                Description = NewEquipment.Description,
+                Quality = NewEquipment.Quality,
+                Condition = NewEquipment.Condition
+            });
+            ConfirmationMessage = $"Added '{NewEquipment.Name}'.";
+            ErrorMessage = null;
+            NewEquipment = new EquipmentPiece();
+            NewStatInput = string.Empty;
         }
 
         // TODO: Add persistence hooks
