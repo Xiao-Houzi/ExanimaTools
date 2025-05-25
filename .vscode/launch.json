@@ -5,7 +5,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build ExanimaTools",
-            "program": "${workspaceFolder}/bin/Debug/net9.0/ExanimaTools.exe",
+            "program": "${workspaceFolder}/ExanimaToolsApp/bin/Debug/net8.0/ExanimaTools.exe",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

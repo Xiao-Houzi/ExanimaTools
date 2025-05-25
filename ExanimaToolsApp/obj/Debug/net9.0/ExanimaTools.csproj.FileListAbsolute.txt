@@ -1,0 +1,8 @@
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.csproj.AssemblyReference.cache
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\Avalonia\resources
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.AssemblyInfoInputs.cache
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.AssemblyInfo.cs
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.csproj.CoreCompileInputs.cache
+D:\Dev\GameSupport\Exanima\src\obj\Debug\net9.0\ExanimaTools.sourcelink.json

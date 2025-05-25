@@ -1,0 +1,12 @@
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\bin\Debug\net8.0\ExanimaTools.Models.deps.json
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\bin\Debug\net8.0\ExanimaTools.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\bin\Debug\net8.0\ExanimaTools.Models.pdb
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.AssemblyInfoInputs.cache
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.AssemblyInfo.cs
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.csproj.CoreCompileInputs.cache
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.sourcelink.json
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\refint\ExanimaTools.Models.dll
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ExanimaTools.Models.pdb
+D:\Dev\GameSupport\Exanima\ExanimaTools.Models\obj\Debug\net8.0\ref\ExanimaTools.Models.dll
