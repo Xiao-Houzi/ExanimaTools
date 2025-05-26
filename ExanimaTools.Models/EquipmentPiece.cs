@@ -56,6 +56,8 @@ namespace ExanimaTools.Models
         public string Description { get; set; } = string.Empty;
         public EquipmentQuality Quality { get; set; } = EquipmentQuality.Common;
         public EquipmentCondition Condition { get; set; } = EquipmentCondition.Good;
+        public string Category { get; set; } = string.Empty; // e.g., "Weapon", "Armour"
+        public string Subcategory { get; set; } = string.Empty; // e.g., "Swords", "Polearms", "Body", "Head"
         public void SetStat(StatType stat, float value)
         {
             float clamped = Math.Clamp(value, 0, 10);

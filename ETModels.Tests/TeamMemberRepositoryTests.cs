@@ -11,25 +11,29 @@ namespace ETModels.Tests;
 [TestClass]
 public class TeamMemberRepositoryTests
 {
-    private string? _dbPath;
+    private string? _dbPath = "TestTeamMember.db";
     private string _connectionString => $"Data Source={_dbPath}";
 
     [TestInitialize]
-    public void Init()
+    public async Task Init()
     {
-        _dbPath = $"TestTeamMembers_{System.Guid.NewGuid()}.db";
-        using var conn = new SqliteConnection(_connectionString);
-        conn.Open();
-        var cmd = conn.CreateCommand();
-        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS TeamMembers (
-            Name TEXT PRIMARY KEY,
-            Role INTEGER,
-            Rank INTEGER,
-            Sex INTEGER,
-            Type INTEGER,
-            EquipmentProfiles TEXT
-        )";
-        cmd.ExecuteNonQuery();
+        if (File.Exists(_dbPath))
+        {
+            try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
+        }
+        using (var conn = new SqliteConnection(_connectionString))
+        {
+            conn.Open();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
+                Name TEXT PRIMARY KEY,
+                Type INTEGER,
+                Description TEXT
+            )";
+            cmd.ExecuteNonQuery();
+        }
+        var repo = new TeamMemberRepository(_connectionString);
+        await repo.InitializeSchemaAsync();
     }
 
     [TestCleanup]
@@ -164,8 +168,20 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task EquipmentProfiles_PersistsAndLoadsCorrectly()
     {
+        // Insert required equipment pieces for FK constraints
+        using (var conn = new SqliteConnection(_connectionString))
+        {
+            conn.Open();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = @"INSERT INTO Equipment (Name, Type, Description) VALUES
+                ('Gambeson', 1, 'Padded armour'),
+                ('Mail Hauberk', 1, 'Chainmail'),
+                ('Cuirass', 1, 'Plate'),
+                ('Armet', 1, 'Helmet')";
+            cmd.ExecuteNonQuery();
+        }
         var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember
+        var member = new TeamMember()
         {
             Name = "LayeredGuy",
             Role = Role.Fighter,
@@ -174,7 +190,7 @@ public class TeamMemberRepositoryTests
             Type = MemberType.Hireling,
             EquipmentProfiles = new Dictionary<Rank, EquipmentProfile>
             {
-                [Rank.Expert] = new EquipmentProfile
+                [Rank.Expert] = new EquipmentProfile()
                 {
                     Name = "Expert Loadout",
                     EquippedItems = new Dictionary<EquipmentSlot, List<EquipmentPiece>>
@@ -200,19 +216,35 @@ public class TeamMemberRepositoryTests
         Assert.IsTrue(loaded.EquipmentProfiles.ContainsKey(Rank.Expert));
         var torso = loaded.EquipmentProfiles[Rank.Expert].EquippedItems[EquipmentSlot.Body];
         Assert.AreEqual(3, torso.Count);
+        // Only assert on properties that are persisted in EquippedItems (JSON): Name, Type, Slot, Layer, Stats
         Assert.AreEqual("Gambeson", torso[0].Name);
+        Assert.AreEqual(EquipmentType.Armour, torso[0].Type);
+        Assert.AreEqual(EquipmentSlot.Body, torso[0].Slot);
         Assert.AreEqual(ArmourLayer.Padding, torso[0].Layer);
+        Assert.IsTrue(torso[0].Stats.ContainsKey(StatType.CrushProtection));
         Assert.AreEqual(5, torso[0].Stats[StatType.CrushProtection]);
+
         Assert.AreEqual("Mail Hauberk", torso[1].Name);
+        Assert.AreEqual(EquipmentType.Armour, torso[1].Type);
+        Assert.AreEqual(EquipmentSlot.Body, torso[1].Slot);
         Assert.AreEqual(ArmourLayer.Chainmail, torso[1].Layer);
+        Assert.IsTrue(torso[1].Stats.ContainsKey(StatType.SlashProtection));
         Assert.AreEqual(10, torso[1].Stats[StatType.SlashProtection]);
+
         Assert.AreEqual("Cuirass", torso[2].Name);
+        Assert.AreEqual(EquipmentType.Armour, torso[2].Type);
+        Assert.AreEqual(EquipmentSlot.Body, torso[2].Slot);
         Assert.AreEqual(ArmourLayer.Armour, torso[2].Layer);
+        Assert.IsTrue(torso[2].Stats.ContainsKey(StatType.PierceProtection));
         Assert.AreEqual(15, torso[2].Stats[StatType.PierceProtection]);
+
         var head = loaded.EquipmentProfiles[Rank.Expert].EquippedItems[EquipmentSlot.Head];
         Assert.AreEqual(1, head.Count);
         Assert.AreEqual("Armet", head[0].Name);
+        Assert.AreEqual(EquipmentType.Armour, head[0].Type);
+        Assert.AreEqual(EquipmentSlot.Head, head[0].Slot);
         Assert.AreEqual(ArmourLayer.Armour, head[0].Layer);
+        Assert.IsTrue(head[0].Stats.ContainsKey(StatType.CrushProtection));
         Assert.AreEqual(8, head[0].Stats[StatType.CrushProtection]);
     }
 }

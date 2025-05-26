@@ -9,17 +9,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ExanimaTools.Controls;
 using ExanimaTools.Models;
+using ExanimaTools.Persistence;
+using System.IO;
 
 namespace ExanimaTools.ViewModels
 {
     public partial class EquipmentManagerViewModel : ObservableObject
     {
         private readonly ILoggingService? _logger;
+        private readonly EquipmentRepository _equipmentRepository;
+        private const string DefaultDbFile = "exanima_tools.db";
+
         public EquipmentManagerViewModel(ILoggingService? logger = null)
         {
             _logger = logger;
             // Use logger for all new models
             NewEquipment = new EquipmentPiece(_logger);
+            // Set up repository with default DB path in app directory
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultDbFile);
+            _equipmentRepository = new EquipmentRepository($"Data Source={dbPath}");
+            // Load equipment from DB on startup
+            _ = LoadEquipmentAsync();
         }
         // Observable collection of equipment pieces for binding
         [ObservableProperty]
@@ -62,11 +72,102 @@ namespace ExanimaTools.ViewModels
         public Array EquipmentQualities => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentQuality));
         public Array EquipmentConditions => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentCondition));
 
+        // Category and subcategory options for dropdowns
+        // New: Separate maps for weapon and armour categories
+        public static readonly Dictionary<string, List<string>> WeaponCategorySubcategoryMap = new()
+        {
+            ["Sword"] = new List<string> { "Longsword", "Shortsword", "Greatsword", "Arming Sword" },
+            ["Axe"] = new List<string> { "Battleaxe", "Handaxe", "Greataxe" },
+            ["Polearm"] = new List<string> { "Spear", "Halberd", "Glaive" },
+            ["Bludgeon"] = new List<string> { "Mace", "Hammer", "Club" },
+            ["Dagger"] = new List<string> { "Stiletto", "Dirk", "Main Gauche" },
+            ["Shield"] = new List<string> { "Buckler", "Round", "Kite", "Tower" },
+            ["Unconventional"] = new List<string> { "Improvised", "Exotic" }
+        };
+        public static readonly Dictionary<string, List<string>> ArmourCategorySubcategoryMap = new()
+        {
+            ["Body"] = new List<string> { "Cuirass", "Brigandine", "Gambeson" },
+            ["Head"] = new List<string> { "Helmet", "Coif", "Cap" },
+            ["Shoulders"] = new List<string> { "Pauldron", "Spaulder" },
+            ["Elbows"] = new List<string> { "Couter" },
+            ["Wrists"] = new List<string> { "Vambrace", "Bracer" },
+            ["Hands"] = new List<string> { "Gauntlet", "Glove" },
+            ["Legs"] = new List<string> { "Cuisses", "Greaves" },
+            ["Feet"] = new List<string> { "Sabatons", "Boots" }
+        };
+
+        [ObservableProperty]
+        private string selectedCategory = string.Empty;
+        [ObservableProperty]
+        private string selectedSubcategory = string.Empty;
+        public ObservableCollection<string> CategoryOptions { get; } = new();
+        public ObservableCollection<string> SubcategoryOptions { get; } = new();
+
+        private enum AddFormMode { None, Weapon, Armour }
+        private AddFormMode addFormMode = AddFormMode.None;
+
+        private void SetCategoryOptionsForMode()
+        {
+            CategoryOptions.Clear();
+            if (addFormMode == AddFormMode.Weapon)
+            {
+                foreach (var cat in WeaponCategorySubcategoryMap.Keys)
+                    CategoryOptions.Add(cat);
+            }
+            else if (addFormMode == AddFormMode.Armour)
+            {
+                foreach (var cat in ArmourCategorySubcategoryMap.Keys)
+                    CategoryOptions.Add(cat);
+            }
+        }
+
+        partial void OnSelectedCategoryChanged(string value)
+        {
+            SubcategoryOptions.Clear();
+            if (addFormMode == AddFormMode.Weapon && !string.IsNullOrEmpty(value) && WeaponCategorySubcategoryMap.TryGetValue(value, out var subs))
+            {
+                foreach (var sub in subs)
+                    SubcategoryOptions.Add(sub);
+                SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+            }
+            else if (addFormMode == AddFormMode.Armour && !string.IsNullOrEmpty(value) && ArmourCategorySubcategoryMap.TryGetValue(value, out var subs2))
+            {
+                foreach (var sub in subs2)
+                    SubcategoryOptions.Add(sub);
+                SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+            }
+            else
+            {
+                SelectedSubcategory = string.Empty;
+            }
+            NewEquipment.Category = value;
+            NewEquipment.Subcategory = SelectedSubcategory;
+        }
+        partial void OnSelectedSubcategoryChanged(string value)
+        {
+            NewEquipment.Subcategory = value;
+        }
+
         // Async stub for loading equipment (for future persistence)
         public async Task LoadEquipmentAsync()
         {
-            // TODO: Load from storage
-            await Task.CompletedTask;
+            try
+            {
+                var loaded = await _equipmentRepository.GetAllAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    EquipmentList.Clear();
+                    foreach (var eq in loaded)
+                        EquipmentList.Add(eq);
+                    BuildEquipmentTree(); // Ensure tree is built after loading
+                    ConfirmationMessage = $"Loaded {loaded.Count} equipment from database.";
+                    ErrorMessage = null;
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to load equipment: {ex.Message}";
+            }
         }
 
         // Async stub for saving equipment (for future persistence)
@@ -222,12 +323,18 @@ namespace ExanimaTools.ViewModels
         private void ShowAddWeaponForm()
         {
             _logger?.LogOperation("ShowAddWeaponForm");
-            NewEquipment = new EquipmentPiece(_logger)
+            addFormMode = AddFormMode.Weapon;
+            SetCategoryOptionsForMode();
+            SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+            SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+            NewEquipment = new EquipmentPiece(_logger!)
             {
                 Type = EquipmentType.Weapon,
                 Slot = EquipmentSlot.Hands, // Default for weapon
                 Layer = null,
-                Stats = WeaponStats.ToDictionary(st => st, st => 0.5f)
+                Stats = WeaponStats.ToDictionary(st => st, st => 0.5f),
+                Category = SelectedCategory,
+                Subcategory = SelectedSubcategory
             };
             IsAddFormVisible = true;
             SyncStatPipViewModels();
@@ -237,19 +344,25 @@ namespace ExanimaTools.ViewModels
         private void ShowAddArmourForm()
         {
             _logger?.LogOperation("ShowAddArmourForm");
-            NewEquipment = new EquipmentPiece(_logger)
+            addFormMode = AddFormMode.Armour;
+            SetCategoryOptionsForMode();
+            SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+            SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+            NewEquipment = new EquipmentPiece(_logger!)
             {
                 Type = EquipmentType.Armour,
                 Slot = EquipmentSlot.Body, // Default for armour
                 Layer = ArmourLayer.Padding,
-                Stats = ArmourStats.ToDictionary(st => st, st => 0.5f)
+                Stats = ArmourStats.ToDictionary(st => st, st => 0.5f),
+                Category = SelectedCategory,
+                Subcategory = SelectedSubcategory
             };
             IsAddFormVisible = true;
             SyncStatPipViewModels();
         }
 
         [RelayCommand]
-        private void SaveNewEquipment()
+        private async Task SaveNewEquipment()
         {
             if (!ValidateEquipment(NewEquipment, out var error))
             {
@@ -257,7 +370,7 @@ namespace ExanimaTools.ViewModels
                 ConfirmationMessage = null;
                 return;
             }
-            EquipmentList.Add(new EquipmentPiece
+            var eq = new EquipmentPiece
             {
                 Name = NewEquipment.Name,
                 Type = NewEquipment.Type,
@@ -266,12 +379,24 @@ namespace ExanimaTools.ViewModels
                 Stats = new Dictionary<StatType, float>(NewEquipment.Stats),
                 Description = NewEquipment.Description,
                 Quality = NewEquipment.Quality,
-                Condition = NewEquipment.Condition
-            });
-            ConfirmationMessage = $"Saved '{NewEquipment.Name}'.";
-            ErrorMessage = null;
-            NewEquipment = new EquipmentPiece();
-            IsAddFormVisible = false;
+                Condition = NewEquipment.Condition,
+                Category = NewEquipment.Category,
+                Subcategory = NewEquipment.Subcategory
+            };
+            try
+            {
+                await _equipmentRepository.AddAsync(eq);
+                EquipmentList.Add(eq);
+                BuildEquipmentTree(); // Ensure tree updates after add
+                ConfirmationMessage = $"Saved '{eq.Name}'.";
+                ErrorMessage = null;
+                NewEquipment = new EquipmentPiece();
+                IsAddFormVisible = false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to save equipment: {ex.Message}";
+            }
         }
 
         [RelayCommand]
@@ -282,6 +407,54 @@ namespace ExanimaTools.ViewModels
                 NewEquipment.Stats[statType] = 0.5f;
                 SyncStatPipViewModels();
             }
+        }
+
+        public class EquipmentTreeNodeViewModel : ObservableObject
+        {
+            public string Name { get; set; } = string.Empty;
+            public ObservableCollection<EquipmentTreeNodeViewModel> Children { get; set; } = new();
+            public EquipmentPiece? EquipmentPiece { get; set; }
+            public bool IsCategory => EquipmentPiece == null;
+            public bool IsLeaf => EquipmentPiece != null;
+            public EquipmentTreeNodeViewModel(string name) { Name = name; }
+            public EquipmentTreeNodeViewModel(EquipmentPiece piece) { Name = piece.Name; EquipmentPiece = piece; }
+        }
+
+        public ObservableCollection<EquipmentTreeNodeViewModel> EquipmentTree { get; } = new();
+        private EquipmentTreeNodeViewModel? selectedEquipmentTreeItem;
+        public EquipmentTreeNodeViewModel? SelectedEquipmentTreeItem
+        {
+            get => selectedEquipmentTreeItem;
+            set
+            {
+                if (SetProperty(ref selectedEquipmentTreeItem, value))
+                {
+                    if (value?.EquipmentPiece != null)
+                        SelectedEquipment = value.EquipmentPiece;
+                }
+            }
+        }
+        private void BuildEquipmentTree()
+        {
+            EquipmentTree.Clear();
+            var byCategory = EquipmentList.GroupBy(e => e.Category);
+            foreach (var catGroup in byCategory)
+            {
+                var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
+                var bySubcat = catGroup.GroupBy(e => e.Subcategory);
+                foreach (var subGroup in bySubcat)
+                {
+                    var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
+                    foreach (var eq in subGroup)
+                        subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
+                    catNode.Children.Add(subNode);
+                }
+                EquipmentTree.Add(catNode);
+            }
+        }
+        partial void OnEquipmentListChanged(ObservableCollection<EquipmentPiece> value)
+        {
+            BuildEquipmentTree();
         }
 
         // TODO: Add persistence hooks
