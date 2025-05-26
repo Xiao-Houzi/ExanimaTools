@@ -35,5 +35,8 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/Dev/GameSupport/Exanima/ExanimaToolsApp/Controls/HeaderBar.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/Dev/GameSupport/Exanima/ExanimaToolsApp/Controls/PipDisplayControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/Dev/GameSupport/Exanima/ExanimaToolsApp/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

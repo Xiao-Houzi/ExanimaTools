@@ -91,3 +91,14 @@
 
 #### Subtask: Dynamic UI Update (2 points)
 - Update UI in real time as loadout changes.
+
+### BUG: Pip stat editor UI does not log pip click events or update stats in some cases
+**As a user, I expect clicking on a pip (or half-pip) in the stat editor to always log the event and update the stat value in the model and UI.**
+- Sometimes, clicking a pip does not trigger a log entry or stat update (see log excerpt: no pip click events logged).
+- This may indicate a bug in pointer event routing, DataContext, or event handler binding in PipDisplayControl.
+- Repro: Open equipment editor, click pips in stat editor, observe missing log entries for pip clicks.
+- Expected: Every pip click should log an operation ("Pip Click") and update the stat value.
+- Severity: Medium (affects usability and auditability of stat editing)
+- Acceptance: All pip clicks reliably log and update stats; covered by automated and manual tests.
+
+// Created 2025-05-26 by Copilot (auto-generated from user request and log evidence)
