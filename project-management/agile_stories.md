@@ -13,15 +13,7 @@
 
 ## Team Management
 
-### Add Team Member UI (3 points)
-**As a user, I want to add new team members via the UI, so that I can build and manage my Exanima team.**
-- Add a button to the Team Manager tab to open a dialog/form for entering new team member details (Name, Role, Rank, Sex, Type, Equipment Profile).
-- Validate required fields and allow saving the new member to the team list.
-- Show a confirmation or error message on save.
-
-#### Subtask: Team Member Input Validation (2 points)
-- Ensure all required fields are filled before allowing save.
-- Show inline validation errors for missing or invalid data.
+<!-- (Moved to agile-current.md on 2025-05-26) -->
 
 ### Team Display UI (3 points)
 **As a user, I want to see a list of all team members, each represented by a TeamMember control, so I can view and manage my team at a glance.**
