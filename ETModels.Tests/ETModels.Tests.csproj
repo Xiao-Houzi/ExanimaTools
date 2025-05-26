@@ -11,6 +11,11 @@
   <ItemGroup>
     <ProjectReference Include="..\ExanimaTools.Models\ExanimaTools.Models.csproj" />
     <ProjectReference Include="..\ExanimaTools.Persistence\ExanimaTools.Persistence.csproj" />
+    <ProjectReference Include="..\ExanimaToolsApp\ExanimaTools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.9.3" />
   </ItemGroup>
 
 </Project>

@@ -14,6 +14,8 @@ namespace ExanimaTools.Controls
 
         private void PipFull_PointerPressed(object? sender, PointerPressedEventArgs e)
         {
+            // DEBUG: Log when handler is called
+            System.Diagnostics.Debug.WriteLine("PipFull_PointerPressed called");
             if (DataContext is PipDisplayViewModel vm && sender is Avalonia.Controls.Shapes.Ellipse ellipse)
             {
                 var border = ellipse.FindAncestorOfType<Border>();
@@ -21,6 +23,7 @@ namespace ExanimaTools.Controls
                 if (itemsControl != null && border != null)
                 {
                     int pipIndex = itemsControl.IndexFromContainer(border);
+                    System.Diagnostics.Debug.WriteLine($"PipFull_PointerPressed: pipIndex={pipIndex}");
                     vm.SetValueFromPip(pipIndex, false);
                 }
             }
@@ -28,6 +31,8 @@ namespace ExanimaTools.Controls
 
         private void PipHalf_PointerPressed(object? sender, PointerPressedEventArgs e)
         {
+            // DEBUG: Log when handler is called
+            System.Diagnostics.Debug.WriteLine("PipHalf_PointerPressed called");
             if (DataContext is PipDisplayViewModel vm && sender is Avalonia.Controls.Shapes.Ellipse ellipse)
             {
                 var border = ellipse.FindAncestorOfType<Border>();
@@ -35,6 +40,7 @@ namespace ExanimaTools.Controls
                 if (itemsControl != null && border != null)
                 {
                     int pipIndex = itemsControl.IndexFromContainer(border);
+                    System.Diagnostics.Debug.WriteLine($"PipHalf_PointerPressed: pipIndex={pipIndex}");
                     vm.SetValueFromPip(pipIndex, true);
                 }
             }

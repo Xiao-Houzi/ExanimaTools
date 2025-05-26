@@ -1,0 +1,62 @@
+﻿[2025-05-26 13:03:03.716] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 13:03:06.935] OPERATION: ShowAddWeaponForm
+[2025-05-26 13:03:06.935] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 13:03:06.941] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5
+[2025-05-26 13:03:08.764] OPERATION: ShowAddArmourForm
+[2025-05-26 13:03:08.764] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 13:03:08.764] OPERATION: Set Stats | Coverage:0.5,ImpactResistance:0.5,Encumbrance:0.5,Weight:0.5
+[2025-05-26 13:03:19.780] OPERATION: Set Stat | Weight=0
+[2025-05-26 13:03:19.780] OPERATION: StatPipViewModel.ValueChanged | Weight=0
+[2025-05-26 13:03:21.899] OPERATION: Set Stat | Weight=0.5
+[2025-05-26 13:03:21.900] OPERATION: StatPipViewModel.ValueChanged | Weight=0.5
+[2025-05-26 13:03:24.444] OPERATION: Set Stat | Weight=0
+[2025-05-26 13:03:24.444] OPERATION: StatPipViewModel.ValueChanged | Weight=0
+[2025-05-26 13:03:25.281] OPERATION: Set Stat | Weight=0.5
+[2025-05-26 13:03:25.281] OPERATION: StatPipViewModel.ValueChanged | Weight=0.5
+[2025-05-26 13:03:26.062] OPERATION: Set Stat | Weight=0
+[2025-05-26 13:03:26.062] OPERATION: StatPipViewModel.ValueChanged | Weight=0
+[2025-05-26 13:03:28.435] OPERATION: Set Stat | Weight=0.5
+[2025-05-26 13:03:28.435] OPERATION: StatPipViewModel.ValueChanged | Weight=0.5
+[2025-05-26 13:03:29.443] OPERATION: Set Stat | Weight=1
+[2025-05-26 13:03:29.443] OPERATION: StatPipViewModel.ValueChanged | Weight=1
+[2025-05-26 13:03:29.884] OPERATION: Set Stat | Weight=1.5
+[2025-05-26 13:03:29.884] OPERATION: StatPipViewModel.ValueChanged | Weight=1.5
+[2025-05-26 13:03:30.048] OPERATION: Set Stat | Weight=2
+[2025-05-26 13:03:30.048] OPERATION: StatPipViewModel.ValueChanged | Weight=2
+[2025-05-26 13:03:30.190] OPERATION: Set Stat | Weight=2.5
+[2025-05-26 13:03:30.190] OPERATION: StatPipViewModel.ValueChanged | Weight=2.5
+[2025-05-26 13:03:30.358] OPERATION: Set Stat | Weight=3
+[2025-05-26 13:03:30.358] OPERATION: StatPipViewModel.ValueChanged | Weight=3
+[2025-05-26 13:03:30.525] OPERATION: Set Stat | Weight=3.5
+[2025-05-26 13:03:30.525] OPERATION: StatPipViewModel.ValueChanged | Weight=3.5
+[2025-05-26 13:03:30.652] OPERATION: Set Stat | Weight=4
+[2025-05-26 13:03:30.652] OPERATION: StatPipViewModel.ValueChanged | Weight=4
+[2025-05-26 13:03:30.813] OPERATION: Set Stat | Weight=4.5
+[2025-05-26 13:03:30.813] OPERATION: StatPipViewModel.ValueChanged | Weight=4.5
+[2025-05-26 13:03:30.978] OPERATION: Set Stat | Weight=5
+[2025-05-26 13:03:30.978] OPERATION: StatPipViewModel.ValueChanged | Weight=5
+[2025-05-26 13:03:31.146] OPERATION: Set Stat | Weight=5.5
+[2025-05-26 13:03:31.146] OPERATION: StatPipViewModel.ValueChanged | Weight=5.5
+[2025-05-26 13:03:31.291] OPERATION: Set Stat | Weight=6
+[2025-05-26 13:03:31.291] OPERATION: StatPipViewModel.ValueChanged | Weight=6
+[2025-05-26 13:03:31.467] OPERATION: Set Stat | Weight=6.5
+[2025-05-26 13:03:31.467] OPERATION: StatPipViewModel.ValueChanged | Weight=6.5
+[2025-05-26 13:03:31.622] OPERATION: Set Stat | Weight=7
+[2025-05-26 13:03:31.622] OPERATION: StatPipViewModel.ValueChanged | Weight=7
+[2025-05-26 13:03:31.804] OPERATION: Set Stat | Weight=7.5
+[2025-05-26 13:03:31.804] OPERATION: StatPipViewModel.ValueChanged | Weight=7.5
+[2025-05-26 13:03:31.980] OPERATION: Set Stat | Weight=8
+[2025-05-26 13:03:31.980] OPERATION: StatPipViewModel.ValueChanged | Weight=8
+[2025-05-26 13:03:32.168] OPERATION: Set Stat | Weight=8.5
+[2025-05-26 13:03:32.168] OPERATION: StatPipViewModel.ValueChanged | Weight=8.5
+[2025-05-26 13:03:32.361] OPERATION: Set Stat | Weight=9
+[2025-05-26 13:03:32.361] OPERATION: StatPipViewModel.ValueChanged | Weight=9
+[2025-05-26 13:03:32.554] OPERATION: Set Stat | Weight=9.5
+[2025-05-26 13:03:32.554] OPERATION: StatPipViewModel.ValueChanged | Weight=9.5
+[2025-05-26 13:03:32.745] OPERATION: Set Stat | Weight=10
+[2025-05-26 13:03:32.745] OPERATION: StatPipViewModel.ValueChanged | Weight=10
+[2025-05-26 13:03:35.636] OPERATION: Set Stat | Weight=9.5
+[2025-05-26 13:03:35.636] OPERATION: StatPipViewModel.ValueChanged | Weight=9.5
+[2025-05-26 13:03:39.108] OPERATION: ShowAddArmourForm
+[2025-05-26 13:03:39.108] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 13:03:39.108] OPERATION: Set Stats | Coverage:0.5,ImpactResistance:0.5,Encumbrance:0.5,Weight:0.5

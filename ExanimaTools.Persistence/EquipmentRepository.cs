@@ -39,7 +39,7 @@ public class EquipmentRepository
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "INSERT INTO Equipment (Name, Type, Description) VALUES ($name, $type, $desc)";
+        cmd.CommandText = "INSERT INTO Equipment (Name, Type, Description) VALUES ($name, $type, $desc) ON CONFLICT(Name) DO UPDATE SET Type = excluded.Type, Description = excluded.Description";
         cmd.Parameters.AddWithValue("$name", equipment.Name);
         cmd.Parameters.AddWithValue("$type", (int)equipment.Type);
         cmd.Parameters.AddWithValue("$desc", equipment.Description);
@@ -66,6 +66,10 @@ public class EquipmentRepository
         cmd.CommandText = "DELETE FROM Equipment WHERE Name = $name";
         cmd.Parameters.AddWithValue("$name", name);
         await cmd.ExecuteNonQueryAsync();
+        // VACUUM to ensure deleted rows are removed from the file
+        var vacuumCmd = conn.CreateCommand();
+        vacuumCmd.CommandText = "VACUUM";
+        await vacuumCmd.ExecuteNonQueryAsync();
     }
 
     public async Task<EquipmentPiece?> GetByIdAsync(string name)

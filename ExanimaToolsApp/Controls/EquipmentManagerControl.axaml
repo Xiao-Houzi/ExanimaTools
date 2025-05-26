@@ -3,16 +3,21 @@
              xmlns:controls="clr-namespace:ExanimaTools.Controls"
              xmlns:local="clr-namespace:ExanimaTools.Controls"
              xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+             xmlns:models="clr-namespace:ExanimaTools.Models"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:av="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
+             xmlns:shapes="clr-namespace:Avalonia.Controls.Shapes;assembly=Avalonia.Controls"
              x:Class="ExanimaTools.Controls.EquipmentManagerControl"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400">
-    <UserControl.DataContext>
-        <viewmodels:EquipmentManagerViewModel/>
-    </UserControl.DataContext>
     <UserControl.Resources>
         <controls:PipStateToColorConverter x:Key="PipStateToColorConverter"/>
         <local:StatToPipDisplayViewModelConverter x:Key="StatToPipDisplayViewModelConverter"/>
+        <!-- Add the new converters here -->
+        <local:QualityDescriptionConverter x:Key="QualityDescriptionConverter"/>
+        <local:ConditionDescriptionConverter x:Key="ConditionDescriptionConverter"/>
+        <local:QualityAndConditionDescriptionMultiConverter x:Key="QualityAndConditionDescriptionMultiConverter"/>
+        <local:EquipmentTypeToDrawingConverter x:Key="EquipmentTypeToDrawingConverter"/>
     </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,8" DockPanel.Dock="Top">
@@ -26,58 +31,88 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Margin="0,0,0,8" DockPanel.Dock="Top" IsVisible="{Binding IsAddFormVisible}">
             <TextBlock Text="Add New Equipment" FontWeight="Bold"/>
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <TextBox Width="120" Watermark="Name" Text="{Binding NewEquipment.Name, Mode=TwoWay}"/>
-                <TextBox Width="100" Watermark="Description" Text="{Binding NewEquipment.Description, Mode=TwoWay}"/>
-                <TextBox Width="80" Watermark="Quality" Text="{Binding NewEquipment.Quality, Mode=TwoWay}"/>
-                <TextBox Width="80" Watermark="Condition" Text="{Binding NewEquipment.Condition, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <Border Width="128" Height="256" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#222" VerticalAlignment="Top" Margin="0,0,8,0">
+                    <ContentControl Content="{Binding NewEquipment.Type, Converter={StaticResource EquipmentTypeToDrawingConverter}}" />
+                </Border>
+                <StackPanel Orientation="Vertical" Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox Width="120" Watermark="Name" Text="{Binding NewEquipment.Name, Mode=TwoWay}"/>
+                        <TextBox Width="100" Watermark="Description" Text="{Binding NewEquipment.Description, Mode=TwoWay}"/>
+                        <ComboBox Width="100" ItemsSource="{Binding EquipmentQualities}" SelectedItem="{Binding NewEquipment.Quality, Mode=TwoWay}"/>
+                        <ComboBox Width="100" ItemsSource="{Binding EquipmentConditions}" SelectedItem="{Binding NewEquipment.Condition, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="Type:"/>
+                        <TextBlock Text="{Binding NewEquipment.Type}"/>
+                        <TextBlock Text="Slot:"/>
+                        <TextBlock Text="{Binding NewEquipment.Slot}"/>
+                        <TextBlock Text="Layer:"/>
+                        <TextBlock Text="{Binding NewEquipment.Layer}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <ItemsControl ItemsSource="{Binding NewEquipmentStatPips}" Grid.IsSharedSizeScope="True">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="4" Margin="0,2,0,2" Padding="4" Background="Transparent">
+                                        <Grid VerticalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="StatLabel" MinWidth="80"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding StatLabel}" FontSize="15" FontWeight="SemiBold" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <controls:PipDisplayControl Grid.Column="1" DataContext="{Binding PipDisplayViewModel}" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0" HorizontalAlignment="Left">
+                        <ComboBox Width="140" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
+                        <Button Content="Add Stat" Command="{Binding AddStatCommand}"/>
+                    </StackPanel>
+                    <TextBlock Margin="0,4,0,0" FontStyle="Italic" Foreground="#FFBBAA77" FontSize="13">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource QualityAndConditionDescriptionMultiConverter}">
+                                <Binding Path="NewEquipment.Quality"/>
+                                <Binding Path="NewEquipment.Condition"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <Button Content="Save" Command="{Binding SaveNewEquipmentCommand}" HorizontalAlignment="Left"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <TextBlock Text="Type:"/>
-                <TextBlock Text="{Binding NewEquipment.Type}"/>
-                <TextBlock Text="Slot:"/>
-                <TextBlock Text="{Binding NewEquipment.Slot}"/>
-                <TextBlock Text="Layer:"/>
-                <TextBlock Text="{Binding NewEquipment.Layer}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <ItemsControl ItemsSource="{Binding NewEquipmentStatPips}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <TextBlock Text="{Binding Stat}" Margin="0,0,4,0"/>
-                                <controls:PipDisplayControl DataContext="{Binding ., Converter={StaticResource StatToPipDisplayViewModelConverter}}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-            <Button Content="Save" Command="{Binding SaveNewEquipmentCommand}"/>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding EquipmentList}" SelectedItem="{Binding SelectedEquipment, Mode=TwoWay}" AutoGenerateColumns="False" Height="250">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
-                <DataGridTemplateColumn Header="Stats" Width="3*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Stats}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <TextBlock Text="{Binding Key}" Margin="0,0,4,0"/>
-                                            <controls:PipDisplayControl DataContext="{Binding Value, Converter={StaticResource StatToPipDisplayViewModelConverter}}"/>
-                                            <TextBlock Text="{Binding Value}" Margin="4,0,0,0"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel Orientation="Horizontal" Spacing="16">
+            <StackPanel Orientation="Vertical" Spacing="0">
+                <!-- Remove invalid ItemsControl properties and ensure DataGrid is used for tabular data -->
+                <DataGrid ItemsSource="{Binding EquipmentList}" SelectedItem="{Binding SelectedEquipment, Mode=TwoWay}" AutoGenerateColumns="False" Height="250">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
+                        <DataGridTemplateColumn Header="Stats" Width="3*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Stats}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <TextBlock Text="{Binding Key}" Margin="0,0,4,0"/>
+                                                    <controls:PipDisplayControl DataContext="{Binding Value, Converter={StaticResource StatToPipDisplayViewModelConverter}}"/>
+                                                    <TextBlock Text="{Binding Value}" Margin="4,0,0,0"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </StackPanel>
         <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="0,8,0,0"/>
         <TextBlock Text="{Binding ConfirmationMessage}" Foreground="Green" Margin="0,2,0,0"/>
     </DockPanel>

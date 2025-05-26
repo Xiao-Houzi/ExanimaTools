@@ -5,31 +5,46 @@
     <UserControl.Resources>
         <local:PipStateToColorConverter x:Key="PipStateToColorConverter"/>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal" Spacing="2">
-        <!-- Bind to PipDisplayViewModel.Pips, which is a collection of PipState (Empty, Half, Full) -->
+    <StackPanel Orientation="Horizontal" Spacing="2" Background="Black" Height="24">
         <ItemsControl ItemsSource="{Binding Pips}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl>
-                        <ContentControl.Styles>
-                            <Style Selector="ContentControl">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <Path Width="16" Height="16" Stretch="Uniform" Stroke="Black" StrokeThickness="1">
-                                            <Path.Data>
-                                                <EllipseGeometry Center="8,8" RadiusX="7" RadiusY="7"/>
-                                            </Path.Data>
-                                            <Path.Fill>
-                                                <SolidColorBrush Color="{Binding Converter={StaticResource PipStateToColorConverter}}"/>
-                                            </Path.Fill>
-                                        </Path>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ContentControl.Styles>
-                    </ContentControl>
+                    <Border Width="18" Height="18" Background="Transparent" IsHitTestVisible="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid Width="16" Height="16" IsHitTestVisible="True">
+                            <!-- Left half: white for Full or Half, clipped to left semicircle -->
+                            <Ellipse Width="16" Height="16"
+                                     Fill="{Binding ., Converter={StaticResource PipStateToColorConverter}, ConverterParameter=Left}"
+                                     PointerPressed="PipHalf_PointerPressed"
+                                     Cursor="Hand" IsHitTestVisible="True">
+                                <Ellipse.Clip>
+                                    <RectangleGeometry Rect="0,0,8,16"/>
+                                </Ellipse.Clip>
+                            </Ellipse>
+                            <!-- Right half: white only for Full, clipped to right semicircle -->
+                            <Ellipse Width="16" Height="16"
+                                     Fill="{Binding ., Converter={StaticResource PipStateToColorConverter}, ConverterParameter=Right}"
+                                     PointerPressed="PipFull_PointerPressed"
+                                     Cursor="Hand" IsHitTestVisible="True">
+                                <Ellipse.Clip>
+                                    <RectangleGeometry Rect="8,0,8,16"/>
+                                </Ellipse.Clip>
+                            </Ellipse>
+                            <!-- Outline -->
+                            <Ellipse Width="16" Height="16" Stroke="White" StrokeThickness="1" Fill="Transparent"/>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <!-- Spinner for increment/decrement -->
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="2,0,0,0">
+            <Button Width="16" Height="10" Padding="0" Content="▲" Command="{Binding IncrementCommand}"/>
+            <Button Width="16" Height="10" Padding="0" Content="▼" Command="{Binding DecrementCommand}"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

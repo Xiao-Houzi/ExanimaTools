@@ -4,14 +4,17 @@ using Avalonia.Platform;
 using Avalonia.Controls.ApplicationLifetimes;
 using System.Linq;
 using System;
+using ExanimaTools.Models;
 
 namespace ExanimaTools;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow() : this(null) { }
+    public MainWindow(ILoggingService? logger)
     {
         InitializeComponent();
+        this.DataContext = new ExanimaTools.ViewModels.EquipmentManagerViewModel(logger);
 
         // Get all screens
         var screens = this.Screens?.All;

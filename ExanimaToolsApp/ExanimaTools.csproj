@@ -28,4 +28,5 @@
     <ProjectReference Include="..\ExanimaTools.Models\ExanimaTools.Models.csproj" />
     <ProjectReference Include="..\ExanimaTools.Persistence\ExanimaTools.Persistence.csproj" />
   </ItemGroup>
+
 </Project>

@@ -9,11 +9,14 @@ namespace ExanimaTools.Controls
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            string? side = parameter as string;
             return value switch
             {
-                PipState.Full => new SolidColorBrush(Colors.Black),
-                PipState.Half => new SolidColorBrush(Colors.Gray),
-                PipState.Empty => new SolidColorBrush(Colors.Transparent),
+                PipState.Full => new SolidColorBrush(Colors.White),
+                PipState.Half => side == "Left"
+                    ? new SolidColorBrush(Colors.White)
+                    : new SolidColorBrush(Colors.Gray),
+                PipState.Empty => new SolidColorBrush(Color.FromArgb(64, 255, 255, 255)), // Low alpha white
                 _ => new SolidColorBrush(Colors.Transparent)
             };
         }

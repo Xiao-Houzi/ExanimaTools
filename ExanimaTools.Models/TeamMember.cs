@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ExanimaTools.Models;
 
@@ -66,33 +69,55 @@ public enum StatType
     Weight,
     Balance,
     Thrust,
+    Impact,
+    Slash,
+    Crush,
+    Pierce
     // Add more as needed
 }
 
-public class EquipmentPiece
+public enum EquipmentType
 {
-    public string Name { get; set; } = string.Empty;
-    public EquipmentType Type { get; set; }
-    public EquipmentSlot Slot { get; set; }
-    public ArmourLayer? Layer { get; set; } // null for weapons
-    public Dictionary<StatType, float> Stats { get; set; } = new();
-    public string Description { get; set; } = string.Empty; // make, quality, condition
-    public string? Quality { get; set; }
-    public string? Condition { get; set; }
+    Weapon,
+    Armour,
+    Shield,
+    Accessory
 }
 
 public class EquipmentProfile
 {
-    public string Name { get; set; } = string.Empty;
-    public Dictionary<EquipmentSlot, List<EquipmentPiece>> EquippedItems { get; set; } = new(); // Layered per slot
+    private readonly ILoggingService? _logger;
+    public EquipmentProfile(ILoggingService? logger = null)
+    {
+        _logger = logger;
+        _logger?.LogOperation("Create EquipmentProfile", $"Name={_name}");
+    }
+    private string _name = string.Empty;
+    public string Name
+    {
+        get => _name;
+        set { _name = value; _logger?.LogOperation("Set Profile Name", value); }
+    }
+    public Dictionary<EquipmentSlot, List<EquipmentPiece>> EquippedItems { get; set; } = new();
 }
 
 public class TeamMember
 {
-    public string Name { get; set; } = string.Empty;
+    private readonly ILoggingService? _logger;
+    public TeamMember(ILoggingService? logger = null)
+    {
+        _logger = logger;
+        _logger?.LogOperation("Create TeamMember", $"Name={_name}");
+    }
+    private string _name = string.Empty;
+    public string Name
+    {
+        get => _name;
+        set { _name = value; _logger?.LogOperation("Set Name", value); }
+    }
     public Role Role { get; set; }
     public Rank Rank { get; set; }
     public Sex Sex { get; set; }
     public MemberType Type { get; set; } = MemberType.Recruit;
-    public Dictionary<Rank, EquipmentProfile> EquipmentProfiles { get; set; } = new(); // Per-rank loadouts
+    public Dictionary<Rank, EquipmentProfile> EquipmentProfiles { get; set; } = new();
 }

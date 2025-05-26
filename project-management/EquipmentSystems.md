@@ -121,4 +121,61 @@ public class TeamMember {
 
 ---
 
+## Appendix: Equipment Quality and Condition (Exanima)
+
+### Equipment Quality (Item Quality)
+- Poor
+- Common
+- WellMade
+- Masterwork
+- Legendary
+
+### Equipment Condition (Item Condition)
+- Ruined
+- Damaged
+- Worn
+- Fair
+- Used
+- Good
+- Excellent
+- Pristine
+
+// These lists match the in-game values as of May 2025. Update if Exanima adds new qualities/conditions.
+
+---
+
+## Appendix: Equipment Stat Requirements (Exanima)
+
+### Weapon Minimum Stats
+- Encumbrance (all weapons)
+- Weight (all weapons)
+
+### Weapon Optional Stats (addable via UI)
+- Balance
+- Impact
+- Slash
+- Crush
+- Pierce
+- Thrust
+
+### Armour Minimum Stats (always present)
+- Coverage (all armour)
+- ImpactResistance (all armour)
+- Encumbrance (all armour)
+- Weight (all armour)
+
+### Armour Optional Stats (may be present, but not on all pieces)
+- SlashProtection
+- CrushProtection
+- PierceProtection
+- HeatProtection (very rare, e.g. fire-resistant gear)
+- ColdProtection (very rare, e.g. winter gear)
+- BluntProtection (sometimes used as a synonym for ImpactResistance, not always present)
+- MagicResistance (not in base Exanima, but may appear in mods or future updates)
+- Flexibility (sometimes present for special light armours, not standard)
+
+> Note: Only Coverage, ImpactResistance, Encumbrance, and Weight are guaranteed for all armour. Protection stats (Slash, Crush, Pierce) are common on most protective gear but not on all clothing or light layers.
+
+---
+
 This system provides a flexible, extensible foundation for modelling Exanima's equipment in your tools and UI.
