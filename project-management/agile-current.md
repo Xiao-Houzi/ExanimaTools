@@ -24,11 +24,10 @@
 (See `Weapons.md`, `Armour.md`, and `EquipmentSystems.md` for category structure.)
 
 ## PROGRESS
-- Updated EquipmentPiece model to include `Category` and `Subcategory` fields for hierarchical grouping in the equipment browser tree.
-- Added category and subcategory ComboBoxes to the add equipment form. Subcategory options update based on selected category. ComboBoxes are bound to the view model and update the new equipment item.
-- ComboBox logic finalized: first dropdown is broad category (e.g., Sword, Axe, Shield for weapons; Body, Head, etc. for armour), second is subtype (e.g., Longsword, Buckler). Add Weapon/Add Armour buttons determine which set is shown. UI and view model logic are now correct and robust.
-- All build errors and logging service issues are resolved. The add equipment form is fully functional and user-friendly.
-- Equipment tree UI is implemented: all equipment is shown in a hierarchical tree grouped by category and subcategory. Selecting a tree item shows its details in the grid.
-- Persistence is now fully integrated: equipment loads from the database on startup, and new equipment is saved to the database. The UI updates automatically after changes.
-- Equipment tree border replaced with a Separator for a cleaner, more flexible layout. Tree now stretches to full width and is visually clear.
-- All build/runtime errors (including XAML AVLN2000 from invalid Line element) are resolved. UI is tested and working as intended.
+- Equipment browser tree is fully implemented, visually clear, and stretches to full width. All build/runtime errors are resolved.
+- All requirements and acceptance criteria are met: hierarchical tree, add form, persistence, and UI updates are complete and tested.
+
+## DONE
+- Equipment Browser UI with Categorised Tree is complete and merged to main.
+
+<!-- Ticket closed: 2025-05-26 -->

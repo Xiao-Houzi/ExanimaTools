@@ -9,17 +9,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ExanimaTools.Controls;
 using ExanimaTools.Models;
+using ExanimaTools.Persistence;
+using System.IO;
 
 namespace ExanimaTools.ViewModels
 {
     public partial class EquipmentManagerViewModel : ObservableObject
     {
         private readonly ILoggingService? _logger;
+        private readonly EquipmentRepository _equipmentRepository;
+        private const string DefaultDbFile = "exanima_tools.db";
+
         public EquipmentManagerViewModel(ILoggingService? logger = null)
         {
             _logger = logger;
             // Use logger for all new models
             NewEquipment = new EquipmentPiece(_logger);
+            // Set up repository with default DB path in app directory
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultDbFile);
+            _equipmentRepository = new EquipmentRepository($"Data Source={dbPath}");
+            // Load equipment from DB on startup
+            _ = LoadEquipmentAsync();
         }
         // Observable collection of equipment pieces for binding
         [ObservableProperty]
@@ -141,8 +151,23 @@ namespace ExanimaTools.ViewModels
         // Async stub for loading equipment (for future persistence)
         public async Task LoadEquipmentAsync()
         {
-            // TODO: Load from storage
-            await Task.CompletedTask;
+            try
+            {
+                var loaded = await _equipmentRepository.GetAllAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    EquipmentList.Clear();
+                    foreach (var eq in loaded)
+                        EquipmentList.Add(eq);
+                    BuildEquipmentTree(); // Ensure tree is built after loading
+                    ConfirmationMessage = $"Loaded {loaded.Count} equipment from database.";
+                    ErrorMessage = null;
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to load equipment: {ex.Message}";
+            }
         }
 
         // Async stub for saving equipment (for future persistence)
@@ -337,7 +362,7 @@ namespace ExanimaTools.ViewModels
         }
 
         [RelayCommand]
-        private void SaveNewEquipment()
+        private async Task SaveNewEquipment()
         {
             if (!ValidateEquipment(NewEquipment, out var error))
             {
@@ -345,7 +370,7 @@ namespace ExanimaTools.ViewModels
                 ConfirmationMessage = null;
                 return;
             }
-            EquipmentList.Add(new EquipmentPiece
+            var eq = new EquipmentPiece
             {
                 Name = NewEquipment.Name,
                 Type = NewEquipment.Type,
@@ -354,12 +379,24 @@ namespace ExanimaTools.ViewModels
                 Stats = new Dictionary<StatType, float>(NewEquipment.Stats),
                 Description = NewEquipment.Description,
                 Quality = NewEquipment.Quality,
-                Condition = NewEquipment.Condition
-            });
-            ConfirmationMessage = $"Saved '{NewEquipment.Name}'.";
-            ErrorMessage = null;
-            NewEquipment = new EquipmentPiece();
-            IsAddFormVisible = false;
+                Condition = NewEquipment.Condition,
+                Category = NewEquipment.Category,
+                Subcategory = NewEquipment.Subcategory
+            };
+            try
+            {
+                await _equipmentRepository.AddAsync(eq);
+                EquipmentList.Add(eq);
+                BuildEquipmentTree(); // Ensure tree updates after add
+                ConfirmationMessage = $"Saved '{eq.Name}'.";
+                ErrorMessage = null;
+                NewEquipment = new EquipmentPiece();
+                IsAddFormVisible = false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to save equipment: {ex.Message}";
+            }
         }
 
         [RelayCommand]
@@ -370,6 +407,54 @@ namespace ExanimaTools.ViewModels
                 NewEquipment.Stats[statType] = 0.5f;
                 SyncStatPipViewModels();
             }
+        }
+
+        public class EquipmentTreeNodeViewModel : ObservableObject
+        {
+            public string Name { get; set; } = string.Empty;
+            public ObservableCollection<EquipmentTreeNodeViewModel> Children { get; set; } = new();
+            public EquipmentPiece? EquipmentPiece { get; set; }
+            public bool IsCategory => EquipmentPiece == null;
+            public bool IsLeaf => EquipmentPiece != null;
+            public EquipmentTreeNodeViewModel(string name) { Name = name; }
+            public EquipmentTreeNodeViewModel(EquipmentPiece piece) { Name = piece.Name; EquipmentPiece = piece; }
+        }
+
+        public ObservableCollection<EquipmentTreeNodeViewModel> EquipmentTree { get; } = new();
+        private EquipmentTreeNodeViewModel? selectedEquipmentTreeItem;
+        public EquipmentTreeNodeViewModel? SelectedEquipmentTreeItem
+        {
+            get => selectedEquipmentTreeItem;
+            set
+            {
+                if (SetProperty(ref selectedEquipmentTreeItem, value))
+                {
+                    if (value?.EquipmentPiece != null)
+                        SelectedEquipment = value.EquipmentPiece;
+                }
+            }
+        }
+        private void BuildEquipmentTree()
+        {
+            EquipmentTree.Clear();
+            var byCategory = EquipmentList.GroupBy(e => e.Category);
+            foreach (var catGroup in byCategory)
+            {
+                var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
+                var bySubcat = catGroup.GroupBy(e => e.Subcategory);
+                foreach (var subGroup in bySubcat)
+                {
+                    var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
+                    foreach (var eq in subGroup)
+                        subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
+                    catNode.Children.Add(subNode);
+                }
+                EquipmentTree.Add(catNode);
+            }
+        }
+        partial void OnEquipmentListChanged(ObservableCollection<EquipmentPiece> value)
+        {
+            BuildEquipmentTree();
         }
 
         // TODO: Add persistence hooks

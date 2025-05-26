@@ -12,6 +12,22 @@ public class EquipmentRepository
     public EquipmentRepository(string connectionString)
     {
         _connectionString = connectionString;
+        EnsureTableExists();
+    }
+
+    private void EnsureTableExists()
+    {
+        using var conn = new SqliteConnection(_connectionString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
+            Name TEXT PRIMARY KEY,
+            Type INTEGER,
+            Description TEXT,
+            Category TEXT,
+            Subcategory TEXT
+        )";
+        cmd.ExecuteNonQuery();
     }
 
     public async Task<List<EquipmentPiece>> GetAllAsync()

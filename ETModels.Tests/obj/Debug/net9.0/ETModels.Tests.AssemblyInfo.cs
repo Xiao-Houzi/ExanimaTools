@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ETModels.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a28bdf2aae930561f289f557f49b216fee33ccd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0492f1383570845ff8fa69cb0d4f08c3070ebd5")]
 [assembly: System.Reflection.AssemblyProductAttribute("ETModels.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ETModels.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
