@@ -1,18 +1,4 @@
-# ExanimaTools Agile Story History
-
-## Completed Stories
-
-### Team Member Repository & Persistence Refactor (3 points)
-**As a developer, I want the TeamMember repository and model to support layered, per-slot, per-rank equipment, so the system matches Exanima's rules.**
-- Refactor models and enums for new equipment system.
-- Update persistence and tests for nested/layered equipment profiles.
-- Remove legacy/duplicate code.
-
-(Completed: 2025-05-25)
-
----
-
-# Equipment Profile Management (Completed 2025-05-26)
+# Agile Story: Equipment Profile Management (Current)
 
 ## TASK DESCRIPTION
 Implement, test, and document robust equipment profile management for ExanimaTools, focusing on model, persistence, and test coverage. Ensure equipment profiles (per-rank, per-slot, layered, with full stat details) are correctly persisted and loaded, matching Exanima’s requirements. All changes should be committed to a dedicated feature branch.
@@ -59,4 +45,6 @@ Implement, test, and document robust equipment profile management for ExanimaToo
 - Used dotnet test repeatedly to verify test and persistence logic.
 - Used read_file and semantic_search to gather model and persistence context.
 
-The model and persistence for equipment profile management are now robust, fully tested, and ready for further UI or integration work.
+---
+
+# (Moved to agile_history.md on 2025-05-26)
