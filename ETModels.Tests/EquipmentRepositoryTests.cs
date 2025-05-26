@@ -17,7 +17,11 @@ public class EquipmentRepositoryTests
     [TestInitialize]
     public void Init()
     {
-        if (File.Exists(_dbPath)) File.Delete(_dbPath);
+        // Only try to delete the test DB in the current directory (test runner output)
+        if (File.Exists(_dbPath))
+        {
+            try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
+        }
         using var conn = new SqliteConnection(_connectionString);
         conn.Open();
         var cmd = conn.CreateCommand();
@@ -51,7 +55,8 @@ public class EquipmentRepositoryTests
         // Update
         eq.Description = "Very Heavy";
         await repo.UpdateAsync(eq);
-        var updated = (await repo.GetAllAsync())[0];
+        var updated = await repo.GetByIdAsync(eq.Name);
+        Assert.IsNotNull(updated);
         Assert.AreEqual("Very Heavy", updated.Description);
         // Delete
         await repo.DeleteAsync(eq.Name);

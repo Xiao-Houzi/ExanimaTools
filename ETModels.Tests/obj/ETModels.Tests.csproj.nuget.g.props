@@ -14,6 +14,8 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)xunit.core\2.9.3\build\xunit.core.props" Condition="Exists('$(NuGetPackageRoot)xunit.core\2.9.3\build\xunit.core.props')" />
+    <Import Project="$(NuGetPackageRoot)skiasharp.nativeassets.webassembly\2.88.9\buildTransitive\netstandard1.0\SkiaSharp.NativeAssets.WebAssembly.props" Condition="Exists('$(NuGetPackageRoot)skiasharp.nativeassets.webassembly\2.88.9\buildTransitive\netstandard1.0\SkiaSharp.NativeAssets.WebAssembly.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.testing.platform\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Platform.props" Condition="Exists('$(NuGetPackageRoot)microsoft.testing.platform\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Platform.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.testing.platform.msbuild\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('$(NuGetPackageRoot)microsoft.testing.platform.msbuild\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Platform.MSBuild.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.testing.extensions.telemetry\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('$(NuGetPackageRoot)microsoft.testing.extensions.telemetry\1.4.1\buildTransitive\net8.0\Microsoft.Testing.Extensions.Telemetry.props')" />
@@ -21,8 +23,13 @@
     <Import Project="$(NuGetPackageRoot)microsoft.testplatform.testhost\17.11.1\build\netcoreapp3.1\Microsoft.TestPlatform.TestHost.props" Condition="Exists('$(NuGetPackageRoot)microsoft.testplatform.testhost\17.11.1\build\netcoreapp3.1\Microsoft.TestPlatform.TestHost.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.codecoverage\17.11.1\build\netstandard2.0\Microsoft.CodeCoverage.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codecoverage\17.11.1\build\netstandard2.0\Microsoft.CodeCoverage.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.net.test.sdk\17.11.1\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.props" Condition="Exists('$(NuGetPackageRoot)microsoft.net.test.sdk\17.11.1\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.props')" />
+    <Import Project="$(NuGetPackageRoot)harfbuzzsharp.nativeassets.webassembly\7.3.0.3\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.props" Condition="Exists('$(NuGetPackageRoot)harfbuzzsharp.nativeassets.webassembly\7.3.0.3\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.props')" />
+    <Import Project="$(NuGetPackageRoot)avalonia\11.3.0\buildTransitive\Avalonia.props" Condition="Exists('$(NuGetPackageRoot)avalonia\11.3.0\buildTransitive\Avalonia.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\Jason\.nuget\packages\xunit.analyzers\1.18.0</Pkgxunit_analyzers>
     <PkgMSTest_Analyzers Condition=" '$(PkgMSTest_Analyzers)' == '' ">C:\Users\Jason\.nuget\packages\mstest.analyzers\3.6.1</PkgMSTest_Analyzers>
+    <PkgAvalonia_BuildServices Condition=" '$(PkgAvalonia_BuildServices)' == '' ">C:\Users\Jason\.nuget\packages\avalonia.buildservices\0.0.31</PkgAvalonia_BuildServices>
+    <PkgAvalonia Condition=" '$(PkgAvalonia)' == '' ">C:\Users\Jason\.nuget\packages\avalonia\11.3.0</PkgAvalonia>
   </PropertyGroup>
 </Project>
