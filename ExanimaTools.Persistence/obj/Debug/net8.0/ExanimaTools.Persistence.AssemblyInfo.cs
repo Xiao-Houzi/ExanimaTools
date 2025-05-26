@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExanimaTools.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45e3e00389ed5bc31c274b9a913e2e1cdf12aab6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b2c1f02ac365cba492c419d879e183a6a8add3a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExanimaTools.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExanimaTools.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

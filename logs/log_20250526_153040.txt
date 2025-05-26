@@ -1,0 +1,24 @@
+﻿[2025-05-26 15:30:40.888] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 15:30:47.075] OPERATION: ShowAddWeaponForm
+[2025-05-26 15:30:47.075] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 15:30:47.081] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5
+[2025-05-26 15:30:51.900] OPERATION: ShowAddWeaponForm
+[2025-05-26 15:30:51.900] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 15:30:51.900] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5
+[2025-05-26 15:30:56.765] OPERATION: Set Stat | Weight=1
+[2025-05-26 15:30:56.765] OPERATION: StatPipViewModel.ValueChanged | Weight=1
+[2025-05-26 15:30:56.937] OPERATION: Set Stat | Weight=1.5
+[2025-05-26 15:30:56.937] OPERATION: StatPipViewModel.ValueChanged | Weight=1.5
+[2025-05-26 15:30:57.106] OPERATION: Set Stat | Weight=2
+[2025-05-26 15:30:57.106] OPERATION: StatPipViewModel.ValueChanged | Weight=2
+[2025-05-26 15:30:57.265] OPERATION: Set Stat | Weight=2.5
+[2025-05-26 15:30:57.265] OPERATION: StatPipViewModel.ValueChanged | Weight=2.5
+[2025-05-26 15:30:57.445] OPERATION: Set Stat | Weight=3
+[2025-05-26 15:30:57.445] OPERATION: StatPipViewModel.ValueChanged | Weight=3
+[2025-05-26 15:30:57.767] OPERATION: Set Stat | Weight=3.5
+[2025-05-26 15:30:57.767] OPERATION: StatPipViewModel.ValueChanged | Weight=3.5
+[2025-05-26 15:30:58.896] OPERATION: Set Name | s
+[2025-05-26 15:30:59.218] OPERATION: Set Name | sw
+[2025-05-26 15:30:59.984] OPERATION: Set Name | swo
+[2025-05-26 15:31:00.288] OPERATION: Set Name | swor
+[2025-05-26 15:31:01.665] OPERATION: Set Name | sword

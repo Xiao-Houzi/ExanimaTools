@@ -1,4 +1,0 @@
-﻿[2025-05-26 12:15:26.094] OPERATION: Create EquipmentPiece | Name=
-[2025-05-26 12:15:28.989] OPERATION: ShowAddWeaponForm
-[2025-05-26 12:15:28.989] OPERATION: Create EquipmentPiece | Name=
-[2025-05-26 12:15:28.995] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5

@@ -28,7 +28,9 @@ public class EquipmentRepositoryTests
         cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
             Name TEXT PRIMARY KEY,
             Type INTEGER,
-            Description TEXT
+            Description TEXT,
+            Category TEXT,
+            Subcategory TEXT
         )";
         cmd.ExecuteNonQuery();
     }
@@ -37,27 +39,33 @@ public class EquipmentRepositoryTests
     public async Task AddAndGetAllAsync_Works()
     {
         var repo = new EquipmentRepository(_connectionString);
-        var eq = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Description = "Sharp" };
+        var eq = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords" };
         await repo.AddAsync(eq);
         List<EquipmentPiece> all = await repo.GetAllAsync();
         Assert.AreEqual(1, all.Count);
         Assert.AreEqual("Sword", all[0].Name);
         Assert.AreEqual(EquipmentType.Weapon, all[0].Type);
         Assert.AreEqual("Sharp", all[0].Description);
+        Assert.AreEqual("Weapon", all[0].Category);
+        Assert.AreEqual("Swords", all[0].Subcategory);
     }
 
     [TestMethod]
     public async Task UpdateAndDeleteAsync_Works()
     {
         var repo = new EquipmentRepository(_connectionString);
-        var eq = new EquipmentPiece { Name = "Axe", Type = EquipmentType.Weapon, Description = "Heavy" };
+        var eq = new EquipmentPiece { Name = "Axe", Type = EquipmentType.Weapon, Description = "Heavy", Category = "Weapon", Subcategory = "Axes" };
         await repo.AddAsync(eq);
         // Update
         eq.Description = "Very Heavy";
+        eq.Category = "Weapon";
+        eq.Subcategory = "Axes";
         await repo.UpdateAsync(eq);
         var updated = await repo.GetByIdAsync(eq.Name);
         Assert.IsNotNull(updated);
         Assert.AreEqual("Very Heavy", updated.Description);
+        Assert.AreEqual("Weapon", updated.Category);
+        Assert.AreEqual("Axes", updated.Subcategory);
         // Delete
         await repo.DeleteAsync(eq.Name);
         var all = await repo.GetAllAsync();
@@ -68,11 +76,13 @@ public class EquipmentRepositoryTests
     public async Task GetByIdAsync_Works()
     {
         var repo = new EquipmentRepository(_connectionString);
-        var eq = new EquipmentPiece { Name = "Mace", Type = EquipmentType.Weapon, Description = "Blunt" };
+        var eq = new EquipmentPiece { Name = "Mace", Type = EquipmentType.Weapon, Description = "Blunt", Category = "Weapon", Subcategory = "Bludgeons" };
         await repo.AddAsync(eq);
         var found = await repo.GetByIdAsync("Mace");
         Assert.IsNotNull(found);
         Assert.AreEqual("Mace", found.Name);
         Assert.AreEqual(EquipmentType.Weapon, found.Type);
+        Assert.AreEqual("Weapon", found.Category);
+        Assert.AreEqual("Bludgeons", found.Subcategory);
     }
 }

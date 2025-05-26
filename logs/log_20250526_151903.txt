@@ -1,0 +1,17 @@
+﻿[2025-05-26 15:19:03.954] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 15:19:07.800] OPERATION: ShowAddWeaponForm
+[2025-05-26 15:19:07.800] OPERATION: Create EquipmentPiece | Name=
+[2025-05-26 15:19:07.805] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5
+[2025-05-26 15:19:17.718] OPERATION: Set Name | S
+[2025-05-26 15:19:18.358] OPERATION: Set Name | Sh
+[2025-05-26 15:19:18.537] OPERATION: Set Name | Sho
+[2025-05-26 15:19:19.031] OPERATION: Set Name | Shor
+[2025-05-26 15:19:20.285] OPERATION: Set Name | Short
+[2025-05-26 15:19:21.928] OPERATION: Set Name | Short 
+[2025-05-26 15:19:22.225] OPERATION: Set Name | Short S
+[2025-05-26 15:19:22.881] OPERATION: Set Name | Short Sw
+[2025-05-26 15:19:23.571] OPERATION: Set Name | Short Swo
+[2025-05-26 15:19:23.740] OPERATION: Set Name | Short Swor
+[2025-05-26 15:19:24.915] OPERATION: Set Name | Short Sworf
+[2025-05-26 15:19:25.840] OPERATION: Set Name | Short Swor
+[2025-05-26 15:19:25.903] OPERATION: Set Name | Short Sword

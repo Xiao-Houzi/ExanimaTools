@@ -22,3 +22,6 @@
 - Data model and persistence changes are fully tested.
 
 (See `Weapons.md`, `Armour.md`, and `EquipmentSystems.md` for category structure.)
+
+## PROGRESS
+- Updated EquipmentPiece model to include `Category` and `Subcategory` fields for hierarchical grouping in the equipment browser tree.
