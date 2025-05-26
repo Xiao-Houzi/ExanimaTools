@@ -101,4 +101,13 @@
 - Severity: Medium (affects usability and auditability of stat editing)
 - Acceptance: All pip clicks reliably log and update stats; covered by automated and manual tests.
 
-// Created 2025-05-26 by Copilot (auto-generated from user request and log evidence)
+---
+
+## Agile Story Tracking Procedure (added 2025-05-26)
+
+- The file `agile-current.md` is used to track the single current active agile story, including its task description, progress, and completion state.
+- When a story is completed, it is moved from `agile-current.md` to `agile_history.md` (with a completion date), and a note is left in `agile-current.md` for traceability.
+- `agile_stories.md` is used for backlog, future, or reference stories, and should not contain the current active story.
+- This process ensures clear tracking of the current story, preserves history, and avoids duplication.
+
+# (Moved to agile-current.md on 2025-05-26)
