@@ -1,0 +1,10 @@
+﻿[2025-05-28 06:51:20.401] OPERATION: Create EquipmentPiece | Name=
+[2025-05-28 06:51:27.819] OPERATION: ShowAddWeaponForm
+[2025-05-28 06:51:27.822] OPERATION: Create EquipmentPiece | Name=
+[2025-05-28 06:51:27.830] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5
+[2025-05-28 06:51:28.465] OPERATION: ShowAddArmourForm
+[2025-05-28 06:51:28.466] OPERATION: Create EquipmentPiece | Name=
+[2025-05-28 06:51:28.466] OPERATION: Set Stats | Coverage:0.5,ImpactResistance:0.5,Encumbrance:0.5,Weight:0.5
+[2025-05-28 06:51:29.254] OPERATION: ShowAddWeaponForm
+[2025-05-28 06:51:29.255] OPERATION: Create EquipmentPiece | Name=
+[2025-05-28 06:51:29.255] OPERATION: Set Stats | Encumbrance:0.5,Weight:0.5

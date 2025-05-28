@@ -1213,7 +1213,7 @@
         },
         "runtime": {
           "ExanimaTools.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1221,7 +1221,7 @@
       "ExanimaTools.Models/1.0.0": {
         "runtime": {
           "ExanimaTools.Models.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1233,7 +1233,7 @@
         },
         "runtime": {
           "ExanimaTools.Persistence.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }

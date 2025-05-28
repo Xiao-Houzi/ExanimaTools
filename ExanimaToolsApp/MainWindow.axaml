@@ -15,7 +15,7 @@
             <!-- Tabbed Panel Area -->
             <TabControl DockPanel.Dock="Top" Margin="24,24,24,24" x:Name="MainTabControl">
                 <TabItem Header="Team Manager">
-                    <TextBlock Text="Team Manager content goes here." Margin="16"/>
+                    <controls:TeamManagerControl/>
                 </TabItem>
                 <TabItem Header="Equipment Manager">
                     <controls:EquipmentManagerControl/>

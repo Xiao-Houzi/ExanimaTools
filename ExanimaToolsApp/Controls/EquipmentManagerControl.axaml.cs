@@ -13,6 +13,9 @@ namespace ExanimaTools.Controls
         public EquipmentManagerControl()
         {
             InitializeComponent();
+            if (Design.IsDesignMode) return;
+            if (DataContext == null)
+                DataContext = new ExanimaTools.ViewModels.EquipmentManagerViewModel();
         }
     }
 
