@@ -20,6 +20,9 @@
                 <TabItem Header="Equipment Manager">
                     <controls:EquipmentManagerControl/>
                 </TabItem>
+                <TabItem Header="Arsenal">
+                    <controls:ArsenalManagerControl/>
+                </TabItem>
             </TabControl>
             <!-- Main Content -->
             <ContentPresenter/>
