@@ -130,4 +130,33 @@
 
 ---
 
-Moved to history: 2025-05-28
+# Add Equipment from Database to Arsenal (Completed 2025-05-28)
+
+**As a user, I want to add equipment from the database to my arsenal, so I can build a collection of available gear.**
+
+- Provide a searchable/selectable list of equipment from the database.
+- Allow users to add selected equipment to their arsenal.
+- Allow duplicate entries in the arsenal we may own more than one rusty dagger.
+
+**Acceptance Criteria:**
+- User can browse/search all equipment in the database.
+- User can add equipment to their arsenal with a single action.
+- Duplicate entries in the arsenal are allowed.
+- UI and persistence are updated accordingly.
+- Covered by integration/UI tests.
+
+**Highlights:**
+- Arsenal model and repository refactored to allow duplicate entries.
+- Arsenal and equipment tests updated/added for duplicate handling and persistence.
+- Test setup improved with unique DB files/names and cleanup script.
+- Seeding script created, improved to check for empty table, and integrated into app startup.
+- Dump script created and integrated into command-line entry point.
+- All DB path usage unified via DbManager.GetDbPath().
+- Extensive logging added to seeding, EquipmentManagerViewModel, and all user actions.
+- Debug UI element added to show equipment count loaded from DB.
+- Verified correct DB state and logging via dump and log inspection.
+- All acceptance criteria for the ticket are now met; further polish will be handled as backlog stories.
+
+(Completed: 2025-05-28)
+
+---

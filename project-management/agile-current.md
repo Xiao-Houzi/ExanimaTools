@@ -34,20 +34,3 @@
 
 (See `Weapons.md`, `Armour.md`, and `EquipmentSystems.md` for category structure.)
 
-# Add Equipment from Database to Arsenal (Active)
-
-**As a user, I want to add equipment from the database to my arsenal, so I can build a collection of available gear.**
-
-- Provide a searchable/selectable list of equipment from the database.
-- Allow users to add selected equipment to their arsenal.
-- Allow duplicate entries in the arsenal we may own more than one rusty dagger.
-
-**Acceptance Criteria:**
-- User can browse/search all equipment in the database.
-- User can add equipment to their arsenal with a single action.
-- Duplicate entries in the arsenal are allowed.
-- UI and persistence are updated accordingly.
-- Covered by integration/UI tests.
-
----
-
