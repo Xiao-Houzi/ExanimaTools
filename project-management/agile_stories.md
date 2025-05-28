@@ -43,12 +43,6 @@
 
 ## Equipment & Arsenal
 
-### Add Equipment from Database to Arsenal (2 points)
-**As a user, I want to add equipment from the database to my arsenal, so I can build a collection of available gear.**
-- Provide a searchable/selectable list of equipment from the database.
-- Allow users to add selected equipment to their arsenal.
-- Prevent duplicate entries in the arsenal.
-
 ### Arsenal Display Controls (3 points)
 **As a user, I want to view my arsenal in a clear, organized way, so I can see all available equipment at a glance.**
 - Create an arsenal display control showing all equipment in the arsenal.
@@ -106,37 +100,6 @@
 
 ---
 
-# Equipment Browser UI with Categorised Tree (Completed 2025-05-28)
-
-**Goal:** Migrate the equipment management system to use a unique integer Id as the primary key for all equipment items, replacing Name as the unique identifier. Ensure all CRUD operations, UI, and tests use Id for referencing and editing items. Support editing equipment even if the name changes, and seed the database with initial entries for testing.
-
-**Highlights:**
-- Updated EquipmentPiece model and EquipmentRepository to use Id as the primary key.
-- All CRUD, UI, and test logic now reference equipment by Id, not Name.
-- Database seeding and schema migration logic updated and tested.
-- All old database files and schema issues resolved; no duplication or lingering errors.
-- UI and integration tests confirm correct behavior.
-
-(See agile_history.md for full story details.)
-
----
-
-# Equipment Stat Expansion: Rank & Points (Planned)
-
-**As a user, I want equipment to have a minimum rank requirement and a points value, so that team management and loadout rules match Exanima's gameplay.**
-
-- Add a `Rank` stat to each equipment piece, representing the minimum team member rank required to equip it.
-- Add a `Points` stat to each equipment piece, representing its loadout cost.
-- Each team member rank will have a maximum allowed points value for equipped gear.
-- Update the data model, UI, and persistence to support these new fields.
-- Update documentation in `EquipmentSystems.md` and `Armour.md` to describe the new stats and their gameplay impact.
-- Update the Equipment Manager UI to allow editing/viewing these stats.
-- Validate that team members cannot equip gear above their rank or points limit.
-
-**Acceptance Criteria:**
-- Equipment pieces have `Rank` and `Points` fields in the model, database, and UI.
-- Team members cannot equip gear above their rank or points limit.
-- Documentation is updated to reflect new rules and fields.
-- All changes are covered by tests.
+# (No planned stories; see agile_history.md for completed work)
 
 
