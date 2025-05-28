@@ -34,3 +34,14 @@
 
 (See `Weapons.md`, `Armour.md`, and `EquipmentSystems.md` for category structure.)
 
+# Arsenal Display Controls (Active)
+
+**As a user, I want to view my arsenal in a clear, organized way, so I can see all available equipment at a glance.**
+- Create an arsenal display control showing all equipment in the arsenal.
+- Support sorting/filtering by type, stats, or name.
+- Allow removing equipment from the arsenal.
+
+---
+
+[See agile_history.md for completed stories.]
+

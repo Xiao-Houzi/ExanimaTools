@@ -43,12 +43,6 @@
 
 ## Equipment & Arsenal
 
-### Arsenal Display Controls (3 points)
-**As a user, I want to view my arsenal in a clear, organized way, so I can see all available equipment at a glance.**
-- Create an arsenal display control showing all equipment in the arsenal.
-- Support sorting/filtering by type, stats, or name.
-- Allow removing equipment from the arsenal.
-
 ### Equipment Display Controls (3 points)
 **As a user, I want each piece of equipment to be displayed in a card/control showing its details and stats.**
 - Show name, type, stats (pips/half-pips), description, make, quality, and condition.
