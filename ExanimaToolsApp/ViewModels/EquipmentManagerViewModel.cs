@@ -56,6 +56,9 @@ namespace ExanimaTools.ViewModels
         [ObservableProperty]
         private bool isAddFormVisible;
 
+        [ObservableProperty]
+        private bool isEditMode;
+
         public ObservableCollection<StatType> AvailableStatTypes { get; } = new();
         private StatType? selectedStatType;
         public StatType? SelectedStatType
@@ -87,14 +90,14 @@ namespace ExanimaTools.ViewModels
         };
         public static readonly Dictionary<string, List<string>> ArmourCategorySubcategoryMap = new()
         {
-            ["Body"] = new List<string> { "Cuirass", "Brigandine", "Gambeson" },
-            ["Head"] = new List<string> { "Helmet", "Coif", "Cap" },
-            ["Shoulders"] = new List<string> { "Pauldron", "Spaulder" },
-            ["Elbows"] = new List<string> { "Couter" },
-            ["Wrists"] = new List<string> { "Vambrace", "Bracer" },
-            ["Hands"] = new List<string> { "Gauntlet", "Glove" },
-            ["Legs"] = new List<string> { "Cuisses", "Greaves" },
-            ["Feet"] = new List<string> { "Sabatons", "Boots" }
+            ["Head"] = new List<string> { "Cap", "Hood", "Hat", "Arming Cap", "Padded Cap", "Coif", "Plate Helm", "Bascinet", "Sallet", "Barbute", "Great Helm" },
+            ["Body"] = new List<string> { "Shirt", "Tunic", "Tabard", "Doublet", "Jerkin", "Vest", "Gambeson", "Padded Gambeson", "Arming Doublet", "Mail Shirt", "Hauberk", "Haubergeon", "Leather Cuirass", "Splint Cuirass", "Brigandine", "Lamellar", "Scale", "Coat of Plates", "Plate Cuirass", "Breastplate", "Full Plate Armour" },
+            ["Shoulders"] = new List<string> { "Padded Spaulders", "Mail Shoulders", "Leather Spaulders", "Splint Spaulders", "Plate Spaulders", "Pauldrons" },
+            ["Elbows"] = new List<string> { "Padded Couters", "Leather Couters", "Splint Couters", "Plate Couters" },
+            ["Wrists"] = new List<string> { "Padded Bracers", "Mail Bracers", "Leather Bracers", "Splint Bracers", "Vambraces", "Plate Bracers", "Plate Vambraces" },
+            ["Hands"] = new List<string> { "Gloves", "Padded Gloves", "Mail Gauntlets", "Leather Gauntlets", "Plate Gauntlets" },
+            ["Legs"] = new List<string> { "Trousers", "Pants", "Leggings", "Padded Leggings", "Mail Leggings", "Chausses", "Leather Cuisses", "Splint Cuisses", "Greaves", "Plate Cuisses", "Plate Greaves", "Plate Leggings" },
+            ["Feet"] = new List<string> { "Shoes", "Boots", "Sandals", "Padded Shoes", "Padded Boots", "Mail Shoes", "Plate Sabatons" }
         };
 
         [ObservableProperty]
@@ -309,9 +312,9 @@ namespace ExanimaTools.ViewModels
         };
         private static readonly StatType[] ArmourStats = new[]
         {
-            StatType.Coverage,
             StatType.ImpactResistance,
-            StatType.Encumbrance
+            StatType.Encumbrance,
+            StatType.Coverage
         };
         private static readonly StatType[] ArmourOptionalStats = new[]
         {
@@ -374,6 +377,49 @@ namespace ExanimaTools.ViewModels
                 ConfirmationMessage = null;
                 return;
             }
+            if (IsEditMode)
+            {
+                // Use Id to find and update the correct item
+                var idx = EquipmentList.ToList().FindIndex(e => e.Id == NewEquipment.Id);
+                if (idx >= 0)
+                {
+                    var updated = new EquipmentPiece(_logger!)
+                    {
+                        Id = NewEquipment.Id,
+                        Name = NewEquipment.Name,
+                        Type = NewEquipment.Type,
+                        Slot = NewEquipment.Slot,
+                        Layer = NewEquipment.Layer,
+                        Stats = new Dictionary<StatType, float>(NewEquipment.Stats),
+                        Description = NewEquipment.Description,
+                        Quality = NewEquipment.Quality,
+                        Condition = NewEquipment.Condition,
+                        Category = NewEquipment.Category,
+                        Subcategory = NewEquipment.Subcategory,
+                        Rank = NewEquipment.Rank,
+                        Points = NewEquipment.Points,
+                        Weight = NewEquipment.Weight
+                    };
+                    try
+                    {
+                        await _equipmentRepository.UpdateAsync(updated);
+                        EquipmentList[idx] = updated;
+                        BuildEquipmentTree();
+                        ConfirmationMessage = $"Updated '{updated.Name}'.";
+                        ErrorMessage = null;
+                        NewEquipment = new EquipmentPiece();
+                        IsAddFormVisible = false;
+                        IsEditMode = false;
+                        SelectedEquipment = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage = $"Failed to update equipment: {ex.Message}";
+                    }
+                    return;
+                }
+            }
+            // Otherwise, add as new
             var eq = new EquipmentPiece
             {
                 Name = NewEquipment.Name,
@@ -385,17 +431,22 @@ namespace ExanimaTools.ViewModels
                 Quality = NewEquipment.Quality,
                 Condition = NewEquipment.Condition,
                 Category = NewEquipment.Category,
-                Subcategory = NewEquipment.Subcategory
+                Subcategory = NewEquipment.Subcategory,
+                Rank = NewEquipment.Rank,
+                Points = NewEquipment.Points,
+                Weight = NewEquipment.Weight
             };
             try
             {
                 await _equipmentRepository.AddAsync(eq);
+                // After AddAsync, eq.Id is set from the DB (see EquipmentRepository)
                 EquipmentList.Add(eq);
                 BuildEquipmentTree(); // Ensure tree updates after add
                 ConfirmationMessage = $"Saved '{eq.Name}'.";
                 ErrorMessage = null;
                 NewEquipment = new EquipmentPiece();
                 IsAddFormVisible = false;
+                IsEditMode = false;
             }
             catch (Exception ex)
             {
@@ -441,19 +492,35 @@ namespace ExanimaTools.ViewModels
         private void BuildEquipmentTree()
         {
             EquipmentTree.Clear();
-            var byCategory = EquipmentList.GroupBy(e => e.Category);
-            foreach (var catGroup in byCategory)
+            // Group by top-level type (Weapon/Armour)
+            var byType = EquipmentList.GroupBy(e => e.Type);
+            foreach (var typeGroup in byType)
             {
-                var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
-                var bySubcat = catGroup.GroupBy(e => e.Subcategory);
-                foreach (var subGroup in bySubcat)
+                var typeNode = new EquipmentTreeNodeViewModel(typeGroup.Key.ToString());
+                var byCategory = typeGroup.GroupBy(e => e.Category);
+                foreach (var catGroup in byCategory)
                 {
-                    var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
-                    foreach (var eq in subGroup)
-                        subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
-                    catNode.Children.Add(subNode);
+                    var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
+                    var bySubcat = catGroup.GroupBy(e => e.Subcategory);
+                    foreach (var subGroup in bySubcat)
+                    {
+                        // Only add subcategory node if it is not the same as the equipment name
+                        if (subGroup.Count() == 1 && subGroup.Key == subGroup.First().Name)
+                        {
+                            // Single item, skip subcategory node and add equipment directly under category
+                            catNode.Children.Add(new EquipmentTreeNodeViewModel(subGroup.First()));
+                        }
+                        else
+                        {
+                            var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
+                            foreach (var eq in subGroup)
+                                subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
+                            catNode.Children.Add(subNode);
+                        }
+                    }
+                    typeNode.Children.Add(catNode);
                 }
-                EquipmentTree.Add(catNode);
+                EquipmentTree.Add(typeNode);
             }
         }
         partial void OnEquipmentListChanged(ObservableCollection<EquipmentPiece> value)
@@ -464,5 +531,50 @@ namespace ExanimaTools.ViewModels
         // TODO: Add persistence hooks
 
         public ObservableCollection<Rank> AllRanks { get; } = new ObservableCollection<Rank>((Rank[])Enum.GetValues(typeof(Rank)));
+
+        [RelayCommand]
+        public void EditEquipmentFromTree(EquipmentPiece? equipment)
+        {
+            if (equipment == null) return;
+            // Set up the add/edit form with the selected equipment's data
+            NewEquipment = new EquipmentPiece(_logger!)
+            {
+                Id = equipment.Id,
+                Name = equipment.Name,
+                Type = equipment.Type,
+                Slot = equipment.Slot,
+                Layer = equipment.Layer,
+                Stats = new Dictionary<StatType, float>(equipment.Stats),
+                Description = equipment.Description,
+                Quality = equipment.Quality,
+                Condition = equipment.Condition,
+                Category = equipment.Category,
+                Subcategory = equipment.Subcategory,
+                Rank = equipment.Rank,
+                Points = equipment.Points,
+                Weight = equipment.Weight
+            };
+            SelectedCategory = equipment.Category;
+            SelectedSubcategory = equipment.Subcategory;
+            IsAddFormVisible = true;
+            IsEditMode = true;
+            SyncStatPipViewModels();
+        }
+
+        public async Task SeedInitialEquipmentAsync()
+        {
+            var repo = _equipmentRepository;
+            var items = new[]
+            {
+                new EquipmentPiece { Name = "Test Sword", Type = EquipmentType.Weapon, Description = "A sharp sword", Category = "Weapon", Subcategory = "Swords", Rank = Rank.Novice, Points = 10, Weight = 0.5f },
+                new EquipmentPiece { Name = "Test Axe", Type = EquipmentType.Weapon, Description = "A heavy axe", Category = "Weapon", Subcategory = "Axes", Rank = Rank.Inept, Points = 8, Weight = 0.7f },
+                new EquipmentPiece { Name = "Test Helm", Type = EquipmentType.Armour, Description = "A sturdy helmet", Category = "Head", Subcategory = "Plate Helm", Rank = Rank.Adept, Points = 5, Weight = 0.3f }
+            };
+            foreach (var item in items)
+            {
+                await repo.AddAsync(item);
+            }
+            await LoadEquipmentAsync();
+        }
     }
 }

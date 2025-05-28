@@ -21,7 +21,8 @@ public class EquipmentRepository
         conn.Open();
         var cmd = conn.CreateCommand();
         cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
-            Name TEXT PRIMARY KEY,
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Name TEXT UNIQUE,
             Type INTEGER,
             Description TEXT,
             Category TEXT,
@@ -69,20 +70,21 @@ public class EquipmentRepository
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT Name, Type, Description, Category, Subcategory, Rank, Points, Weight FROM Equipment";
+        cmd.CommandText = "SELECT Id, Name, Type, Description, Category, Subcategory, Rank, Points, Weight FROM Equipment";
         using var reader = await cmd.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
             var eq = new EquipmentPiece
             {
-                Name = reader.GetString(0),
-                Type = (EquipmentType)reader.GetInt32(1),
-                Description = reader.GetString(2),
-                Category = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
-                Subcategory = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-                Rank = (Rank)(reader.IsDBNull(5) ? 0 : reader.GetInt32(5)),
-                Points = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
-                Weight = reader.IsDBNull(7) ? 0f : (float)reader.GetDouble(7)
+                Id = reader.GetInt32(0),
+                Name = reader.GetString(1),
+                Type = (EquipmentType)reader.GetInt32(2),
+                Description = reader.GetString(3),
+                Category = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+                Subcategory = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                Rank = (Rank)(reader.IsDBNull(6) ? 0 : reader.GetInt32(6)),
+                Points = reader.IsDBNull(7) ? 0 : reader.GetInt32(7),
+                Weight = reader.IsDBNull(8) ? 0f : (float)reader.GetDouble(8)
             };
             result.Add(eq);
         }
@@ -94,7 +96,7 @@ public class EquipmentRepository
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "INSERT INTO Equipment (Name, Type, Description, Category, Subcategory, Rank, Points, Weight) VALUES ($name, $type, $desc, $cat, $subcat, $rank, $points, $weight) ON CONFLICT(Name) DO UPDATE SET Type = excluded.Type, Description = excluded.Description, Category = excluded.Category, Subcategory = excluded.Subcategory, Rank = excluded.Rank, Points = excluded.Points, Weight = excluded.Weight";
+        cmd.CommandText = "INSERT INTO Equipment (Name, Type, Description, Category, Subcategory, Rank, Points, Weight) VALUES ($name, $type, $desc, $cat, $subcat, $rank, $points, $weight); SELECT last_insert_rowid();";
         cmd.Parameters.AddWithValue("$name", equipment.Name);
         cmd.Parameters.AddWithValue("$type", (int)equipment.Type);
         cmd.Parameters.AddWithValue("$desc", equipment.Description);
@@ -103,7 +105,8 @@ public class EquipmentRepository
         cmd.Parameters.AddWithValue("$rank", (int)equipment.Rank);
         cmd.Parameters.AddWithValue("$points", equipment.Points);
         cmd.Parameters.AddWithValue("$weight", equipment.Weight);
-        await cmd.ExecuteNonQueryAsync();
+        var id = (long)await cmd.ExecuteScalarAsync();
+        equipment.Id = (int)id;
     }
 
     public async Task UpdateAsync(EquipmentPiece equipment)
@@ -111,7 +114,8 @@ public class EquipmentRepository
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "UPDATE Equipment SET Type = $type, Description = $desc, Category = $cat, Subcategory = $subcat, Rank = $rank, Points = $points, Weight = $weight WHERE Name = $name";
+        cmd.CommandText = "UPDATE Equipment SET Name = $name, Type = $type, Description = $desc, Category = $cat, Subcategory = $subcat, Rank = $rank, Points = $points, Weight = $weight WHERE Id = $id";
+        cmd.Parameters.AddWithValue("$id", equipment.Id);
         cmd.Parameters.AddWithValue("$name", equipment.Name);
         cmd.Parameters.AddWithValue("$type", (int)equipment.Type);
         cmd.Parameters.AddWithValue("$desc", equipment.Description);
@@ -123,38 +127,39 @@ public class EquipmentRepository
         await cmd.ExecuteNonQueryAsync();
     }
 
-    public async Task<EquipmentPiece?> GetByIdAsync(string name)
+    public async Task<EquipmentPiece?> GetByIdAsync(int id)
     {
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT Name, Type, Description, Category, Subcategory, Rank, Points, Weight FROM Equipment WHERE Name = $name";
-        cmd.Parameters.AddWithValue("$name", name);
+        cmd.CommandText = "SELECT Id, Name, Type, Description, Category, Subcategory, Rank, Points, Weight FROM Equipment WHERE Id = $id";
+        cmd.Parameters.AddWithValue("$id", id);
         using var reader = await cmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())
         {
             return new EquipmentPiece
             {
-                Name = reader.GetString(0),
-                Type = (EquipmentType)reader.GetInt32(1),
-                Description = reader.GetString(2),
-                Category = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
-                Subcategory = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-                Rank = (Rank)(reader.IsDBNull(5) ? 0 : reader.GetInt32(5)),
-                Points = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
-                Weight = reader.IsDBNull(7) ? 0f : (float)reader.GetDouble(7)
+                Id = reader.GetInt32(0),
+                Name = reader.GetString(1),
+                Type = (EquipmentType)reader.GetInt32(2),
+                Description = reader.GetString(3),
+                Category = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+                Subcategory = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                Rank = (Rank)(reader.IsDBNull(6) ? 0 : reader.GetInt32(6)),
+                Points = reader.IsDBNull(7) ? 0 : reader.GetInt32(7),
+                Weight = reader.IsDBNull(8) ? 0f : (float)reader.GetDouble(8)
             };
         }
         return null;
     }
 
-    public async Task DeleteAsync(string name)
+    public async Task DeleteAsync(int id)
     {
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "DELETE FROM Equipment WHERE Name = $name";
-        cmd.Parameters.AddWithValue("$name", name);
+        cmd.CommandText = "DELETE FROM Equipment WHERE Id = $id";
+        cmd.Parameters.AddWithValue("$id", id);
         await cmd.ExecuteNonQueryAsync();
     }
 }

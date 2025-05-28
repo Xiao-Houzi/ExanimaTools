@@ -48,6 +48,10 @@ public class EquipmentRepositoryTests
         Assert.AreEqual("Sharp", all[0].Description);
         Assert.AreEqual("Weapon", all[0].Category);
         Assert.AreEqual("Swords", all[0].Subcategory);
+        // New: check by Id
+        var byId = await repo.GetByIdAsync(eq.Id);
+        Assert.IsNotNull(byId);
+        Assert.AreEqual("Sword", byId.Name);
     }
 
     [TestMethod]
@@ -61,13 +65,13 @@ public class EquipmentRepositoryTests
         eq.Category = "Weapon";
         eq.Subcategory = "Axes";
         await repo.UpdateAsync(eq);
-        var updated = await repo.GetByIdAsync(eq.Name);
+        var updated = await repo.GetByIdAsync(eq.Id);
         Assert.IsNotNull(updated);
         Assert.AreEqual("Very Heavy", updated.Description);
         Assert.AreEqual("Weapon", updated.Category);
         Assert.AreEqual("Axes", updated.Subcategory);
         // Delete
-        await repo.DeleteAsync(eq.Name);
+        await repo.DeleteAsync(eq.Id);
         var all = await repo.GetAllAsync();
         Assert.AreEqual(0, all.Count);
     }
@@ -78,7 +82,7 @@ public class EquipmentRepositoryTests
         var repo = new EquipmentRepository(_connectionString);
         var eq = new EquipmentPiece { Name = "Mace", Type = EquipmentType.Weapon, Description = "Blunt", Category = "Weapon", Subcategory = "Bludgeons" };
         await repo.AddAsync(eq);
-        var found = await repo.GetByIdAsync("Mace");
+        var found = await repo.GetByIdAsync(eq.Id);
         Assert.IsNotNull(found);
         Assert.AreEqual("Mace", found.Name);
         Assert.AreEqual(EquipmentType.Weapon, found.Type);

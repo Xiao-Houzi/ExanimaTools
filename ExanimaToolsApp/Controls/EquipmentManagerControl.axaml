@@ -20,6 +20,7 @@
         <local:EquipmentTypeToDrawingConverter x:Key="EquipmentTypeToDrawingConverter"/>
         <local:CategoryToFontWeightConverter x:Key="CategoryToFontWeightConverter"/>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <local:BoolToEditSaveConverter x:Key="BoolToEditSaveConverter"/>
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" ColumnDefinitions="*">
         <!-- Title and description -->
@@ -102,7 +103,9 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <Button Content="Save" Command="{Binding SaveNewEquipmentCommand}" HorizontalAlignment="Left"/>
+                            <Button Content="{Binding IsEditMode, Converter={StaticResource BoolToEditSaveConverter}}"
+                                    Command="{Binding SaveNewEquipmentCommand}"
+                                    HorizontalAlignment="Left"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -119,8 +122,9 @@
                             <TreeView.ItemTemplate>
                                 <TreeDataTemplate ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <TextBlock Text="{Binding Name}"/>
-                                        <TextBlock Text="{Binding EquipmentPiece.Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA" Margin="8,0,0,0"/>
+                                        <TextBlock Text="{Binding Name}" IsVisible="{Binding IsCategory}"/>
+                                        <TextBlock Text="{Binding Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA"/>
+                                        <Button Content="Edit" IsVisible="{Binding IsLeaf}" Margin="8,0,0,0" Command="{Binding DataContext.EditEquipmentFromTreeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding EquipmentPiece}"/>
                                     </StackPanel>
                                 </TreeDataTemplate>
                             </TreeView.ItemTemplate>

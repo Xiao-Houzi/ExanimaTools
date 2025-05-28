@@ -27,6 +27,11 @@ namespace ExanimaTools.Models
 
     public class EquipmentPiece
     {
+        /// <summary>
+        /// Unique database key for this equipment item.
+        /// </summary>
+        public int Id { get; set; } // Unique DB key
+
         private readonly ILoggingService? _logger;
         public EquipmentPiece(ILoggingService? logger = null)
         {

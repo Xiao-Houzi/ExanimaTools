@@ -1,3 +1,65 @@
+# Armour Types and Layering (Updated 2025-05-28)
+
+Exanima's armour system supports a wide variety of pieces for each body location and layer. Below is a comprehensive list based on in-game content and community research:
+
+### Head
+- **Clothing:** Cap, Hood, Hat
+- **Padding:** Arming Cap, Padded Cap
+- **Chainmail:** Coif
+- **Plate:** Plate Helm, Bascinet, Sallet, Barbute, Great Helm
+
+### Body
+- **Clothing:** Shirt, Tunic, Tabard, Doublet, Jerkin, Vest
+- **Padding:** Gambeson, Padded Gambeson, Arming Doublet
+- **Chainmail:** Mail Shirt (Short/Long Sleeved), Hauberk, Haubergeon
+- **Non-Full Armour:** Leather Cuirass, Splint Cuirass, Brigandine, Lamellar, Scale, Coat of Plates
+- **Plate:** Plate Cuirass, Breastplate, Full Plate Armour
+
+### Shoulders
+- **Clothing:** None (rare)
+- **Padding:** Padded Spaulders
+- **Chainmail:** Mail Shoulders
+- **Non-Full Armour:** Leather Spaulders, Splint Spaulders
+- **Plate:** Plate Spaulders, Pauldrons
+
+### Elbows
+- **Padding:** Padded Couters
+- **Non-Full Armour:** Leather Couters, Splint Couters
+- **Plate:** Plate Couters
+
+### Wrists/Forearms
+- **Clothing:** None (rare)
+- **Padding:** Padded Bracers
+- **Chainmail:** Mail Bracers
+- **Non-Full Armour:** Leather Bracers, Splint Bracers, Vambraces
+- **Plate:** Plate Bracers, Plate Vambraces
+
+### Hands
+- **Clothing:** Gloves
+- **Padding:** Padded Gloves
+- **Chainmail:** Mail Gauntlets
+- **Non-Full Armour:** Leather Gauntlets
+- **Plate:** Plate Gauntlets
+
+### Legs (Thighs, Shins)
+- **Clothing:** Trousers, Pants, Leggings
+- **Padding:** Padded Leggings
+- **Chainmail:** Mail Leggings, Chausses
+- **Non-Full Armour:** Leather Cuisses, Splint Cuisses, Greaves
+- **Plate:** Plate Cuisses, Plate Greaves, Plate Leggings
+
+### Feet
+- **Clothing:** Shoes, Boots, Sandals
+- **Padding:** Padded Shoes/Boots
+- **Chainmail:** Mail Shoes
+- **Plate:** Plate Sabatons
+
+---
+
+- **Mail** (chainmail) is a distinct layer and appears as coifs, shirts, leggings, bracers, gauntlets, and shoes for various locations.
+- Some armours (e.g., full plate) may cover multiple locations and replace several slots.
+- See in-game tooltips and community guides for further details.
+
 Exanima's armor system is layered, meaning different types of armor can be worn together for stacked protection. Here's a breakdown:
 Armor Layering System
 Armor is divided into multiple layers, each affecting protection and mobility:

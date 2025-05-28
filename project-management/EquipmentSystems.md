@@ -181,4 +181,17 @@ public class TeamMember {
 
 ---
 
+## Armour Types and Layering (Updated 2025-05-28)
+
+See `Armour.md` for a comprehensive list of all armour types and layers for each body location, including:
+- Clothing (shirts, tunics, trousers, boots, etc.)
+- Padding (gambesons, arming caps, padded spaulders, etc.)
+- Chainmail (coifs, mail shirts, mail leggings, etc.)
+- Non-Full Armour (leather, splint, brigandine, lamellar, scale, etc.)
+- Plate (plate cuirass, plate helm, plate greaves, sabatons, etc.)
+
+Mail (chainmail) is a distinct layer and is available for head, body, hands, wrists, legs, and feet. Full details and slot/layer compatibility are in `Armour.md`.
+
+---
+
 This system provides a flexible, extensible foundation for modelling Exanima's equipment in your tools and UI.
