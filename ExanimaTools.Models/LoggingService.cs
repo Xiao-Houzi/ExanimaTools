@@ -12,6 +12,7 @@ namespace ExanimaTools.Models
     {
         void Log(string message);
         void LogOperation(string operation, string? details = null);
+        void LogError(string message, Exception? ex = null);
     }
 
     public class FileLoggingService : ILoggingService, IDisposable
@@ -42,6 +43,14 @@ namespace ExanimaTools.Models
         public void LogOperation(string operation, string? details = null)
         {
             Log($"OPERATION: {operation}{(details != null ? $" | {details}" : "")}");
+        }
+
+        public void LogError(string message, Exception? ex = null)
+        {
+            var errorLine = $"[ERROR] [{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {message}";
+            if (ex != null)
+                errorLine += $"\nException: {ex.Message}\n{ex.StackTrace}";
+            _queue.Enqueue(errorLine);
         }
 
         private async Task FlushLoop()

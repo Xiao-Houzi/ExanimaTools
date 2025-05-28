@@ -64,6 +64,7 @@ namespace ETModels.Tests
             public TestLogger(System.Action onLog) => _onLog = onLog;
             public void Log(string message) => _onLog();
             public void LogOperation(string operation, string? details = null) => _onLog();
+            public void LogError(string message, Exception? ex = null) => _onLog();
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿[2025-05-28 11:11:29.408] OPERATION: Create EquipmentPiece | Name=
+[ERROR] [2025-05-28 11:11:29.431] Failed to load equipment: SQLite Error 1: 'no such column: Rank'.
+Exception: SQLite Error 1: 'no such column: Rank'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync()
+   at ExanimaTools.Persistence.EquipmentRepository.GetAllAsync() in D:\Dev\GameSupport\Exanima\ExanimaTools.Persistence\EquipmentRepository.cs:line 43
+   at ExanimaTools.ViewModels.EquipmentManagerViewModel.LoadEquipmentAsync() in D:\Dev\GameSupport\Exanima\ExanimaToolsApp\ViewModels\EquipmentManagerViewModel.cs:line 156
