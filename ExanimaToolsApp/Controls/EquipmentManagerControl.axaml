@@ -61,6 +61,16 @@
                                 <TextBlock Text="Layer:"/>
                                 <TextBlock Text="{Binding NewEquipment.Layer}"/>
                             </StackPanel>
+                            <!-- Rank and Weight controls at the top -->
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="Rank:" VerticalAlignment="Center"/>
+                                <ComboBox Width="100" ItemsSource="{Binding AllRanks}" SelectedItem="{Binding NewEquipment.Rank, Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="Weight:" VerticalAlignment="Center" ToolTip.Tip="Slider position matches Exanima's UI bar. Actual weight values are not shown in-game."/>
+                                <Slider Width="100" Minimum="0" Maximum="1" Value="{Binding NewEquipment.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <!-- Pip stats section (Weight must not appear here) -->
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <ItemsControl ItemsSource="{Binding NewEquipmentStatPips}" Grid.IsSharedSizeScope="True">
                                     <ItemsControl.ItemTemplate>
@@ -79,6 +89,7 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </StackPanel>
+                            <!-- Add Stat dropdown: Points must be available as an option -->
                             <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0" HorizontalAlignment="Left">
                                 <ComboBox Width="140" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
                                 <Button Content="Add Stat" Command="{Binding AddStatCommand}"/>

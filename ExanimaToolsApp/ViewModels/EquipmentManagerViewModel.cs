@@ -25,6 +25,7 @@ namespace ExanimaTools.ViewModels
             _logger = logger;
             // Use logger for all new models
             NewEquipment = new EquipmentPiece(_logger);
+            NewEquipment.Rank = Rank.Inept; // Set default rank to Inept immediately after creation
             // Set up repository with default DB path in app directory
             var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultDbFile);
             _equipmentRepository = new EquipmentRepository($"Data Source={dbPath}");
@@ -269,6 +270,7 @@ namespace ExanimaTools.ViewModels
             NewEquipmentStatPips.Clear();
             foreach (var kvp in NewEquipment.Stats)
             {
+                if (kvp.Key == StatType.Weight) continue; // Remove Weight from pip stats
                 var pipVm = new StatPipViewModel(kvp.Key, kvp.Value, v => NewEquipment.SetStat(kvp.Key, v), _logger);
                 NewEquipmentStatPips.Add(pipVm);
             }
@@ -293,8 +295,7 @@ namespace ExanimaTools.ViewModels
 
         private static readonly StatType[] WeaponStats = new[]
         {
-            StatType.Encumbrance,
-            StatType.Weight
+            StatType.Encumbrance
         };
         private static readonly StatType[] WeaponOptionalStats = new[]
         {
@@ -303,22 +304,21 @@ namespace ExanimaTools.ViewModels
             StatType.Slash,
             StatType.Crush,
             StatType.Pierce,
-            StatType.Thrust
+            StatType.Thrust,
+            StatType.Points // Allow Points as an optional pip stat
         };
         private static readonly StatType[] ArmourStats = new[]
         {
             StatType.Coverage,
             StatType.ImpactResistance,
-            StatType.Encumbrance,
-            StatType.Weight
+            StatType.Encumbrance
         };
         private static readonly StatType[] ArmourOptionalStats = new[]
         {
             StatType.SlashProtection,
             StatType.CrushProtection,
-            StatType.PierceProtection
-            // Rare/optional stats like HeatProtection, ColdProtection, BluntProtection, MagicResistance, Flexibility
-            // are not defined in StatType and are not included here.
+            StatType.PierceProtection,
+            StatType.Points // Allow Points as an optional pip stat
         };
 
         [RelayCommand]
@@ -336,7 +336,8 @@ namespace ExanimaTools.ViewModels
                 Layer = null,
                 Stats = WeaponStats.ToDictionary(st => st, st => 0.5f),
                 Category = SelectedCategory,
-                Subcategory = SelectedSubcategory
+                Subcategory = SelectedSubcategory,
+                Rank = Rank.Inept // Explicitly set default rank
             };
             IsAddFormVisible = true;
             SyncStatPipViewModels();
@@ -357,7 +358,8 @@ namespace ExanimaTools.ViewModels
                 Layer = ArmourLayer.Padding,
                 Stats = ArmourStats.ToDictionary(st => st, st => 0.5f),
                 Category = SelectedCategory,
-                Subcategory = SelectedSubcategory
+                Subcategory = SelectedSubcategory,
+                Rank = Rank.Inept // Explicitly set default rank
             };
             IsAddFormVisible = true;
             SyncStatPipViewModels();
@@ -460,5 +462,7 @@ namespace ExanimaTools.ViewModels
         }
 
         // TODO: Add persistence hooks
+
+        public ObservableCollection<Rank> AllRanks { get; } = new ObservableCollection<Rank>((Rank[])Enum.GetValues(typeof(Rank)));
     }
 }

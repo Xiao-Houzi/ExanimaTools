@@ -15,6 +15,9 @@ Each equipment piece has:
 - **Slot** (Head, Body, Hands, Legs, Feet, etc.)
 - **Stats** (see below)
 - **Layer** (for armour)
+- **Rank** (minimum required rank to equip)
+- **Points** (loadout cost for team management)
+- **Weight** (float, precise, not a pip stat; edited via slider in UI)
 
 ---
 

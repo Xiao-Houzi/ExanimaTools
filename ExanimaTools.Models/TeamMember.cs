@@ -72,7 +72,8 @@ public enum StatType
     Impact,
     Slash,
     Crush,
-    Pierce
+    Pierce,
+    Points // Added for equipment points stat
     // Add more as needed
 }
 

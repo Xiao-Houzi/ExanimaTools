@@ -81,3 +81,53 @@
 - Validation is now inline and always visible; Save is always enabled.
 - Error messages are shown next to the relevant fields.
 - All acceptance criteria are met and the feature is complete.
+
+---
+
+# Equipment Stat Expansion: Rank & Points (Completed)
+
+**Completed on 2025-05-28**
+
+- Added Rank and Points fields to equipment model, UI, and persistence.
+- Weight is now a float, edited via a slider, and matches Exanima's UI bar (0-1 range, abstracted).
+- Rank dropdown defaults to Inept and shows all ranks.
+- Points is available as an optional pip stat.
+- Weight is not shown as a pip stat and has no numeric label in the UI.
+- Documentation updated in EquipmentSystems.md.
+- All changes covered by tests and validation.
+- UI and code tidied for clarity and maintainability.
+
+---
+
+# Equipment Stat Expansion: Rank & Points (Completed)
+
+**Completed on 2025-05-28**
+
+- Added Rank and Points fields to equipment model, UI, and persistence.
+- Weight is now a float, edited via a slider, and matches Exanima's UI bar (0-1 range, abstracted).
+- Rank dropdown defaults to Inept and shows all ranks.
+- Points is available as an optional pip stat.
+- Weight is not shown as a pip stat and has no numeric label in the UI.
+- Documentation updated in EquipmentSystems.md.
+- All changes covered by tests and validation.
+- UI and code tidied for clarity and maintainability.
+
+---
+
+# Equipment Stat Expansion: Rank & Points (Completed)
+
+**Completed on 2025-05-28**
+
+- [x] Expand equipment stats: minimum Rank, Points value, Weight as float (slider in UI)
+- [x] Update Weight to float, slider 0–1, abstract bar, no numeric label
+- [x] Add validation: team members cannot equip gear above rank/points
+- [x] Improve error reporting for equipment loading
+- [x] Update Equipment Manager UI: Rank/Weight at top, Weight slider, Points pip stat, no log files in git
+- [x] Ensure Weight slider matches Exanima’s UI
+- [x] Update documentation (EquipmentSystems.md)
+- [x] Move completed ticket to agile_history.md and mark as completed in agile-current.md
+- [x] Code tidy and UI clarity
+
+---
+
+Moved to history: 2025-05-28
