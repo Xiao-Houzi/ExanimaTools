@@ -58,6 +58,13 @@ namespace ExanimaTools.Models
         public EquipmentCondition Condition { get; set; } = EquipmentCondition.Good;
         public string Category { get; set; } = string.Empty; // e.g., "Weapon", "Armour"
         public string Subcategory { get; set; } = string.Empty; // e.g., "Swords", "Polearms", "Body", "Head"
+        public Rank Rank { get; set; } = Rank.Novice; // Minimum required rank to equip
+        public int Points { get; set; } = 0; // Loadout cost
+        public float Weight
+        {
+            get => Stats.TryGetValue(StatType.Weight, out var w) ? w : 0f;
+            set => SetStat(StatType.Weight, value);
+        }
         public void SetStat(StatType stat, float value)
         {
             float clamped = Math.Clamp(value, 0, 10);

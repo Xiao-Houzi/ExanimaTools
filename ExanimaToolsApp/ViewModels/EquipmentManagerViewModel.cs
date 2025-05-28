@@ -166,7 +166,7 @@ namespace ExanimaTools.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Failed to load equipment: {ex.Message}";
+                ErrorMessage = $"Failed to load equipment: {ex.Message}\n{ex.StackTrace}";
             }
         }
 
