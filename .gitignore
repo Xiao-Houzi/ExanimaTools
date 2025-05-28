@@ -46,3 +46,6 @@ appsettings.Development.json
 
 # Ignore coverage and debug files
 *.msCoverage*
+
+# Ignore log files
+logs/
