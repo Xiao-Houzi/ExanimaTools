@@ -1,42 +1,32 @@
 # Ignore scripts and automation files
 scripts/
 
-# .NET build artifacts
+# Ignore .NET build artifacts for all target frameworks
 bin/
 obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.db
+*.dbmdl
+*.bak
+*.mdf
+*.ldf
+TestResults/
 
-# User-specific files
+# Ignore Avalonia and VS artifacts
+*.app
+.vscode/
+.idea/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
-
-# VS Code settings
-.vscode/
-
-# Test results
-TestResults/
-
-# Build results
-*.dll
-*.exe
-*.app
-*.pdb
-*.cache
-*.log
 *.vspscc
 *.vssscc
-*.dbmdl
-*.db
-*.bak
-*.mdf
-*.ldf
-
-# Rider/JetBrains
-.idea/
 *.sln.iml
-
-# OS generated files
 .DS_Store
 Thumbs.db
 
@@ -53,3 +43,6 @@ packages/
 # Exclude any local config or secrets
 secrets.json
 appsettings.Development.json
+
+# Ignore coverage and debug files
+*.msCoverage*
