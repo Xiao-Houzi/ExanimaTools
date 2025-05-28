@@ -14,7 +14,7 @@ public partial class MainWindow : Window
     public MainWindow(ILoggingService? logger)
     {
         InitializeComponent();
-        this.DataContext = new ExanimaTools.ViewModels.EquipmentManagerViewModel(logger);
+        // Removed: this.DataContext = new ExanimaTools.ViewModels.EquipmentManagerViewModel(logger);
 
         // Get all screens
         var screens = this.Screens?.All;

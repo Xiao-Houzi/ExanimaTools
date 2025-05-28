@@ -40,12 +40,12 @@
 
 - Provide a searchable/selectable list of equipment from the database.
 - Allow users to add selected equipment to their arsenal.
-- Prevent duplicate entries in the arsenal.
+- Allow duplicate entries in the arsenal we may own more than one rusty dagger.
 
 **Acceptance Criteria:**
 - User can browse/search all equipment in the database.
 - User can add equipment to their arsenal with a single action.
-- Duplicate entries in the arsenal are prevented.
+- Duplicate entries in the arsenal are allowed.
 - UI and persistence are updated accordingly.
 - Covered by integration/UI tests.
 

@@ -168,6 +168,9 @@
                 <TextBlock Text="Status:" FontWeight="Bold" Foreground="#BBB"/>
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"/>
                 <TextBlock Text="{Binding ConfirmationMessage}" Foreground="Green"/>
+                <!-- DEBUG: Show equipment count loaded from DB -->
+                <TextBlock Text="| Equipment loaded: " Foreground="#888"/>
+                <TextBlock Text="{Binding EquipmentList.Count}" Foreground="#FFD700" FontWeight="Bold"/>
             </StackPanel>
         </Border>
     </Grid>

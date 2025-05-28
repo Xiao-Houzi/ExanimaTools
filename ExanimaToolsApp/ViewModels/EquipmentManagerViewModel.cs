@@ -11,6 +11,8 @@ using ExanimaTools.Controls;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using System.IO;
+using ExanimaTools.ViewModels;
+using ExanimaToolsApp;
 
 namespace ExanimaTools.ViewModels
 {
@@ -23,11 +25,12 @@ namespace ExanimaTools.ViewModels
         public EquipmentManagerViewModel(ILoggingService? logger = null)
         {
             _logger = logger;
+            _logger?.LogOperation("EquipmentManagerViewModel", "Created");
             // Use logger for all new models
             NewEquipment = new EquipmentPiece(_logger);
             NewEquipment.Rank = Rank.Inept; // Set default rank to Inept immediately after creation
             // Set up repository with default DB path in app directory
-            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultDbFile);
+            var dbPath = DbManager.GetDbPath();
             _equipmentRepository = new EquipmentRepository($"Data Source={dbPath}");
             // Load equipment from DB on startup
             _ = LoadEquipmentAsync();
@@ -235,6 +238,7 @@ namespace ExanimaTools.ViewModels
                     SelectedEquipment = null;
                     ConfirmationMessage = $"Removed '{toRemove.Name}'.";
                     ErrorMessage = null;
+                    _logger?.LogOperation("RemoveEquipmentAsync", $"Removed: {toRemove.Name}");
                 });
             }
         }
@@ -327,7 +331,7 @@ namespace ExanimaTools.ViewModels
         [RelayCommand]
         private void ShowAddWeaponForm()
         {
-            _logger?.LogOperation("ShowAddWeaponForm");
+            _logger?.LogOperation("ShowAddWeaponForm", "User opened Add Weapon form");
             addFormMode = AddFormMode.Weapon;
             SetCategoryOptionsForMode();
             SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
@@ -349,7 +353,7 @@ namespace ExanimaTools.ViewModels
         [RelayCommand]
         private void ShowAddArmourForm()
         {
-            _logger?.LogOperation("ShowAddArmourForm");
+            _logger?.LogOperation("ShowAddArmourForm", "User opened Add Armour form");
             addFormMode = AddFormMode.Armour;
             SetCategoryOptionsForMode();
             SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
@@ -371,10 +375,12 @@ namespace ExanimaTools.ViewModels
         [RelayCommand]
         private async Task SaveNewEquipment()
         {
+            _logger?.LogOperation("SaveNewEquipment", $"User saving equipment: {NewEquipment.Name}");
             if (!ValidateEquipment(NewEquipment, out var error))
             {
                 ErrorMessage = error;
                 ConfirmationMessage = null;
+                _logger?.LogError($"Validation failed: {error}");
                 return;
             }
             if (IsEditMode)
@@ -411,16 +417,18 @@ namespace ExanimaTools.ViewModels
                         IsAddFormVisible = false;
                         IsEditMode = false;
                         SelectedEquipment = null;
+                        _logger?.LogOperation("SaveNewEquipment", $"Updated equipment: {updated.Name}");
                     }
                     catch (Exception ex)
                     {
                         ErrorMessage = $"Failed to update equipment: {ex.Message}";
+                        _logger?.LogError($"Failed to update equipment: {ex.Message}", ex);
                     }
                     return;
                 }
             }
             // Otherwise, add as new
-            var eq = new EquipmentPiece
+            var eq = new EquipmentPiece(_logger!)
             {
                 Name = NewEquipment.Name,
                 Type = NewEquipment.Type,
@@ -439,18 +447,17 @@ namespace ExanimaTools.ViewModels
             try
             {
                 await _equipmentRepository.AddAsync(eq);
-                // After AddAsync, eq.Id is set from the DB (see EquipmentRepository)
                 EquipmentList.Add(eq);
-                BuildEquipmentTree(); // Ensure tree updates after add
+                BuildEquipmentTree();
                 ConfirmationMessage = $"Saved '{eq.Name}'.";
                 ErrorMessage = null;
                 NewEquipment = new EquipmentPiece();
-                IsAddFormVisible = false;
-                IsEditMode = false;
+                _logger?.LogOperation("SaveNewEquipment", $"Added new equipment: {eq.Name}");
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Failed to save equipment: {ex.Message}";
+                _logger?.LogError($"Failed to save equipment: {ex.Message}", ex);
             }
         }
 
@@ -461,81 +468,15 @@ namespace ExanimaTools.ViewModels
             {
                 NewEquipment.Stats[statType] = 0.5f;
                 SyncStatPipViewModels();
+                _logger?.LogOperation("AddStat", $"Added stat: {statType}");
             }
         }
-
-        public class EquipmentTreeNodeViewModel : ObservableObject
-        {
-            public string Name { get; set; } = string.Empty;
-            public ObservableCollection<EquipmentTreeNodeViewModel> Children { get; set; } = new();
-            public EquipmentPiece? EquipmentPiece { get; set; }
-            public bool IsCategory => EquipmentPiece == null;
-            public bool IsLeaf => EquipmentPiece != null;
-            public EquipmentTreeNodeViewModel(string name) { Name = name; }
-            public EquipmentTreeNodeViewModel(EquipmentPiece piece) { Name = piece.Name; EquipmentPiece = piece; }
-        }
-
-        public ObservableCollection<EquipmentTreeNodeViewModel> EquipmentTree { get; } = new();
-        private EquipmentTreeNodeViewModel? selectedEquipmentTreeItem;
-        public EquipmentTreeNodeViewModel? SelectedEquipmentTreeItem
-        {
-            get => selectedEquipmentTreeItem;
-            set
-            {
-                if (SetProperty(ref selectedEquipmentTreeItem, value))
-                {
-                    if (value?.EquipmentPiece != null)
-                        SelectedEquipment = value.EquipmentPiece;
-                }
-            }
-        }
-        private void BuildEquipmentTree()
-        {
-            EquipmentTree.Clear();
-            // Group by top-level type (Weapon/Armour)
-            var byType = EquipmentList.GroupBy(e => e.Type);
-            foreach (var typeGroup in byType)
-            {
-                var typeNode = new EquipmentTreeNodeViewModel(typeGroup.Key.ToString());
-                var byCategory = typeGroup.GroupBy(e => e.Category);
-                foreach (var catGroup in byCategory)
-                {
-                    var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
-                    var bySubcat = catGroup.GroupBy(e => e.Subcategory);
-                    foreach (var subGroup in bySubcat)
-                    {
-                        // Only add subcategory node if it is not the same as the equipment name
-                        if (subGroup.Count() == 1 && subGroup.Key == subGroup.First().Name)
-                        {
-                            // Single item, skip subcategory node and add equipment directly under category
-                            catNode.Children.Add(new EquipmentTreeNodeViewModel(subGroup.First()));
-                        }
-                        else
-                        {
-                            var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
-                            foreach (var eq in subGroup)
-                                subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
-                            catNode.Children.Add(subNode);
-                        }
-                    }
-                    typeNode.Children.Add(catNode);
-                }
-                EquipmentTree.Add(typeNode);
-            }
-        }
-        partial void OnEquipmentListChanged(ObservableCollection<EquipmentPiece> value)
-        {
-            BuildEquipmentTree();
-        }
-
-        // TODO: Add persistence hooks
-
-        public ObservableCollection<Rank> AllRanks { get; } = new ObservableCollection<Rank>((Rank[])Enum.GetValues(typeof(Rank)));
 
         [RelayCommand]
         public void EditEquipmentFromTree(EquipmentPiece? equipment)
         {
             if (equipment == null) return;
+            _logger?.LogOperation("EditEquipmentFromTree", $"User editing: {equipment.Name}");
             // Set up the add/edit form with the selected equipment's data
             NewEquipment = new EquipmentPiece(_logger!)
             {

@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ExanimaTools.Controls"
+             xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+             xmlns:models="clr-namespace:ExanimaTools.Models"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="ExanimaTools.Controls.ArsenalManagerControl"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400">
+    <UserControl.Resources>
+        <controls:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+        <controls:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+    </UserControl.Resources>
+    <Grid RowDefinitions="Auto,Auto,*,Auto,*,Auto" ColumnDefinitions="*">
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Equipment Pool (Database)" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+        <!-- Equipment Database TreeView -->
+        <Border Grid.Row="1" BorderBrush="#181818" BorderThickness="1" Background="#181818" CornerRadius="6" Padding="8" Margin="0,0,0,8">
+            <TreeView ItemsSource="{Binding PoolTree}" SelectedItem="{Binding SelectedPoolTreeItem, Mode=TwoWay}" MinHeight="150" MaxHeight="300">
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="{Binding Name}" IsVisible="{Binding IsCategory}"/>
+                            <TextBlock Text="{Binding Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA"/>
+                            <Button Content="Add" IsVisible="{Binding IsLeaf}" Margin="8,0,0,0" Command="{Binding DataContext.AddToArsenalCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding EquipmentPiece}"/>
+                        </StackPanel>
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Border>
+        <!-- Arsenal Title -->
+        <TextBlock Grid.Row="2" Text="Your Arsenal" FontWeight="Bold" FontSize="16" Margin="0,8,0,8"/>
+        <!-- Arsenal TreeView -->
+        <Border Grid.Row="3" BorderBrush="#181818" BorderThickness="1" Background="#181818" CornerRadius="6" Padding="8" Margin="0,0,0,8">
+            <TreeView ItemsSource="{Binding ArsenalTree}" SelectedItem="{Binding SelectedArsenalTreeItem, Mode=TwoWay}" MinHeight="150" MaxHeight="300">
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="{Binding Name}" IsVisible="{Binding IsCategory}"/>
+                            <TextBlock Text="{Binding Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA"/>
+                            <Button Content="Remove" IsVisible="{Binding IsLeaf}" Margin="8,0,0,0" Command="{Binding DataContext.RemoveFromArsenalCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding EquipmentPiece}"/>
+                        </StackPanel>
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Border>
+        <TextBlock Grid.Row="4" Text="Status:" FontWeight="Bold" Foreground="#BBB"/>
+        <TextBlock Grid.Row="4" Text="{Binding StatusMessage}" Foreground="#888" Margin="60,0,0,0"/>
+    </Grid>
+</UserControl>
