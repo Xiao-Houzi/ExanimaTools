@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Dev\\GameSupport\\Exanima\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B1298051-1A05-4802-B41B-DE95FAA8CF76}|ExanimaTools.Models\\ExanimaTools.Models.csproj|d:\\dev\\gamesupport\\exanima\\exanimatools.models\\teammember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1298051-1A05-4802-B41B-DE95FAA8CF76}|ExanimaTools.Models\\ExanimaTools.Models.csproj|solutionrelative:exanimatools.models\\teammember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3A408E42-720B-4CF7-8116-C88B19864E9F}|ETModels.Tests\\ETModels.Tests.csproj|d:\\dev\\gamesupport\\exanima\\etmodels.tests\\mstestsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3A408E42-720B-4CF7-8116-C88B19864E9F}|ETModels.Tests\\ETModels.Tests.csproj|solutionrelative:etmodels.tests\\mstestsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -47,6 +51,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "TeamMember.cs",
+              "DocumentMoniker": "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\TeamMember.cs",
+              "RelativeDocumentMoniker": "ExanimaTools.Models\\TeamMember.cs",
+              "ToolTip": "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\TeamMember.cs",
+              "RelativeToolTip": "ExanimaTools.Models\\TeamMember.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAywAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-25T12:07:27.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "MSTestSettings.cs",
               "DocumentMoniker": "D:\\Dev\\GameSupport\\Exanima\\ETModels.Tests\\MSTestSettings.cs",
               "RelativeDocumentMoniker": "ETModels.Tests\\MSTestSettings.cs",
@@ -59,7 +76,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ExanimaTools.AssemblyInfo.cs",
               "DocumentMoniker": "D:\\Dev\\GameSupport\\Exanima\\src\\obj\\Debug\\net8.0\\ExanimaTools.AssemblyInfo.cs",
               "RelativeDocumentMoniker": "src\\obj\\Debug\\net8.0\\ExanimaTools.AssemblyInfo.cs",
@@ -71,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": ".NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
               "DocumentMoniker": "D:\\Dev\\GameSupport\\Exanima\\src\\obj\\Debug\\net8.0\\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
               "RelativeDocumentMoniker": "src\\obj\\Debug\\net8.0\\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",

@@ -1,2 +1,25 @@
-Equipment DB Dump (28/05/2025 17:49:57)
-Count: 0
+Equipment DB Dump (29/05/2025 08:01:31)
+Count: 23
+- Id: 1, Name: Rusty Sword, Type: Weapon, Category: Weapon, Subcategory: Swords, Rank: Inept, Points: 5, Weight: 0.8, Desc: A dull, rusty sword.
+- Id: 2, Name: Old Axe, Type: Weapon, Category: Weapon, Subcategory: Axes, Rank: Inept, Points: 6, Weight: 1, Desc: A heavy, old axe.
+- Id: 3, Name: Wooden Club, Type: Weapon, Category: Weapon, Subcategory: Bludgeons, Rank: Inept, Points: 4, Weight: 0.7, Desc: A simple wooden club.
+- Id: 4, Name: Iron Dagger, Type: Weapon, Category: Weapon, Subcategory: Daggers, Rank: Inept, Points: 3, Weight: 0.3, Desc: A short iron dagger.
+- Id: 5, Name: Training Spear, Type: Weapon, Category: Weapon, Subcategory: Polearms, Rank: Inept, Points: 5, Weight: 1.2, Desc: A blunt training spear.
+- Id: 6, Name: Old Leather Tunic, Type: Armour, Category: Armour, Subcategory: Body, Rank: Inept, Points: 2, Weight: 0.5, Desc: Worn leather tunic.
+- Id: 7, Name: Padded Cap, Type: Armour, Category: Armour, Subcategory: Head, Rank: Inept, Points: 1, Weight: 0.2, Desc: Simple padded cap.
+- Id: 8, Name: Ragged Trousers, Type: Armour, Category: Armour, Subcategory: Legs, Rank: Inept, Points: 1, Weight: 0.3, Desc: Torn cloth trousers.
+- Id: 9, Name: Worn Boots, Type: Armour, Category: Armour, Subcategory: Feet, Rank: Inept, Points: 1, Weight: 0.4, Desc: Old leather boots.
+- Id: 10, Name: Cloth Gloves, Type: Armour, Category: Armour, Subcategory: Hands, Rank: Inept, Points: 1, Weight: 0.1, Desc: Basic cloth gloves.
+- Id: 11, Name: Aspirant Sword, Type: Weapon, Category: Weapon, Subcategory: Swords, Rank: Aspirant, Points: 8, Weight: 0.9, Desc: A sharper sword for aspirants.
+- Id: 12, Name: Aspirant Axe, Type: Weapon, Category: Weapon, Subcategory: Axes, Rank: Aspirant, Points: 9, Weight: 1.1, Desc: A better axe for aspirants.
+- Id: 13, Name: Aspirant Club, Type: Weapon, Category: Weapon, Subcategory: Bludgeons, Rank: Aspirant, Points: 7, Weight: 0.8, Desc: A heavier club for aspirants.
+- Id: 14, Name: Aspirant Dagger, Type: Weapon, Category: Weapon, Subcategory: Daggers, Rank: Aspirant, Points: 6, Weight: 0.4, Desc: A sharper dagger for aspirants.
+- Id: 15, Name: Aspirant Spear, Type: Weapon, Category: Weapon, Subcategory: Polearms, Rank: Aspirant, Points: 8, Weight: 1.3, Desc: A pointed spear for aspirants.
+- Id: 16, Name: Aspirant Leather Vest, Type: Armour, Category: Armour, Subcategory: Body, Rank: Aspirant, Points: 4, Weight: 0.6, Desc: Sturdier leather vest.
+- Id: 17, Name: Aspirant Cap, Type: Armour, Category: Armour, Subcategory: Head, Rank: Aspirant, Points: 2, Weight: 0.25, Desc: Better padded cap.
+- Id: 18, Name: Aspirant Trousers, Type: Armour, Category: Armour, Subcategory: Legs, Rank: Aspirant, Points: 2, Weight: 0.35, Desc: Reinforced trousers.
+- Id: 19, Name: Aspirant Boots, Type: Armour, Category: Armour, Subcategory: Feet, Rank: Aspirant, Points: 2, Weight: 0.45, Desc: Sturdier boots.
+- Id: 20, Name: Aspirant Gloves, Type: Armour, Category: Armour, Subcategory: Hands, Rank: Aspirant, Points: 2, Weight: 0.15, Desc: Reinforced gloves.
+- Id: 21, Name: Rustedlongsword, Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Inept, Points: 0, Weight: 0.2, Desc: 
+- Id: 22, Name: battered longsword, Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Inept, Points: 0, Weight: 0, Desc: 
+- Id: 23, Name: worn hatchet, Type: Weapon, Category: Axe, Subcategory: Handaxe, Rank: Inept, Points: 0, Weight: 0, Desc: 

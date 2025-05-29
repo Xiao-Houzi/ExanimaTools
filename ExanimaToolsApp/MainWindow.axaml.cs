@@ -37,6 +37,8 @@ public partial class MainWindow : Window
         }
     }
 
+    public string? StatusMessage { get; set; }
+
     private void OnCloseButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         this.Close();

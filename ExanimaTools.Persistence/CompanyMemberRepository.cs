@@ -2,29 +2,60 @@ using ExanimaTools.Models;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ExanimaTools.Persistence;
 
-public class TeamMemberRepository
+public class CompanyMemberRepository
 {
     private readonly string _connectionString;
+    private readonly string? _dbFilePath;
+    private readonly bool _reseedDb;
+    private Task? _schemaInitTask;
+    private readonly SqliteConnection? _externalConnection;
 
-    public TeamMemberRepository(string connectionString)
+    public CompanyMemberRepository(string connectionString, bool reseedDb = false)
     {
         _connectionString = connectionString;
+        _reseedDb = reseedDb;
+        // Try to extract the DB file path for deletion logic
+        if (connectionString.StartsWith("Data Source="))
+        {
+            _dbFilePath = connectionString.Substring("Data Source=".Length).Trim(';');
+        }
+        _schemaInitTask = InitializeSchemaAsync();
     }
 
-    public async Task<List<TeamMember>> GetAllAsync()
+    public CompanyMemberRepository(SqliteConnection connection)
     {
-        var result = new List<TeamMember>();
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        _externalConnection = connection;
+        _connectionString = connection.ConnectionString;
+        _schemaInitTask = InitializeSchemaAsync();
+    }
+
+    private SqliteConnection GetConnection()
+    {
+        return _externalConnection ?? new SqliteConnection(_connectionString);
+    }
+
+    private static async Task EnsureConnectionOpenAsync(SqliteConnection conn)
+    {
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync();
+    }
+
+    public async Task<List<CompanyMember>> GetAllAsync()
+    {
+        if (_schemaInitTask != null) await _schemaInitTask;
+        var result = new List<CompanyMember>();
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT Name, Role, Rank, Sex, Type FROM TeamMembers";
+        cmd.CommandText = "SELECT Name, Role, Rank, Sex, Type FROM CompanyMembers";
         using var reader = await cmd.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
-            result.Add(new TeamMember
+            result.Add(new CompanyMember
             {
                 Name = reader.GetString(0),
                 Role = (Role)reader.GetInt32(1),
@@ -38,11 +69,15 @@ public class TeamMemberRepository
 
     public async Task InitializeSchemaAsync()
     {
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        if (_reseedDb && !string.IsNullOrEmpty(_dbFilePath) && File.Exists(_dbFilePath))
+        {
+            try { File.Delete(_dbFilePath); } catch { /* ignore if locked */ }
+        }
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         var cmd = conn.CreateCommand();
         cmd.CommandText = @"
-        CREATE TABLE IF NOT EXISTS TeamMembers (
+        CREATE TABLE IF NOT EXISTS CompanyMembers (
             Name TEXT PRIMARY KEY,
             Role INTEGER,
             Rank INTEGER,
@@ -51,10 +86,10 @@ public class TeamMemberRepository
         );
         CREATE TABLE IF NOT EXISTS EquipmentProfiles (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            TeamMemberName TEXT,
+            CompanyMemberName TEXT,
             Rank INTEGER,
             Name TEXT,
-            FOREIGN KEY(TeamMemberName) REFERENCES TeamMembers(Name)
+            FOREIGN KEY(CompanyMemberName) REFERENCES CompanyMembers(Name)
         );
         CREATE TABLE IF NOT EXISTS EquippedItems (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,13 +108,14 @@ public class TeamMemberRepository
         await cmd.ExecuteNonQueryAsync();
     }
 
-    public async Task AddAsync(TeamMember member)
+    public async Task AddAsync(CompanyMember member)
     {
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        if (_schemaInitTask != null) await _schemaInitTask;
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         using var tx = conn.BeginTransaction();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "INSERT INTO TeamMembers (Name, Role, Rank, Sex, Type) VALUES ($name, $role, $rank, $sex, $type)";
+        cmd.CommandText = "INSERT INTO CompanyMembers (Name, Role, Rank, Sex, Type) VALUES ($name, $role, $rank, $sex, $type)";
         cmd.Parameters.AddWithValue("$name", member.Name);
         cmd.Parameters.AddWithValue("$role", (int)member.Role);
         cmd.Parameters.AddWithValue("$rank", (int)member.Rank);
@@ -89,8 +125,8 @@ public class TeamMemberRepository
         foreach (var (rank, profile) in member.EquipmentProfiles)
         {
             var profileCmd = conn.CreateCommand();
-            profileCmd.CommandText = "INSERT INTO EquipmentProfiles (TeamMemberName, Rank, Name) VALUES ($tm, $rank, $name); SELECT last_insert_rowid();";
-            profileCmd.Parameters.AddWithValue("$tm", member.Name);
+            profileCmd.CommandText = "INSERT INTO EquipmentProfiles (CompanyMemberName, Rank, Name) VALUES ($cm, $rank, $name); SELECT last_insert_rowid();";
+            profileCmd.Parameters.AddWithValue("$cm", member.Name);
             profileCmd.Parameters.AddWithValue("$rank", (int)rank);
             profileCmd.Parameters.AddWithValue("$name", profile.Name);
             var profileId = (long)await profileCmd.ExecuteScalarAsync();
@@ -116,19 +152,20 @@ public class TeamMemberRepository
         tx.Commit();
     }
 
-    public async Task<TeamMember?> GetByIdAsync(string name)
+    public async Task<CompanyMember?> GetByIdAsync(string name)
     {
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        if (_schemaInitTask != null) await _schemaInitTask;
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT Name, Role, Rank, Sex, Type FROM TeamMembers WHERE Name = $name";
+        cmd.CommandText = "SELECT Name, Role, Rank, Sex, Type FROM CompanyMembers WHERE Name = $name";
         cmd.Parameters.AddWithValue("$name", name);
         using var reader = await cmd.ExecuteReaderAsync();
         if (!await reader.ReadAsync()) return null;
-        var member = new TeamMember { Name = reader.GetString(0), Role = (Role)reader.GetInt32(1), Rank = (Rank)reader.GetInt32(2), Sex = (Sex)reader.GetInt32(3), Type = (MemberType)reader.GetInt32(4) };
+        var member = new CompanyMember { Name = reader.GetString(0), Role = (Role)reader.GetInt32(1), Rank = (Rank)reader.GetInt32(2), Sex = (Sex)reader.GetInt32(3), Type = (MemberType)reader.GetInt32(4) };
         var profilesCmd = conn.CreateCommand();
-        profilesCmd.CommandText = "SELECT Id, Rank, Name FROM EquipmentProfiles WHERE TeamMemberName = $tm";
-        profilesCmd.Parameters.AddWithValue("$tm", name);
+        profilesCmd.CommandText = "SELECT Id, Rank, Name FROM EquipmentProfiles WHERE CompanyMemberName = $cm";
+        profilesCmd.Parameters.AddWithValue("$cm", name);
         using var profilesReader = await profilesCmd.ExecuteReaderAsync();
         while (await profilesReader.ReadAsync())
         {
@@ -161,13 +198,14 @@ public class TeamMemberRepository
         return member;
     }
 
-    public async Task UpdateAsync(TeamMember member)
+    public async Task UpdateAsync(CompanyMember member)
     {
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        if (_schemaInitTask != null) await _schemaInitTask;
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         using var tx = conn.BeginTransaction();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "UPDATE TeamMembers SET Role = $role, Rank = $rank, Sex = $sex, Type = $type WHERE Name = $name";
+        cmd.CommandText = "UPDATE CompanyMembers SET Role = $role, Rank = $rank, Sex = $sex, Type = $type WHERE Name = $name";
         cmd.Parameters.AddWithValue("$name", member.Name);
         cmd.Parameters.AddWithValue("$role", (int)member.Role);
         cmd.Parameters.AddWithValue("$rank", (int)member.Rank);
@@ -175,14 +213,14 @@ public class TeamMemberRepository
         cmd.Parameters.AddWithValue("$type", (int)member.Type);
         await cmd.ExecuteNonQueryAsync();
         var delItemsCmd = conn.CreateCommand();
-        delItemsCmd.CommandText = @"DELETE FROM EquippedItems WHERE ProfileId IN (SELECT Id FROM EquipmentProfiles WHERE TeamMemberName = $tm); DELETE FROM EquipmentProfiles WHERE TeamMemberName = $tm;";
-        delItemsCmd.Parameters.AddWithValue("$tm", member.Name);
+        delItemsCmd.CommandText = @"DELETE FROM EquippedItems WHERE ProfileId IN (SELECT Id FROM EquipmentProfiles WHERE CompanyMemberName = $cm); DELETE FROM EquipmentProfiles WHERE CompanyMemberName = $cm;";
+        delItemsCmd.Parameters.AddWithValue("$cm", member.Name);
         await delItemsCmd.ExecuteNonQueryAsync();
         foreach (var (rank, profile) in member.EquipmentProfiles)
         {
             var profileCmd = conn.CreateCommand();
-            profileCmd.CommandText = "INSERT INTO EquipmentProfiles (TeamMemberName, Rank, Name) VALUES ($tm, $rank, $name); SELECT last_insert_rowid();";
-            profileCmd.Parameters.AddWithValue("$tm", member.Name);
+            profileCmd.CommandText = "INSERT INTO EquipmentProfiles (CompanyMemberName, Rank, Name) VALUES ($cm, $rank, $name); SELECT last_insert_rowid();";
+            profileCmd.Parameters.AddWithValue("$cm", member.Name);
             profileCmd.Parameters.AddWithValue("$rank", (int)rank);
             profileCmd.Parameters.AddWithValue("$name", profile.Name);
             var profileId = (long)await profileCmd.ExecuteScalarAsync();
@@ -210,15 +248,16 @@ public class TeamMemberRepository
 
     public async Task DeleteAsync(string name)
     {
-        using var conn = new SqliteConnection(_connectionString);
-        await conn.OpenAsync();
+        if (_schemaInitTask != null) await _schemaInitTask;
+        var conn = GetConnection();
+        await EnsureConnectionOpenAsync(conn);
         using var tx = conn.BeginTransaction();
         var delItemsCmd = conn.CreateCommand();
-        delItemsCmd.CommandText = @"DELETE FROM EquippedItems WHERE ProfileId IN (SELECT Id FROM EquipmentProfiles WHERE TeamMemberName = $tm); DELETE FROM EquipmentProfiles WHERE TeamMemberName = $tm;";
-        delItemsCmd.Parameters.AddWithValue("$tm", name);
+        delItemsCmd.CommandText = @"DELETE FROM EquippedItems WHERE ProfileId IN (SELECT Id FROM EquipmentProfiles WHERE CompanyMemberName = $cm); DELETE FROM EquipmentProfiles WHERE CompanyMemberName = $cm;";
+        delItemsCmd.Parameters.AddWithValue("$cm", name);
         await delItemsCmd.ExecuteNonQueryAsync();
         var cmd = conn.CreateCommand();
-        cmd.CommandText = "DELETE FROM TeamMembers WHERE Name = $name";
+        cmd.CommandText = "DELETE FROM CompanyMembers WHERE Name = $name";
         cmd.Parameters.AddWithValue("$name", name);
         await cmd.ExecuteNonQueryAsync();
         tx.Commit();

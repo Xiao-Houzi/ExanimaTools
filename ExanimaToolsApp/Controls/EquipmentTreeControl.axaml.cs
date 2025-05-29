@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace ExanimaTools.Controls
 {
-    public partial class TeamManagerControl : UserControl
+    public partial class EquipmentTreeControl : UserControl
     {
-        public TeamManagerControl()
+        public EquipmentTreeControl()
         {
             InitializeComponent();
         }

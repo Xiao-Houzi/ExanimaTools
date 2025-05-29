@@ -35,7 +35,6 @@
                 <ComboBox ItemsSource="{Binding AddDialogRoles}" SelectedItem="{Binding NewCompanyMember.Role, Mode=TwoWay}" MinWidth="120" MaxWidth="200" Background="#111" Foreground="White" IsEnabled="{Binding IsRoleSelectable}"/>
                 <!-- Rank ComboBox: Manager dialog disables and sets to Inept, others allow all ranks -->
                 <ComboBox ItemsSource="{Binding AddDialogRanks}" SelectedItem="{Binding NewCompanyMember.Rank, Mode=TwoWay}" MinWidth="120" MaxWidth="200" Background="#111" Foreground="White" IsEnabled="{Binding IsRankSelectable}"/>
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" Margin="0,4,0,0"/>
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                     <Button Content="Save" Command="{Binding AddCompanyMemberCommand}" Background="#000" Foreground="#fff"/>
                     <Button Content="Cancel" Margin="8,0,0,0" Command="{Binding CloseAddDialogCommand}" Background="#000" Foreground="#fff"/>

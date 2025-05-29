@@ -14,11 +14,8 @@
             <controls:HeaderBar DockPanel.Dock="Top" Height="128"/>
             <!-- Tabbed Panel Area -->
             <TabControl DockPanel.Dock="Top" Margin="24,24,24,24" x:Name="MainTabControl">
-                <TabItem Header="Team Manager">
-                    <controls:TeamManagerControl/>
-                </TabItem>
-                <TabItem Header="Equipment Manager">
-                    <controls:EquipmentManagerControl/>
+                <TabItem Header="Company">
+                    <controls:CompanyControl/>
                 </TabItem>
                 <TabItem Header="Arsenal">
                     <controls:ArsenalManagerControl/>
@@ -26,6 +23,13 @@
             </TabControl>
             <!-- Main Content -->
             <ContentPresenter/>
+            <!-- Top-level status bar at the bottom -->
+            <Border DockPanel.Dock="Bottom" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="6" Background="#222" Padding="8" Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="Status:" FontWeight="Bold" Foreground="#BBB"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#888"/>
+                </StackPanel>
+            </Border>
         </DockPanel>
     </Border>
 </Window>

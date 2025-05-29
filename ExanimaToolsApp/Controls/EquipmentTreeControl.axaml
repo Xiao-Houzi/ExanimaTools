@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ExanimaTools.Controls"
+             xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+             xmlns:models="clr-namespace:ExanimaTools.Models"
+             x:Class="ExanimaTools.Controls.EquipmentTreeControl">
+    <StackPanel>
+        <TextBox Watermark="Search equipment..." Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
+        <TreeView ItemsSource="{Binding TreeItems}"
+                  SelectedItem="{Binding SelectedTreeItem, Mode=TwoWay}"
+                  MinHeight="150" MaxHeight="300">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <TextBlock Text="{Binding Name}" IsVisible="{Binding IsCategory}"/>
+                        <TextBlock Text="{Binding Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA"/>
+                        <Button Content="{Binding ActionLabel}"
+                                IsVisible="{Binding IsLeaf}"
+                                Margin="8,0,0,0"
+                                Command="{Binding ActionCommand}"
+                                CommandParameter="{Binding EquipmentPiece}"/>
+                    </StackPanel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </StackPanel>
+</UserControl>

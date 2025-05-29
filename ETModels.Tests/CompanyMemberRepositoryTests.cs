@@ -9,49 +9,40 @@ using System.Threading.Tasks;
 namespace ETModels.Tests;
 
 [TestClass]
-public class TeamMemberRepositoryTests
+public class CompanyMemberRepositoryTests
 {
-    private string? _dbPath = "TestTeamMember.db";
-    private string _connectionString => $"Data Source={_dbPath}";
+    private SqliteConnection? _connection;
+    private string _connectionString => "Data Source=:memory:;Cache=Shared";
 
     [TestInitialize]
     public async Task Init()
     {
-        if (File.Exists(_dbPath))
-        {
-            try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
-        }
-        using (var conn = new SqliteConnection(_connectionString))
-        {
-            conn.Open();
-            var cmd = conn.CreateCommand();
-            cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
-                Name TEXT PRIMARY KEY,
-                Type INTEGER,
-                Description TEXT
-            )";
-            cmd.ExecuteNonQuery();
-        }
-        var repo = new TeamMemberRepository(_connectionString);
+        _connection = new SqliteConnection(_connectionString);
+        await _connection.OpenAsync();
+        var cmd = _connection.CreateCommand();
+        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
+            Name TEXT PRIMARY KEY,
+            Type INTEGER,
+            Description TEXT
+        )";
+        await cmd.ExecuteNonQueryAsync();
+        var repo = new CompanyMemberRepository(_connection); // new overload
         await repo.InitializeSchemaAsync();
     }
 
     [TestCleanup]
     public void Cleanup()
     {
-        if (File.Exists(_dbPath))
-        {
-            try { File.Delete(_dbPath); } catch { /* ignore */ }
-        }
+        _connection?.Dispose();
     }
 
     [TestMethod]
     public async Task AddAndGetAllAsync_Works()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Bob", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Bob", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
         await repo.AddAsync(member);
-        List<TeamMember> all = await repo.GetAllAsync();
+        List<CompanyMember> all = await repo.GetAllAsync();
         Assert.AreEqual(1, all.Count);
         Assert.AreEqual("Bob", all[0].Name);
         Assert.AreEqual(Role.Fighter, all[0].Role);
@@ -63,8 +54,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task UpdateAndDeleteAsync_Works()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Master, Sex = Sex.Female, Type = MemberType.Hireling };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Master, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         // Update
         member.Rank = Rank.Adept;
@@ -80,8 +71,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_Works()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Carl", Role = Role.Physician, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Carl", Role = Role.Physician, Rank = Rank.Novice, Sex = Sex.Other, Type = MemberType.Custom };
         await repo.AddAsync(member);
         var found = await repo.GetByIdAsync("Carl");
         Assert.IsNotNull(found);
@@ -92,8 +83,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_ReturnsCorrectMember()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Adept, Sex = Sex.Female, Type = MemberType.Hireling };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Alice", Role = Role.Fighter, Rank = Rank.Adept, Sex = Sex.Female, Type = MemberType.Hireling };
         await repo.AddAsync(member);
         var result = await repo.GetByIdAsync("Alice");
         Assert.IsNotNull(result);
@@ -107,8 +98,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task UpdateAsync_UpdatesMember()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Carl", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Carl", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
         await repo.AddAsync(member);
         member.Role = Role.Physician;
         member.Rank = Rank.Expert;
@@ -126,8 +117,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task DeleteAsync_RemovesMember()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Dana", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Female, Type = MemberType.Recruit };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Dana", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Female, Type = MemberType.Recruit };
         await repo.AddAsync(member);
         await repo.DeleteAsync("Dana");
         var result = await repo.GetByIdAsync("Dana");
@@ -139,8 +130,8 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task AddAsync_DuplicateName_ThrowsOrIgnores()
     {
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember { Name = "Eve", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Female, Type = MemberType.Recruit };
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "Eve", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Female, Type = MemberType.Recruit };
         await repo.AddAsync(member);
         await Assert.ThrowsExceptionAsync<SqliteException>(async () =>
         {
@@ -151,7 +142,7 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_Nonexistent_ReturnsNull()
     {
-        var repo = new TeamMemberRepository(_connectionString);
+        var repo = new CompanyMemberRepository(_connection!);
         var result = await repo.GetByIdAsync("NotAName");
         Assert.IsNull(result);
     }
@@ -159,7 +150,7 @@ public class TeamMemberRepositoryTests
     [TestMethod]
     public async Task DeleteAsync_Nonexistent_DoesNotThrow()
     {
-        var repo = new TeamMemberRepository(_connectionString);
+        var repo = new CompanyMemberRepository(_connection!);
         await repo.DeleteAsync("Ghost");
         // No exception expected
         Assert.IsTrue(true);
@@ -169,10 +160,8 @@ public class TeamMemberRepositoryTests
     public async Task EquipmentProfiles_PersistsAndLoadsCorrectly()
     {
         // Insert required equipment pieces for FK constraints
-        using (var conn = new SqliteConnection(_connectionString))
+        using (var cmd = _connection!.CreateCommand())
         {
-            conn.Open();
-            var cmd = conn.CreateCommand();
             cmd.CommandText = @"INSERT INTO Equipment (Name, Type, Description) VALUES
                 ('Gambeson', 1, 'Padded armour'),
                 ('Mail Hauberk', 1, 'Chainmail'),
@@ -180,8 +169,8 @@ public class TeamMemberRepositoryTests
                 ('Armet', 1, 'Helmet')";
             cmd.ExecuteNonQuery();
         }
-        var repo = new TeamMemberRepository(_connectionString);
-        var member = new TeamMember()
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember()
         {
             Name = "LayeredGuy",
             Role = Role.Fighter,

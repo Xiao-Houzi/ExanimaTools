@@ -78,6 +78,7 @@ namespace ExanimaTools.ViewModels
 
         public Array EquipmentQualities => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentQuality));
         public Array EquipmentConditions => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentCondition));
+        public Array AllRanks => Enum.GetValues(typeof(Rank));
 
         // Category and subcategory options for dropdowns
         // New: Separate maps for weapon and armour categories
@@ -120,11 +121,19 @@ namespace ExanimaTools.ViewModels
             {
                 foreach (var cat in WeaponCategorySubcategoryMap.Keys)
                     CategoryOptions.Add(cat);
+                // Set default to first category and subcategory
+                SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+                if (!string.IsNullOrEmpty(SelectedCategory) && WeaponCategorySubcategoryMap.TryGetValue(SelectedCategory, out var subs))
+                    SelectedSubcategory = subs.FirstOrDefault() ?? string.Empty;
             }
             else if (addFormMode == AddFormMode.Armour)
             {
                 foreach (var cat in ArmourCategorySubcategoryMap.Keys)
                     CategoryOptions.Add(cat);
+                // Set default to first category and subcategory
+                SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+                if (!string.IsNullOrEmpty(SelectedCategory) && ArmourCategorySubcategoryMap.TryGetValue(SelectedCategory, out var subs))
+                    SelectedSubcategory = subs.FirstOrDefault() ?? string.Empty;
             }
         }
 
@@ -174,7 +183,6 @@ namespace ExanimaTools.ViewModels
             catch (Exception ex)
             {
                 ErrorMessage = $"Failed to load equipment: {ex.Message}\n{ex.StackTrace}";
-                // Use LogError for error logging
                 _logger?.LogError($"Failed to load equipment: {ex.Message}", ex);
             }
         }
@@ -197,6 +205,12 @@ namespace ExanimaTools.ViewModels
             if (EquipmentList.Any(e => e != equipment && e.Name == equipment.Name))
             {
                 error = $"An equipment named '{equipment.Name}' already exists.";
+                return false;
+            }
+            // Prevent subcategory from being the same as category
+            if (!string.IsNullOrEmpty(equipment.Category) && equipment.Category == equipment.Subcategory)
+            {
+                error = "Subcategory must not be the same as category. Please select a specific subcategory.";
                 return false;
             }
             error = null;
@@ -516,6 +530,69 @@ namespace ExanimaTools.ViewModels
                 await repo.AddAsync(item);
             }
             await LoadEquipmentAsync();
+        }
+
+        [ObservableProperty]
+        private string searchText = string.Empty;
+
+        partial void OnSearchTextChanged(string value)
+        {
+            BuildEquipmentTree();
+        }
+
+        private IEnumerable<EquipmentPiece> GetFilteredEquipment()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+                return EquipmentList;
+            var lower = SearchText.ToLowerInvariant();
+            return EquipmentList.Where(eq =>
+                (!string.IsNullOrEmpty(eq.Name) && eq.Name.ToLowerInvariant().Contains(lower)) ||
+                (!string.IsNullOrEmpty(eq.Category) && eq.Category.ToLowerInvariant().Contains(lower)) ||
+                (!string.IsNullOrEmpty(eq.Subcategory) && eq.Subcategory.ToLowerInvariant().Contains(lower)) ||
+                (!string.IsNullOrEmpty(eq.Description) && eq.Description.ToLowerInvariant().Contains(lower))
+            );
+        }
+
+        // Tree for equipment browser
+        public ObservableCollection<EquipmentTreeNodeViewModel> EquipmentTree { get; } = new();
+        private EquipmentTreeNodeViewModel? selectedEquipmentTreeItem;
+        public EquipmentTreeNodeViewModel? SelectedEquipmentTreeItem
+        {
+            get => selectedEquipmentTreeItem;
+            set => SetProperty(ref selectedEquipmentTreeItem, value);
+        }
+
+        private void BuildEquipmentTree()
+        {
+            EquipmentTree.Clear();
+            var filtered = GetFilteredEquipment();
+            var byType = filtered.GroupBy(e => e.Type);
+            foreach (var typeGroup in byType)
+            {
+                var typeNode = new EquipmentTreeNodeViewModel(typeGroup.Key.ToString());
+                var byCategory = typeGroup.GroupBy(e => e.Category);
+                foreach (var catGroup in byCategory)
+                {
+                    var catNode = new EquipmentTreeNodeViewModel(catGroup.Key);
+                    var bySubcat = catGroup.GroupBy(e => e.Subcategory);
+                    foreach (var subGroup in bySubcat)
+                    {
+                        if (subGroup.Count() == 1 && subGroup.Key == subGroup.First().Name)
+                        {
+                            catNode.Children.Add(new EquipmentTreeNodeViewModel(subGroup.First()));
+                        }
+                        else
+                        {
+                            var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
+                            foreach (var eq in subGroup)
+                                subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
+                            catNode.Children.Add(subNode);
+                        }
+                    }
+                    typeNode.Children.Add(catNode);
+                }
+                EquipmentTree.Add(typeNode);
+            }
         }
     }
 }

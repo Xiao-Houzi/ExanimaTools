@@ -12,8 +12,10 @@ public static class DumpEquipmentDb
     public static async Task DumpAsync(string? dbPath, string outPath)
     {
         dbPath ??= DbManager.GetDbPath();
+        Console.WriteLine($"[DumpEquipmentDb] Using DB path: {dbPath}");
         var repo = new EquipmentRepository($"Data Source={dbPath}");
         var all = await repo.GetAllAsync();
+        Console.WriteLine($"[DumpEquipmentDb] Found {all.Count} equipment items in database.");
         using var writer = new StreamWriter(outPath, false);
         writer.WriteLine($"Equipment DB Dump ({DateTime.Now})");
         writer.WriteLine($"Count: {all.Count}");
