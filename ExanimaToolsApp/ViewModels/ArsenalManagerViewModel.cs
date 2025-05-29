@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using ExanimaTools.ViewModels;
+using System.Collections.Generic;
 
 namespace ExanimaTools.ViewModels;
 
@@ -94,6 +95,11 @@ public partial class ArsenalManagerViewModel : ObservableObject
     public ICommand AddStatCommand { get; }
     public ICommand ShowAddWeaponFormCommand { get; }
     public ICommand ShowAddArmourFormCommand { get; }
+    public ICommand AddFilterCommand { get; }
+
+    public ObservableCollection<EquipmentFilterViewModel> Filters { get; } = new();
+
+    private List<EquipmentPiece> _allEquipment = new(); // Cache for filtering
 
     public ArsenalManagerViewModel(EquipmentRepository equipmentRepo, ArsenalRepository arsenalRepo)
     {
@@ -123,12 +129,15 @@ public partial class ArsenalManagerViewModel : ObservableObject
         AddStatCommand = new SimpleCommand(AddStat);
         ShowAddWeaponFormCommand = new SimpleCommand(ShowAddWeaponForm);
         ShowAddArmourFormCommand = new SimpleCommand(ShowAddArmourForm);
+        AddFilterCommand = new SimpleCommand(AddFilter);
+        Filters.CollectionChanged += (s, e) => ApplyFilters();
     }
 
     private async Task LoadAsync()
     {
         var allEquipment = await _equipmentRepository.GetAllAsync();
-        FilteredEquipment = new ObservableCollection<EquipmentPiece>(allEquipment);
+        _allEquipment = allEquipment.ToList();
+        FilteredEquipment = new ObservableCollection<EquipmentPiece>(_allEquipment);
         var arsenal = await _arsenalRepository.GetArsenalAsync(_equipmentRepository);
         ArsenalEquipment = new ObservableCollection<EquipmentPiece>(arsenal.Equipment);
         BuildTree(FilteredEquipment, PoolTree);
@@ -408,6 +417,94 @@ public partial class ArsenalManagerViewModel : ObservableObject
             foreach (var cat in EquipmentManagerViewModel.ArmourCategorySubcategoryMap.Keys)
                 CategoryOptions.Add(cat);
         }
+    }
+
+    private void AddFilter()
+    {
+        var filter = new EquipmentFilterViewModel { FilterField = EquipmentFilterField.Category, Operator = EquipmentFilterOperator.Equals };
+        filter.RemoveCommand = new SimpleCommand(() => { Filters.Remove(filter); });
+        Filters.Add(filter);
+    }
+
+    private void ApplyFilters()
+    {
+        FilteredEquipment = new ObservableCollection<EquipmentPiece>(GetFilteredEquipment(_allEquipment, Filters));
+    }
+
+    public static List<EquipmentPiece> GetFilteredEquipment(IEnumerable<EquipmentPiece> source, IEnumerable<EquipmentFilterViewModel> filters)
+    {
+        var all = source.ToList();
+        foreach (var filter in filters)
+        {
+            all = ApplyFilterStatic(all, filter);
+        }
+        return all;
+    }
+
+    private static List<EquipmentPiece> ApplyFilterStatic(List<EquipmentPiece> source, EquipmentFilterViewModel filter)
+    {
+        switch (filter.FilterField)
+        {
+            case EquipmentFilterField.Category:
+                if (filter.Value is string cat && !string.IsNullOrEmpty(cat))
+                {
+                    if (filter.Operator == EquipmentFilterOperator.Equals)
+                        return source.FindAll(e => e.Category == cat);
+                    if (filter.Operator == EquipmentFilterOperator.NotEquals)
+                        return source.FindAll(e => e.Category != cat);
+                }
+                break;
+            case EquipmentFilterField.Condition:
+                if (filter.Value is EquipmentCondition cond)
+                {
+                    if (filter.Operator == EquipmentFilterOperator.Equals)
+                        return source.FindAll(e => e.Condition == cond);
+                    if (filter.Operator == EquipmentFilterOperator.NotEquals)
+                        return source.FindAll(e => e.Condition != cond);
+                }
+                break;
+            case EquipmentFilterField.Rank:
+                if (filter.Value is Rank rank)
+                {
+                    if (filter.Operator == EquipmentFilterOperator.Equals)
+                        return source.FindAll(e => e.Rank == rank);
+                    if (filter.Operator == EquipmentFilterOperator.NotEquals)
+                        return source.FindAll(e => e.Rank != rank);
+                    if (filter.Operator == EquipmentFilterOperator.GreaterThan)
+                        return source.FindAll(e => e.Rank > rank);
+                    if (filter.Operator == EquipmentFilterOperator.LessThan)
+                        return source.FindAll(e => e.Rank < rank);
+                    if (filter.Operator == EquipmentFilterOperator.GreaterOrEqual)
+                        return source.FindAll(e => e.Rank >= rank);
+                    if (filter.Operator == EquipmentFilterOperator.LessOrEqual)
+                        return source.FindAll(e => e.Rank <= rank);
+                }
+                break;
+            case EquipmentFilterField.Stat:
+                if (filter.Value is float statVal && !string.IsNullOrEmpty(filter.StatName))
+                {
+                    if (Enum.TryParse<StatType>(filter.StatName, out var statType))
+                    {
+                        switch (filter.Operator)
+                        {
+                            case EquipmentFilterOperator.Equals:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v == statVal);
+                            case EquipmentFilterOperator.NotEquals:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v != statVal);
+                            case EquipmentFilterOperator.GreaterThan:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v > statVal);
+                            case EquipmentFilterOperator.LessThan:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v < statVal);
+                            case EquipmentFilterOperator.GreaterOrEqual:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v >= statVal);
+                            case EquipmentFilterOperator.LessOrEqual:
+                                return source.FindAll(e => e.Stats.TryGetValue(statType, out var v) && v <= statVal);
+                        }
+                    }
+                }
+                break;
+        }
+        return source;
     }
 
     // Simple ICommand implementation for sync commands
