@@ -1,0 +1,46 @@
+<UserControl x:Class="ExanimaTools.Controls.CompanyControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <viewmodels:CompanyViewModel/>
+    </UserControl.DataContext>
+    <StackPanel Margin="16">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Add Manager" Command="{Binding OpenAddManagerDialogCommand}" Width="140" IsEnabled="{Binding CanAddManager}"/>
+            <Button Content="Add Recruit" Command="{Binding OpenAddRecruitDialogCommand}" Width="140" IsEnabled="{Binding CanAddNonManager}"/>
+            <Button Content="Add Hireling" Command="{Binding OpenAddHirelingDialogCommand}" Width="140" IsEnabled="{Binding CanAddNonManager}"/>
+        </StackPanel>
+        <ListBox ItemsSource="{Binding CompanyMembers}" SelectedItem="{Binding SelectedCompanyMember}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                        <TextBlock Text=" | "/>
+                        <TextBlock Text="{Binding Role}"/>
+                        <TextBlock Text=" | "/>
+                        <TextBlock Text="{Binding Rank}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border Background="#222" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
+            <StackPanel>
+                <TextBlock Text="{Binding AddDialogTitle}" FontWeight="Bold" Margin="0,0,0,8" Foreground="White"/>
+                <TextBox Watermark="Name" Text="{Binding NewCompanyMember.Name, Mode=TwoWay}" Background="#111" Foreground="White"/>
+                <!-- Role ComboBox: Manager dialog disables and sets to Manager, Recruit dialog disables and sets to Fighter, Hireling dialog disables Manager option -->
+                <ComboBox ItemsSource="{Binding AddDialogRoles}" SelectedItem="{Binding NewCompanyMember.Role, Mode=TwoWay}" MinWidth="120" MaxWidth="200" Background="#111" Foreground="White" IsEnabled="{Binding IsRoleSelectable}"/>
+                <!-- Rank ComboBox: Manager dialog disables and sets to Inept, others allow all ranks -->
+                <ComboBox ItemsSource="{Binding AddDialogRanks}" SelectedItem="{Binding NewCompanyMember.Rank, Mode=TwoWay}" MinWidth="120" MaxWidth="200" Background="#111" Foreground="White" IsEnabled="{Binding IsRankSelectable}"/>
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" Margin="0,4,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <Button Content="Save" Command="{Binding AddCompanyMemberCommand}" Background="#000" Foreground="#fff"/>
+                    <Button Content="Cancel" Margin="8,0,0,0" Command="{Binding CloseAddDialogCommand}" Background="#000" Foreground="#fff"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>
