@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ExanimaTools.Models
@@ -25,7 +26,7 @@ namespace ExanimaTools.Models
         Pristine
     }
 
-    public class EquipmentPiece
+    public class EquipmentPiece : INotifyPropertyChanged
     {
         /// <summary>
         /// Unique database key for this equipment item.
@@ -44,7 +45,12 @@ namespace ExanimaTools.Models
             get => _name;
             set { _name = value; _logger?.LogOperation("Set Name", value); }
         }
-        public EquipmentType Type { get; set; }
+        private EquipmentType _type;
+        public EquipmentType Type
+        {
+            get => _type;
+            set { if (!EqualityComparer<EquipmentType>.Default.Equals(_type, value)) { _type = value; OnPropertyChanged(nameof(Type)); } }
+        }
         public EquipmentSlot Slot { get; set; }
         public ArmourLayer? Layer { get; set; }
         private Dictionary<StatType, float> _stats = new();
@@ -61,7 +67,12 @@ namespace ExanimaTools.Models
         public string Description { get; set; } = string.Empty;
         public EquipmentQuality Quality { get; set; } = EquipmentQuality.Common;
         public EquipmentCondition Condition { get; set; } = EquipmentCondition.Good;
-        public string Category { get; set; } = string.Empty; // e.g., "Weapon", "Armour"
+        private string _category = string.Empty;
+        public string Category
+        {
+            get => _category;
+            set { if (_category != value) { _category = value; OnPropertyChanged(nameof(Category)); } }
+        }
         public string Subcategory { get; set; } = string.Empty; // e.g., "Swords", "Polearms", "Body", "Head"
         public Rank Rank { get; set; } = Rank.Novice; // Minimum required rank to equip
         public int Points { get; set; } = 0; // Loadout cost
@@ -76,5 +87,15 @@ namespace ExanimaTools.Models
             _stats[stat] = clamped;
             _logger?.LogOperation("Set Stat", $"{stat}={clamped}");
         }
+
+        private string? _imagePath;
+        public string? ImagePath
+        {
+            get => _imagePath;
+            set { if (_imagePath != value) { _imagePath = value; OnPropertyChanged(nameof(ImagePath)); } }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

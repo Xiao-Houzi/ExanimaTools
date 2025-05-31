@@ -5,83 +5,118 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ExanimaTools.Controls;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using System.IO;
 using ExanimaTools.ViewModels;
 using ExanimaToolsApp;
+using System.ComponentModel;
 
 namespace ExanimaTools.ViewModels
 {
-    public partial class EquipmentManagerViewModel : ObservableObject
+    public class EquipmentManagerViewModel : INotifyPropertyChanged
     {
         private readonly ILoggingService? _logger;
         private readonly EquipmentRepository _equipmentRepository;
         private const string DefaultDbFile = "exanima_tools.db";
 
+        // Command properties
+        public ICommand AddEquipmentCommand { get; }
+        public ICommand RemoveEquipmentCommand { get; }
+        public ICommand EditEquipmentCommand { get; }
+        public ICommand ShowAddWeaponFormCommand { get; }
+        public ICommand ShowAddArmourFormCommand { get; }
+        public ICommand SaveNewEquipmentCommand { get; }
+        public ICommand AddStatCommand { get; }
+        public ICommand EditEquipmentFromTreeCommand { get; }
+
         public EquipmentManagerViewModel(ILoggingService? logger = null)
         {
             _logger = logger;
             _logger?.LogOperation("EquipmentManagerViewModel", "Created");
-            // Use logger for all new models
             NewEquipment = new EquipmentPiece(_logger);
-            NewEquipment.Rank = Rank.Inept; // Set default rank to Inept immediately after creation
-            // Set up repository with default DB path in app directory
+            NewEquipment.Rank = Rank.Inept;
             var dbPath = DbManager.GetDbPath();
             _equipmentRepository = new EquipmentRepository($"Data Source={dbPath}");
-            // Load equipment from DB on startup
             _ = LoadEquipmentAsync();
+            AddEquipmentCommand = new AsyncRelayCommand(() => AddEquipmentAsync(NewEquipment));
+            RemoveEquipmentCommand = new AsyncRelayCommand(RemoveEquipmentAsync, CanRemoveEquipment);
+            EditEquipmentCommand = new AsyncRelayCommand(() =>
+            {
+                var oldEq = SelectedEquipment ?? new EquipmentPiece(_logger);
+                var updatedEq = NewEquipment ?? new EquipmentPiece(_logger);
+                return EditEquipmentAsync((oldEq, updatedEq));
+            });
+            ShowAddWeaponFormCommand = new RelayCommand(ShowAddWeaponForm);
+            ShowAddArmourFormCommand = new RelayCommand(ShowAddArmourForm);
+            SaveNewEquipmentCommand = new AsyncRelayCommand(SaveNewEquipment);
+            AddStatCommand = new RelayCommand(AddStat);
+            EditEquipmentFromTreeCommand = new RelayCommand(() => EditEquipmentFromTree(SelectedEquipment));
         }
         // Observable collection of equipment pieces for binding
-        [ObservableProperty]
         private ObservableCollection<EquipmentPiece> equipmentList = new();
-
-        // Selected equipment for editing/removal
-        [ObservableProperty]
+        public ObservableCollection<EquipmentPiece> EquipmentList
+        {
+            get => equipmentList;
+            set { if (equipmentList != value) { equipmentList = value; OnPropertyChanged(nameof(EquipmentList)); } }
+        }
         private EquipmentPiece? selectedEquipment;
-
-        // Error and confirmation messaging
-        [ObservableProperty]
+        public EquipmentPiece? SelectedEquipment
+        {
+            get => selectedEquipment;
+            set { if (selectedEquipment != value) { selectedEquipment = value; OnPropertyChanged(nameof(SelectedEquipment)); } }
+        }
         private string? errorMessage;
-
-        [ObservableProperty]
+        public string? ErrorMessage
+        {
+            get => errorMessage;
+            set { if (errorMessage != value) { errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); } }
+        }
         private string? confirmationMessage;
-
-        // Fields for new equipment form
-        [ObservableProperty]
+        public string? ConfirmationMessage
+        {
+            get => confirmationMessage;
+            set { if (confirmationMessage != value) { confirmationMessage = value; OnPropertyChanged(nameof(ConfirmationMessage)); } }
+        }
         private EquipmentPiece newEquipment = new EquipmentPiece();
-        [ObservableProperty]
+        public EquipmentPiece NewEquipment
+        {
+            get => newEquipment;
+            set { if (newEquipment != value) { newEquipment = value; OnPropertyChanged(nameof(NewEquipment)); } }
+        }
         private string newStatInput = string.Empty;
-
-        [ObservableProperty]
+        public string NewStatInput
+        {
+            get => newStatInput;
+            set { if (newStatInput != value) { newStatInput = value; OnPropertyChanged(nameof(NewStatInput)); } }
+        }
         private bool isAddFormVisible;
-
-        [ObservableProperty]
+        public bool IsAddFormVisible
+        {
+            get => isAddFormVisible;
+            set { if (isAddFormVisible != value) { isAddFormVisible = value; OnPropertyChanged(nameof(IsAddFormVisible)); } }
+        }
         private bool isEditMode;
-
+        public bool IsEditMode
+        {
+            get => isEditMode;
+            set { if (isEditMode != value) { isEditMode = value; OnPropertyChanged(nameof(IsEditMode)); } }
+        }
         public ObservableCollection<StatType> AvailableStatTypes { get; } = new();
         private StatType? selectedStatType;
         public StatType? SelectedStatType
         {
             get => selectedStatType;
-            set => SetProperty(ref selectedStatType, value);
+            set { if (!EqualityComparer<StatType?>.Default.Equals(selectedStatType, value)) { selectedStatType = value; OnPropertyChanged(nameof(SelectedStatType)); } }
         }
-
         public ObservableCollection<EquipmentType> EquipmentTypes { get; } = new(Enum.GetValues(typeof(EquipmentType)).Cast<EquipmentType>());
         public ObservableCollection<EquipmentSlot> EquipmentSlots { get; } = new(Enum.GetValues(typeof(EquipmentSlot)).Cast<EquipmentSlot>());
         public ObservableCollection<ArmourLayer> ArmourLayers { get; } = new(Enum.GetValues(typeof(ArmourLayer)).Cast<ArmourLayer>());
-
         public ObservableCollection<StatPipViewModel> NewEquipmentStatPips { get; } = new();
-
         public Array EquipmentQualities => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentQuality));
         public Array EquipmentConditions => Enum.GetValues(typeof(ExanimaTools.Models.EquipmentCondition));
         public Array AllRanks => Enum.GetValues(typeof(Rank));
-
-        // Category and subcategory options for dropdowns
-        // New: Separate maps for weapon and armour categories
         public static readonly Dictionary<string, List<string>> WeaponCategorySubcategoryMap = new()
         {
             ["Sword"] = new List<string> { "Longsword", "Shortsword", "Greatsword", "Arming Sword" },
@@ -103,14 +138,54 @@ namespace ExanimaTools.ViewModels
             ["Legs"] = new List<string> { "Trousers", "Pants", "Leggings", "Padded Leggings", "Mail Leggings", "Chausses", "Leather Cuisses", "Splint Cuisses", "Greaves", "Plate Cuisses", "Plate Greaves", "Plate Leggings" },
             ["Feet"] = new List<string> { "Shoes", "Boots", "Sandals", "Padded Shoes", "Padded Boots", "Mail Shoes", "Plate Sabatons" }
         };
-
-        [ObservableProperty]
         private string selectedCategory = string.Empty;
-        [ObservableProperty]
+        public string SelectedCategory
+        {
+            get => selectedCategory;
+            set
+            {
+                if (selectedCategory != value)
+                {
+                    selectedCategory = value;
+                    OnPropertyChanged(nameof(SelectedCategory));
+                    SubcategoryOptions.Clear();
+                    if (addFormMode == AddFormMode.Weapon && !string.IsNullOrEmpty(value) && WeaponCategorySubcategoryMap.TryGetValue(value, out var subs))
+                    {
+                        foreach (var sub in subs)
+                            SubcategoryOptions.Add(sub);
+                        SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+                    }
+                    else if (addFormMode == AddFormMode.Armour && !string.IsNullOrEmpty(value) && ArmourCategorySubcategoryMap.TryGetValue(value, out var subs2))
+                    {
+                        foreach (var sub in subs2)
+                            SubcategoryOptions.Add(sub);
+                        SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
+                    }
+                    else
+                    {
+                        SelectedSubcategory = string.Empty;
+                    }
+                    NewEquipment.Category = value;
+                    NewEquipment.Subcategory = SelectedSubcategory;
+                }
+            }
+        }
         private string selectedSubcategory = string.Empty;
+        public string SelectedSubcategory
+        {
+            get => selectedSubcategory;
+            set
+            {
+                if (selectedSubcategory != value)
+                {
+                    selectedSubcategory = value;
+                    OnPropertyChanged(nameof(SelectedSubcategory));
+                    NewEquipment.Subcategory = value;
+                }
+            }
+        }
         public ObservableCollection<string> CategoryOptions { get; } = new();
         public ObservableCollection<string> SubcategoryOptions { get; } = new();
-
         private enum AddFormMode { None, Weapon, Armour }
         private AddFormMode addFormMode = AddFormMode.None;
 
@@ -135,33 +210,6 @@ namespace ExanimaTools.ViewModels
                 if (!string.IsNullOrEmpty(SelectedCategory) && ArmourCategorySubcategoryMap.TryGetValue(SelectedCategory, out var subs))
                     SelectedSubcategory = subs.FirstOrDefault() ?? string.Empty;
             }
-        }
-
-        partial void OnSelectedCategoryChanged(string value)
-        {
-            SubcategoryOptions.Clear();
-            if (addFormMode == AddFormMode.Weapon && !string.IsNullOrEmpty(value) && WeaponCategorySubcategoryMap.TryGetValue(value, out var subs))
-            {
-                foreach (var sub in subs)
-                    SubcategoryOptions.Add(sub);
-                SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
-            }
-            else if (addFormMode == AddFormMode.Armour && !string.IsNullOrEmpty(value) && ArmourCategorySubcategoryMap.TryGetValue(value, out var subs2))
-            {
-                foreach (var sub in subs2)
-                    SubcategoryOptions.Add(sub);
-                SelectedSubcategory = SubcategoryOptions.FirstOrDefault() ?? string.Empty;
-            }
-            else
-            {
-                SelectedSubcategory = string.Empty;
-            }
-            NewEquipment.Category = value;
-            NewEquipment.Subcategory = SelectedSubcategory;
-        }
-        partial void OnSelectedSubcategoryChanged(string value)
-        {
-            NewEquipment.Subcategory = value;
         }
 
         // Async stub for loading equipment (for future persistence)
@@ -218,7 +266,6 @@ namespace ExanimaTools.ViewModels
         }
 
         // Async command to add new equipment
-        [RelayCommand]
         private async Task AddEquipmentAsync(EquipmentPiece newEquipment)
         {
             _logger?.LogOperation("AddEquipmentAsync", newEquipment?.Name);
@@ -239,7 +286,6 @@ namespace ExanimaTools.ViewModels
         }
 
         // Async command to remove selected equipment
-        [RelayCommand(CanExecute = nameof(CanRemoveEquipment))]
         private async Task RemoveEquipmentAsync()
         {
             _logger?.LogOperation("RemoveEquipmentAsync", SelectedEquipment?.Name);
@@ -260,7 +306,6 @@ namespace ExanimaTools.ViewModels
         private bool CanRemoveEquipment() => SelectedEquipment != null;
 
         // Async command to edit equipment (replace with updated instance)
-        [RelayCommand]
         private async Task EditEquipmentAsync((EquipmentPiece Old, EquipmentPiece Updated) edit)
         {
             _logger?.LogOperation("EditEquipmentAsync", $"{edit.Old?.Name} -> {edit.Updated?.Name}");
@@ -342,7 +387,6 @@ namespace ExanimaTools.ViewModels
             StatType.Points // Allow Points as an optional pip stat
         };
 
-        [RelayCommand]
         private void ShowAddWeaponForm()
         {
             _logger?.LogOperation("ShowAddWeaponForm", "User opened Add Weapon form");
@@ -364,7 +408,6 @@ namespace ExanimaTools.ViewModels
             SyncStatPipViewModels();
         }
 
-        [RelayCommand]
         private void ShowAddArmourForm()
         {
             _logger?.LogOperation("ShowAddArmourForm", "User opened Add Armour form");
@@ -386,7 +429,6 @@ namespace ExanimaTools.ViewModels
             SyncStatPipViewModels();
         }
 
-        [RelayCommand]
         private async Task SaveNewEquipment()
         {
             _logger?.LogOperation("SaveNewEquipment", $"User saving equipment: {NewEquipment.Name}");
@@ -475,7 +517,6 @@ namespace ExanimaTools.ViewModels
             }
         }
 
-        [RelayCommand]
         private void AddStat()
         {
             if (SelectedStatType is StatType statType && !NewEquipment.Stats.ContainsKey(statType))
@@ -486,7 +527,6 @@ namespace ExanimaTools.ViewModels
             }
         }
 
-        [RelayCommand]
         public void EditEquipmentFromTree(EquipmentPiece? equipment)
         {
             if (equipment == null) return;
@@ -532,12 +572,11 @@ namespace ExanimaTools.ViewModels
             await LoadEquipmentAsync();
         }
 
-        [ObservableProperty]
         private string searchText = string.Empty;
-
-        partial void OnSearchTextChanged(string value)
+        public string SearchText
         {
-            BuildEquipmentTree();
+            get => searchText;
+            set { if (searchText != value) { searchText = value; OnPropertyChanged(nameof(SearchText)); BuildEquipmentTree(); } }
         }
 
         private IEnumerable<EquipmentPiece> GetFilteredEquipment()
@@ -559,7 +598,7 @@ namespace ExanimaTools.ViewModels
         public EquipmentTreeNodeViewModel? SelectedEquipmentTreeItem
         {
             get => selectedEquipmentTreeItem;
-            set => SetProperty(ref selectedEquipmentTreeItem, value);
+            set { if (selectedEquipmentTreeItem != value) { selectedEquipmentTreeItem = value; OnPropertyChanged(nameof(SelectedEquipmentTreeItem)); } }
         }
 
         private void BuildEquipmentTree()
@@ -594,5 +633,8 @@ namespace ExanimaTools.ViewModels
                 EquipmentTree.Add(typeNode);
             }
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

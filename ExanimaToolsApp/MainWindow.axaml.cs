@@ -13,6 +13,7 @@ public partial class MainWindow : Window
     public MainWindow() : this(null) { }
     public MainWindow(ILoggingService? logger)
     {
+        logger?.LogOperation("MainWindow", "Created");
         InitializeComponent();
         // Removed: this.DataContext = new ExanimaTools.ViewModels.EquipmentManagerViewModel(logger);
 

@@ -17,7 +17,7 @@
         <local:QualityDescriptionConverter x:Key="QualityDescriptionConverter"/>
         <local:ConditionDescriptionConverter x:Key="ConditionDescriptionConverter"/>
         <local:QualityAndConditionDescriptionMultiConverter x:Key="QualityAndConditionDescriptionMultiConverter"/>
-        <local:EquipmentTypeToDrawingConverter x:Key="EquipmentTypeToDrawingConverter"/>
+        <local:EquipmentTypeAndCategoryToDrawingConverter x:Key="EquipmentTypeAndCategoryToDrawingConverter"/>
         <local:CategoryToFontWeightConverter x:Key="CategoryToFontWeightConverter"/>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <local:BoolToEditSaveConverter x:Key="BoolToEditSaveConverter"/>
@@ -36,7 +36,7 @@
                     <TextBlock Text="Add New Equipment" FontWeight="Bold"/>
                     <StackPanel Orientation="Horizontal" Spacing="16">
                         <Border Width="128" Height="256" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#222" VerticalAlignment="Top" Margin="0,0,8,0">
-                            <ContentControl Content="{Binding NewEquipment.Type, Converter={StaticResource EquipmentTypeToDrawingConverter}}" />
+                            <ContentControl Content="{Binding NewEquipment.Type, Converter={StaticResource EquipmentTypeAndCategoryToDrawingConverter}}" />
                         </Border>
                         <StackPanel Orientation="Vertical" Spacing="4">
                             <StackPanel Orientation="Horizontal" Spacing="8">

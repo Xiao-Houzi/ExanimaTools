@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
+using System.ComponentModel;
 
 namespace ExanimaTools.ViewModels;
 
-public partial class CompanyViewModel : ObservableObject
+public class CompanyViewModel : INotifyPropertyChanged
 {
     private readonly CompanyMemberRepository _companyMemberRepository;
     private readonly ILoggingService? _logger;
@@ -34,24 +33,39 @@ public partial class CompanyViewModel : ObservableObject
 
     public CompanyViewModel() : this(ExanimaTools.App.LoggingServiceInstance) { }
 
-    // Ensure DB schema is initialized before loading team members
     private async Task InitializeAndLoadAsync()
     {
         await _companyMemberRepository.InitializeSchemaAsync();
         await LoadCompanyMembersAsync();
     }
 
-    [ObservableProperty]
     private ObservableCollection<CompanyMember> companyMembers = new();
+    public ObservableCollection<CompanyMember> CompanyMembers
+    {
+        get => companyMembers;
+        set { if (companyMembers != value) { companyMembers = value; OnPropertyChanged(nameof(CompanyMembers)); } }
+    }
 
-    [ObservableProperty]
     private CompanyMember? selectedCompanyMember;
+    public CompanyMember? SelectedCompanyMember
+    {
+        get => selectedCompanyMember;
+        set { if (selectedCompanyMember != value) { selectedCompanyMember = value; OnPropertyChanged(nameof(SelectedCompanyMember)); } }
+    }
 
-    [ObservableProperty]
     private string? searchText;
+    public string? SearchText
+    {
+        get => searchText;
+        set { if (searchText != value) { searchText = value; OnPropertyChanged(nameof(SearchText)); } }
+    }
 
-    [ObservableProperty]
     private string? statusMessage;
+    public string? StatusMessage
+    {
+        get => statusMessage;
+        set { if (statusMessage != value) { statusMessage = value; OnPropertyChanged(nameof(StatusMessage)); } }
+    }
 
     private CompanyMemberViewModel newCompanyMember = new();
     public CompanyMemberViewModel NewCompanyMember
@@ -74,7 +88,6 @@ public partial class CompanyViewModel : ObservableObject
         set { if (errorMessage != value) { errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); } }
     }
 
-    // Add dialog state
     private string addDialogTitle = "Add New Member";
     public string AddDialogTitle { get => addDialogTitle; set { addDialogTitle = value; OnPropertyChanged(nameof(AddDialogTitle)); } }
     private readonly ObservableCollection<Role> addDialogRoles = new();
@@ -97,8 +110,6 @@ public partial class CompanyViewModel : ObservableObject
 
     private void OpenAddMemberDialog(List<Role> roles, List<Rank> ranks, MemberType type, string title, bool isRoleSelectable, bool isRankSelectable)
     {
-        if (NewCompanyMember != null)
-            NewCompanyMember.PropertyChanged -= NewCompanyMember_PropertyChanged;
         AddDialogRoles.Clear();
         foreach (var r in roles) AddDialogRoles.Add(r);
         AddDialogRanks.Clear();
@@ -121,7 +132,6 @@ public partial class CompanyViewModel : ObservableObject
         OnPropertyChanged(nameof(AddDialogRoles));
         OnPropertyChanged(nameof(AddDialogRanks));
         OnPropertyChanged(nameof(NewCompanyMember));
-        NewCompanyMember.PropertyChanged += NewCompanyMember_PropertyChanged;
         IsAddDialogOpen = true;
         ErrorMessage = null;
     }
@@ -202,6 +212,9 @@ public partial class CompanyViewModel : ObservableObject
 
     public static Role[] AllRoles { get; } = (Role[])System.Enum.GetValues(typeof(Role));
     public static Rank[] AllRanks { get; } = (Rank[])System.Enum.GetValues(typeof(Rank));
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 // Simple ICommand implementation for sync commands
@@ -212,14 +225,4 @@ public class SimpleCommand : ICommand
     public event EventHandler? CanExecuteChanged { add { } remove { } }
     public bool CanExecute(object? parameter) => true;
     public void Execute(object? parameter) => _execute();
-}
-
-// ICommand implementation for async commands
-public class AsyncSimpleCommand : ICommand
-{
-    private readonly Func<Task> _execute;
-    public AsyncSimpleCommand(Func<Task> execute) => _execute = execute;
-    public event EventHandler? CanExecuteChanged { add { } remove { } }
-    public bool CanExecute(object? parameter) => true;
-    public async void Execute(object? parameter) => await _execute();
 }

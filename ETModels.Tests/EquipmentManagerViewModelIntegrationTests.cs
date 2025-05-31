@@ -49,7 +49,9 @@ namespace ETModels.Tests
             vm.NewEquipment.Name = "TestSwordRenamed";
             vm.IsEditMode = true;
             vm.IsAddFormVisible = true;
-            await vm.SaveNewEquipmentCommand.ExecuteAsync(null);
+            vm.SaveNewEquipmentCommand.Execute(null);
+            // Optionally, wait for async completion if needed (test may need to poll or expose a Task for testability)
+            await Task.Delay(200); // Give time for async command to complete
             // Assert
             var all = await repo.GetAllAsync();
             Assert.AreEqual(originalCount, all.Count, "Item count should not change after edit");

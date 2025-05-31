@@ -325,10 +325,6 @@
             "Avalonia.Themes.Fluent": {
               "target": "Package",
               "version": "[11.3.0, )"
-            },
-            "CommunityToolkit.Mvvm": {
-              "target": "Package",
-              "version": "[8.4.0, )"
             }
           },
           "imports": [

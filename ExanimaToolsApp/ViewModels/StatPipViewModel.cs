@@ -1,14 +1,11 @@
 using ExanimaTools.Models;
 using ExanimaTools.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-#if DEBUG
-using CommunityToolkit.Mvvm.Input;
-#endif
+using System.ComponentModel;
 
 namespace ExanimaTools.ViewModels
 {
-    public partial class StatPipViewModel : ObservableObject
+    public class StatPipViewModel : INotifyPropertyChanged
     {
         private readonly ILoggingService? _logger;
         public StatType Stat { get; }
@@ -18,8 +15,10 @@ namespace ExanimaTools.ViewModels
             get => _value;
             set
             {
-                if (SetProperty(ref _value, value))
+                if (_value != value)
                 {
+                    _value = value;
+                    OnPropertyChanged(nameof(Value));
                     _onValueChanged?.Invoke(value);
                     PipDisplayViewModel.SetAndGetValue(value);
                     _logger?.LogOperation("StatPipViewModel.ValueChanged", $"{Stat}={value}");
@@ -68,13 +67,7 @@ namespace ExanimaTools.ViewModels
             // Only set the value directly, do not trigger callback/logging
             PipDisplayViewModel.Value = value;
         }
-#if DEBUG
-        [RelayCommand]
-        private void TestRelayCommand()
-        {
-            // Minimal test command
-            System.Diagnostics.Debug.WriteLine("RelayCommand works");
-        }
-#endif
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

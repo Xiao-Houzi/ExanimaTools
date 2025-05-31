@@ -1,9 +1,9 @@
 using ExanimaTools.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 
 namespace ExanimaTools.ViewModels;
 
-public partial class CompanyMemberViewModel : ObservableObject
+public class CompanyMemberViewModel : INotifyPropertyChanged
 {
     public CompanyMember Model { get; }
 
@@ -22,26 +22,28 @@ public partial class CompanyMemberViewModel : ObservableObject
     public string Name
     {
         get => Model.Name;
-        set => Model.Name = value;
+        set { if (Model.Name != value) { Model.Name = value; OnPropertyChanged(nameof(Name)); } }
     }
     public Role Role
     {
         get => Model.Role;
-        set => Model.Role = value;
+        set { if (Model.Role != value) { Model.Role = value; OnPropertyChanged(nameof(Role)); } }
     }
     public Rank Rank
     {
         get => Model.Rank;
-        set => Model.Rank = value;
+        set { if (Model.Rank != value) { Model.Rank = value; OnPropertyChanged(nameof(Rank)); } }
     }
     public Sex Sex
     {
         get => Model.Sex;
-        set => Model.Sex = value;
+        set { if (Model.Sex != value) { Model.Sex = value; OnPropertyChanged(nameof(Sex)); } }
     }
     public MemberType Type
     {
         get => Model.Type;
-        set => Model.Type = value;
+        set { if (Model.Type != value) { Model.Type = value; OnPropertyChanged(nameof(Type)); } }
     }
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

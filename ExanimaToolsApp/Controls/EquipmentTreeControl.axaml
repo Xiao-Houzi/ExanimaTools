@@ -14,10 +14,10 @@
                     <StackPanel Orientation="Horizontal" Spacing="4">
                         <TextBlock Text="{Binding Name}" IsVisible="{Binding IsCategory}"/>
                         <TextBlock Text="{Binding Name}" IsVisible="{Binding IsLeaf}" Foreground="#AAA"/>
-                        <Button Content="{Binding ActionLabel}"
+                        <Button Content="{Binding DataContext.ActionLabel, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 IsVisible="{Binding IsLeaf}"
                                 Margin="8,0,0,0"
-                                Command="{Binding ActionCommand}"
+                                Command="{Binding DataContext.ActionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding EquipmentPiece}"/>
                     </StackPanel>
                 </TreeDataTemplate>

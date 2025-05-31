@@ -1,5 +1,7 @@
 # ExanimaTools Development Practices
 
+> **Note:** This file is the single source of truth for all coding, logging, and architectural best practices for the ExanimaTools project. All code files must refer to this file for best practices. Do not duplicate best practice notes in code files—always update and consult this file.
+
 ## Logging
 - Use the injected `ILoggingService` for all logging throughout the codebase.
 - Pass the logger via constructor injection to all view models and repositories.
@@ -43,7 +45,6 @@
 
 - All code must be written using modern async, event-driven, and MVVM patterns.
 - Provide helpful tools for Exanima players in a tabbed UI.
-- Remove all CommunityToolkit.Mvvm dependencies from TeamManagerViewModel and TeamMemberViewModel; use standard C# and Avalonia MVVM patterns instead.
 - Team members are persisted to SQLite, with schema initialization handled automatically.
 - Team member input validation is inline and always allows Save, with errors shown next to fields.
 - Add Team Member dialog is always accessible from the Team Manager tab.

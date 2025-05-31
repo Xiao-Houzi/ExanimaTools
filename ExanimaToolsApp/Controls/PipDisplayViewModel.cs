@@ -1,15 +1,13 @@
 using System;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using ExanimaTools.ViewModels;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace ExanimaTools.Controls
 {
     public enum PipState { Empty, Half, Full }
 
-    public partial class PipDisplayViewModel : ObservableObject
+    public class PipDisplayViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<PipState> Pips { get; } = new();
 
@@ -19,8 +17,11 @@ namespace ExanimaTools.Controls
             get => _value;
             set
             {
-                if (SetProperty(ref _value, Math.Clamp((float)Math.Round(value * 2) / 2, 0, 10)))
+                float clamped = Math.Clamp((float)Math.Round(value * 2) / 2, 0, 10);
+                if (_value != clamped)
                 {
+                    _value = clamped;
+                    OnPropertyChanged(nameof(Value));
                     UpdatePips();
                 }
             }
@@ -29,15 +30,15 @@ namespace ExanimaTools.Controls
         public int MaxPips { get; } = 10;
 
         private Action<float>? _onValueChanged;
-        public IRelayCommand IncrementCommand { get; }
-        public IRelayCommand DecrementCommand { get; }
+        public ICommand IncrementCommand { get; }
+        public ICommand DecrementCommand { get; }
 
         public PipDisplayViewModel(Action<float>? onValueChanged = null)
         {
             _onValueChanged = onValueChanged;
             Value = 0;
-            IncrementCommand = new RelayCommand(Increment);
-            DecrementCommand = new RelayCommand(Decrement);
+            IncrementCommand = new SimpleCommand(Increment);
+            DecrementCommand = new SimpleCommand(Decrement);
         }
 
         public void SetOnValueChanged(Action<float> callback)
@@ -89,6 +90,19 @@ namespace ExanimaTools.Controls
             }
             Value = newValue;
             _onValueChanged?.Invoke(Value);
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        // Simple ICommand implementation for sync commands
+        public class SimpleCommand : ICommand
+        {
+            private readonly Action _execute;
+            public SimpleCommand(Action execute) => _execute = execute;
+            public event EventHandler? CanExecuteChanged { add { } remove { } }
+            public bool CanExecute(object? parameter) => true;
+            public void Execute(object? parameter) => _execute();
         }
     }
 }

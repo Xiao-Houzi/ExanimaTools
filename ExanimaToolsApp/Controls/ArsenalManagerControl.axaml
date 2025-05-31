@@ -11,16 +11,30 @@
     <UserControl.Resources>
         <controls:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
         <controls:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
-        <local:EquipmentTypeToDrawingConverter x:Key="EquipmentTypeToDrawingConverter"/>
+        <local:EquipmentTypeAndCategoryToDrawingConverter x:Key="EquipmentTypeAndCategoryToDrawingConverter"/>
+        <local:GeometryToStringConverter x:Key="GeometryToStringConverter"/>
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto,*,Auto" ColumnDefinitions="*">
+        <!-- Add buttons for Arsenal (moved above form) -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Add Weapon" Command="{Binding ShowAddWeaponFormCommand}" Margin="0,0,8,0"/>
+            <Button Content="Add Armour" Command="{Binding ShowAddArmourFormCommand}" Margin="0,0,8,0"/>
+            <Button Content="Add Shield" Command="{Binding ShowAddShieldFormCommand}"/>
+        </StackPanel>
         <!-- Add/Edit Equipment Dialog -->
-        <Border Grid.Row="0" Background="#222" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
+        <Border Grid.Row="1" Background="#222" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
             <StackPanel>
                 <TextBlock Text="{Binding AddDialogTitle}" FontWeight="Bold" Margin="0,0,0,8" Foreground="White"/>
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <Border Width="128" Height="256" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#222" VerticalAlignment="Top" Margin="0,0,8,0">
-                        <ContentControl Content="{Binding NewEquipment.Type, Converter={StaticResource EquipmentTypeToDrawingConverter}}" />
+                        <Grid>
+                            <ContentControl DataContext="{Binding NewEquipment}">
+                                <Image Width="120" Height="120"
+                                       Source="{Binding ImagePath, Mode=OneWay}"
+                                       Stretch="Uniform"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </ContentControl>
+                        </Grid>
                     </Border>
                     <StackPanel Orientation="Vertical" Spacing="4">
                         <StackPanel Orientation="Horizontal" Spacing="8">
@@ -64,18 +78,65 @@
         </Border>
         <!-- Title -->
         <TextBlock Grid.Row="1" Text="Equipment Pool (Database)" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
-        <!-- Add buttons for Arsenal -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
-            <Button Content="Add Weapon" Command="{Binding ShowAddWeaponFormCommand}" Margin="0,0,8,0"/>
-            <Button Content="Add Armour" Command="{Binding ShowAddArmourFormCommand}"/>
+        <!-- Filters UI -->
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,0,0,8" Spacing="4">
+            <TextBlock Text="Filters:" FontWeight="SemiBold"/>
+            <ItemsControl ItemsSource="{Binding Filters}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                            <!-- Field selector -->
+                            <ComboBox Width="100" ItemsSource="{Binding DataContext.EquipmentFilterFields, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding FilterField, Mode=TwoWay}"/>
+                            <!-- Operator selector -->
+                            <ComboBox Width="90" ItemsSource="{Binding AvailableOperators}" SelectedItem="{Binding Operator, Mode=TwoWay}"/>
+                            <!-- Value selector: dynamic -->
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.ContentTemplate>
+                                    <DataTemplate DataType="viewmodels:EquipmentFilterViewModel">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <ContentControl>
+                                                <ContentControl.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox Width="100" ItemsSource="{Binding AvailableValues}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
+                                                    </DataTemplate>
+                                                </ContentControl.ContentTemplate>
+                                                <ContentControl.IsVisible>
+                                                    <MultiBinding Converter="{StaticResource NotNullToBoolConverter}">
+                                                        <Binding Path="AvailableValues"/>
+                                                    </MultiBinding>
+                                                </ContentControl.IsVisible>
+                                            </ContentControl>
+                                            <ContentControl>
+                                                <ContentControl.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                                            <ComboBox Width="90" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
+                                                            <TextBox Width="60" Text="{Binding StatValue, Mode=TwoWay}" Watermark="Value"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ContentControl.ContentTemplate>
+                                                <ContentControl.IsVisible>
+                                                    <Binding Path="FilterField" ConverterParameter="Stat" Converter="{StaticResource NotNullToBoolConverter}"/>
+                                                </ContentControl.IsVisible>
+                                            </ContentControl>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ContentControl.ContentTemplate>
+                            </ContentControl>
+                            <Button Content="✕" Command="{Binding RemoveCommand}" Background="#800" Foreground="White" Width="24" Height="24"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Add Filter" Command="{Binding AddFilterCommand}" Width="100"/>
         </StackPanel>
         <!-- Equipment Database TreeView -->
-        <controls:EquipmentTreeControl Grid.Row="3"
+        <controls:EquipmentTreeControl Grid.Row="4"
             DataContext="{Binding PoolTreeViewModel}" />
-        <!-- Arsenal Title -->
-        <TextBlock Grid.Row="4" Text="Your Arsenal" FontWeight="Bold" FontSize="16" Margin="0,8,0,8"/>
-        <!-- Arsenal TreeView -->
-        <controls:EquipmentTreeControl Grid.Row="5"
-            DataContext="{Binding ArsenalTreeViewModel}" />
+        <!-- Arsenal Title and TreeView in a vertical stack -->
+        <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,8,0,0">
+            <TextBlock Text="Your Arsenal" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+            <controls:EquipmentTreeControl DataContext="{Binding ArsenalTreeViewModel}" />
+        </StackPanel>
     </Grid>
 </UserControl>
