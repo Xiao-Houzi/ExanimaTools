@@ -32,7 +32,7 @@ public partial class App : Application
         {
             try
             {
-                var repo = new ExanimaTools.Persistence.EquipmentRepository($"Data Source={dbPath}");
+                var repo = new ExanimaTools.Persistence.EquipmentRepository($"Data Source={dbPath}", LoggingServiceInstance!);
                 var all = repo.GetAllAsync().GetAwaiter().GetResult();
                 if (all.Count == 0)
                     needsSeeding = true;

@@ -9,6 +9,8 @@ namespace ExanimaTools.Controls
 {
     public class StatToPipDisplayViewModelConverter : IValueConverter
     {
+        public static readonly StatToPipDisplayViewModelConverter Instance = new();
+
         public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             // Value is a StatPipViewModel

@@ -7,8 +7,9 @@
         x:Class="ExanimaTools.MainWindow"
         Title="ExanimaTools"
         SystemDecorations="None"
-        CanResize="False">
-    <Border CornerRadius="0">
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <Border CornerRadius="0" Background="{DynamicResource AppBackgroundBrush}">
         <DockPanel LastChildFill="True">
             <!-- Header Bar -->
             <controls:HeaderBar DockPanel.Dock="Top" Height="128"/>

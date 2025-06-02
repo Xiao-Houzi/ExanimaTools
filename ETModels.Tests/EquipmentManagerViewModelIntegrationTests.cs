@@ -27,7 +27,7 @@ namespace ETModels.Tests
         public async Task EditEquipment_UpdatesItemInDbAndCountUnchanged()
         {
             // Arrange
-            var repo = new EquipmentRepository(_connectionString);
+            var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
             var eq = new EquipmentPiece { Name = "TestSword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords", Rank = Rank.Novice, Points = 10, Weight = 0.5f };
             await repo.AddAsync(eq);
             var vm = new EquipmentManagerViewModel(null);

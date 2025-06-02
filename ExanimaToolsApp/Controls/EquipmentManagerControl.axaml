@@ -31,7 +31,7 @@
         </StackPanel>
         <!-- Add form -->
         <StackPanel Orientation="Vertical" Margin="0,0,0,8" Grid.Row="1" IsVisible="{Binding IsAddFormVisible}">
-            <Border BorderBrush="White" BorderThickness="2" CornerRadius="8" Background="#00FFFFFF" Padding="16" Margin="0,0,0,8">
+            <Border BorderBrush="White" BorderThickness="2" CornerRadius="8" Background="{DynamicResource AppBackgroundBrush}" Padding="16" Margin="0,0,0,8">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Add New Equipment" FontWeight="Bold"/>
                     <StackPanel Orientation="Horizontal" Spacing="16">

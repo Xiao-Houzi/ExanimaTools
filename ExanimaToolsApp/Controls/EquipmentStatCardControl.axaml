@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ExanimaTools.Controls"
+             xmlns:local="clr-namespace:ExanimaTools.Controls"
+             xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+             x:Class="ExanimaTools.Controls.EquipmentStatCardControl">
+    <UserControl.Resources>
+        <controls:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
+        <controls:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+    </UserControl.Resources>
+    <Border Margin="16,0,0,0" Padding="16" Background="{DynamicResource AppBackgroundBrush}" CornerRadius="8"
+            IsVisible="{Binding EquipmentPiece, Converter={StaticResource NotNullToBoolConverter}}">
+        <StackPanel>
+            <DockPanel LastChildFill="False">
+                <Button Content="Edit" Width="80" Margin="0,0,0,8"
+                        Command="{Binding EditEquipmentFromTreeCommand}"
+                        CommandParameter="{Binding EquipmentPiece}"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" DockPanel.Dock="Right"/>
+            </DockPanel>
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <Image Width="96" Height="96" Stretch="Uniform"
+                        Source="{Binding EquipmentPiece.ImagePath}"/>
+                <StackPanel>
+                    <!-- Name, type, category, subcategory, description -->
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding EquipmentPiece.Name}" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Type}"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Category}" FontStyle="Italic"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Subcategory}"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Description}" TextWrapping="Wrap" MaxWidth="300"/>
+                    </StackPanel>
+                    <!-- Info fields stacked label above value -->
+                    <StackPanel Orientation="Horizontal" Spacing="24" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Quality:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Quality}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Condition:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Condition}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Rank:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Rank}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Points:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Points}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Slot:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Slot}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Layer:" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EquipmentPiece.Layer}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Weight below info fields, above stats -->
+                    <StackPanel Orientation="Vertical" Margin="0,12,0,0">
+                        <TextBlock Text="Weight:" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Weight}"/>
+                    </StackPanel>
+                    <!-- Stats with pips: only pip stats, use 10-pip block as in add form -->
+                    <TextBlock Text="Stats:" FontWeight="SemiBold" Margin="0,16,0,4"/>
+                    <ItemsControl ItemsSource="{Binding PipStats}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding ShortStatLabel}" FontWeight="SemiBold" Width="110"/>
+                                    <controls:PipDisplayControl DataContext="{Binding PipDisplayViewModel}"/>
+                                    <TextBlock Text="{Binding Value}" Margin="8,0,0,0" Foreground="#BBB" FontWeight="Normal"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="No pip-based stats for this item." Foreground="#888" FontStyle="Italic" Margin="0,4,0,0"
+                               IsVisible="{Binding PipStats.Count, Converter={StaticResource BoolToOpacityConverter}, ConverterParameter=0}"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

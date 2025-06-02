@@ -38,7 +38,7 @@ public class EquipmentRepositoryTests
     [TestMethod]
     public async Task AddAndGetAllAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString);
+        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
         var eq = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords" };
         await repo.AddAsync(eq);
         List<EquipmentPiece> all = await repo.GetAllAsync();
@@ -57,7 +57,7 @@ public class EquipmentRepositoryTests
     [TestMethod]
     public async Task UpdateAndDeleteAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString);
+        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
         var eq = new EquipmentPiece { Name = "Axe", Type = EquipmentType.Weapon, Description = "Heavy", Category = "Weapon", Subcategory = "Axes" };
         await repo.AddAsync(eq);
         // Update
@@ -79,7 +79,7 @@ public class EquipmentRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString);
+        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
         var eq = new EquipmentPiece { Name = "Mace", Type = EquipmentType.Weapon, Description = "Blunt", Category = "Weapon", Subcategory = "Bludgeons" };
         await repo.AddAsync(eq);
         var found = await repo.GetByIdAsync(eq.Id);

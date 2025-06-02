@@ -1,0 +1,3457 @@
+[
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 4.5,
+      "Slash": 2.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.0,
+      "Slash": 2.5,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.5,
+      "Slash": 3.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Slash": 2.5,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Slash": 3.5,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 2.0,
+      "Slash": 2.0,
+      "Pierce": 1.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 2.5,
+      "Slash": 2.5,
+      "Pierce": 1.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Pierce": 1.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Slash": 2.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 4.0,
+      "Slash": 3.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 4.5,
+      "Slash": 3.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.5,
+      "Balance": 3.5,
+      "Slash": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.0,
+      "Balance": 4.0,
+      "Slash": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.5,
+      "Balance": 2.5,
+      "Slash": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 3.0,
+      "Slash": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.5,
+      "Slash": 4.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Crush": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Crush": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Crush": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 2.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.5,
+      "Balance": 2.5,
+      "Crush": 2.5,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.0,
+      "Balance": 3.0,
+      "Crush": 3.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Slash": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Slash": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Slash": 2.0,
+      "Thrust": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.5,
+      "Slash": 3.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 3.0,
+      "Slash": 3.5,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 4.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Slash": 4.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 1.5,
+      "Crush": 3.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 4.0,
+      "Balance": 1.5,
+      "Crush": 4.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 4.5,
+      "Balance": 1.5,
+      "Crush": 4.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 3.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 4.0,
+      "Balance": 1.0,
+      "Crush": 4.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 4.5,
+      "Balance": 1.0,
+      "Crush": 4.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.5,
+      "Impact": 5.0,
+      "Balance": 1.0,
+      "Crush": 5.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 1.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 1.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 4.0,
+      "Pierce": 1.5,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 4.5,
+      "Slash": 2.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.0,
+      "Slash": 2.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.5,
+      "Slash": 3.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Slash": 3.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 4.0,
+      "Slash": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 4.5,
+      "Slash": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 3.0,
+      "Slash": 3.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.5,
+      "Slash": 4.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 4.0,
+      "Slash": 4.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 2.5,
+      "Slash": 3.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 3.0,
+      "Slash": 3.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 2.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.5,
+      "Slash": 2.5,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 1.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 1.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 4.0,
+      "Pierce": 1.5,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Thrust": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 4.5,
+      "Slash": 2.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.0,
+      "Slash": 2.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 5.5,
+      "Slash": 3.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Slash": 3.0,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 4.0,
+      "Slash": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 2.0,
+      "Balance": 4.5,
+      "Slash": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 3.0,
+      "Slash": 3.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.5,
+      "Slash": 4.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 4.0,
+      "Slash": 4.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 2.5,
+      "Slash": 3.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 3.0,
+      "Slash": 3.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 2.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.5,
+      "Slash": 2.5,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 1.5,
+      "Slash": 2.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 2.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.5,
+      "Slash": 2.5,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.0,
+      "Slash": 3.0,
+      "Crush": 2.0,
+      "Pierce": 1.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 1.5,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.5,
+      "Pierce": 0.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 4.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 2.5,
+      "Balance": 2.0,
+      "Slash": 3.0,
+      "Pierce": 1.5,
+      "Thrust": 2.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 3.5,
+      "Pierce": 1.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 3,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 3.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Slash": 4.0,
+      "Pierce": 1.5,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 1.0,
+      "Balance": 1.0,
+      "Slash": 1.0,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 2.5,
+      "Pierce": 2.0,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.0,
+      "Pierce": 2.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 2,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.0,
+      "Impact": 2.0,
+      "Balance": 3.5,
+      "Pierce": 2.0,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 3.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 3.5,
+      "Slash": 4.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 4.0,
+      "Slash": 4.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Slash": 2.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 3.5,
+      "Balance": 2.5,
+      "Slash": 3.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 1.5,
+      "Impact": 4.0,
+      "Balance": 3.0,
+      "Slash": 3.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.0,
+      "Balance": 2.0,
+      "Crush": 3.5,
+      "Thrust": 2.5
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 3.5,
+      "Balance": 2.0,
+      "Crush": 4.0,
+      "Thrust": 3.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 4,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 2.0,
+      "Impact": 4.0,
+      "Balance": 2.0,
+      "Crush": 4.5,
+      "Thrust": 3.5
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 1,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Crude)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Crude",
+    "Condition": "Worn",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Decent)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "None (Well Made)",
+    "Type": null,
+    "MinRank": 0,
+    "Quality": "Well Made",
+    "Condition": "Good",
+    "Description": "",
+    "Stats": {
+      "Weight": 0.5,
+      "Impact": 0.5,
+      "Balance": 0.5,
+      "Slash": 0.5,
+      "Crush": 1.0,
+      "Pierce": 0.0
+    }
+  },
+  {
+    "Name": "Aspirant Cap",
+    "Type": "Armour",
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "Better padded cap.",
+    "Stats": {
+      "SlashProtection": 0.5,
+      "CrushProtection": 0.5,
+      "PierceProtection": 0.5,
+      "ImpactResistance": 0.5,
+      "Encumbrance": 0.5,
+      "Points": 2,
+      "Weight": 0.5
+    }
+  },
+  {
+    "Name": "Aspirant Trousers",
+    "Type": "Armour",
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "Reinforced trousers.",
+    "Stats": {
+      "SlashProtection": 0.5,
+      "CrushProtection": 0.5,
+      "PierceProtection": 0.5,
+      "ImpactResistance": 0.5,
+      "Encumbrance": 0.5,
+      "Points": 2,
+      "Weight": 0.5
+    }
+  },
+  {
+    "Name": "Aspirant Boots",
+    "Type": "Armour",
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "Sturdier boots.",
+    "Stats": {
+      "SlashProtection": 0.5,
+      "CrushProtection": 0.5,
+      "PierceProtection": 0.5,
+      "ImpactResistance": 0.5,
+      "Encumbrance": 0.5,
+      "Points": 2,
+      "Weight": 0.5
+    }
+  },
+  {
+    "Name": "Aspirant Gloves",
+    "Type": "Armour",
+    "MinRank": 2,
+    "Quality": "Decent",
+    "Condition": "Fair",
+    "Description": "Reinforced gloves.",
+    "Stats": {
+      "SlashProtection": 0.5,
+      "CrushProtection": 0.5,
+      "PierceProtection": 0.5,
+      "ImpactResistance": 0.5,
+      "Encumbrance": 0.5,
+      "Points": 1,
+      "Weight": 0.5
+    }
+  }
+]

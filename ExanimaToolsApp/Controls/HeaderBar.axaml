@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="ExanimaTools.Controls.HeaderBar"
              Height="128">
-    <Border Background="#333" CornerRadius="0,0,12,12" Padding="24,16,24,16">
+    <Border Background="{DynamicResource AppBackgroundBrush}" CornerRadius="0,0,12,12" Padding="24,16,24,16">
         <DockPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <!-- Logo Placeholder -->
             <Ellipse Width="48" Height="48" Fill="#555" DockPanel.Dock="Left"/>

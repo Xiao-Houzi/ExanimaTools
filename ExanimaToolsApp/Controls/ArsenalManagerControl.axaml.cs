@@ -16,7 +16,7 @@ namespace ExanimaTools.Controls
             if (DataContext == null)
             {
                 var dbPath = DbManager.GetDbPath();
-                var equipmentRepo = new EquipmentRepository($"Data Source={dbPath}");
+                var equipmentRepo = new EquipmentRepository($"Data Source={dbPath}", logger);
                 var arsenalRepo = new ArsenalRepository($"Data Source={dbPath}");
                 DataContext = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, logger);
             }

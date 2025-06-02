@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using ExanimaToolsApp;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 public static class SeedEquipment
 {
@@ -12,60 +14,92 @@ public static class SeedEquipment
     {
         dbPath ??= DbManager.GetDbPath();
         logger?.LogOperation("SeedEquipment", $"Seeding equipment to DB: {dbPath}");
-        var repo = new EquipmentRepository($"Data Source={dbPath}");
+        var repo = new EquipmentRepository($"Data Source={dbPath}", logger ?? new FileLoggingService("logs"));
         try
         {
-            logger?.LogOperation("SeedEquipment", "Starting weapon seeding");
-            var weapons = new List<EquipmentPiece>
+            // Load equipment from JSON file
+            var jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "project-management", "equipment_seed.json");
+            if (!File.Exists(jsonPath))
             {
-                new EquipmentPiece { Name = "Rustedlongsword", Type = EquipmentType.Weapon, Category = "Sword", Subcategory = "Longsword", Rank = Rank.Inept, Points = 0, Weight = 0.2f, Description = "" },
-                new EquipmentPiece { Name = "battered longsword", Type = EquipmentType.Weapon, Category = "Sword", Subcategory = "Longsword", Rank = Rank.Inept, Points = 0, Weight = 0f, Description = "" },
-                new EquipmentPiece { Name = "worn hatchet", Type = EquipmentType.Weapon, Category = "Axe", Subcategory = "Handaxe", Rank = Rank.Inept, Points = 0, Weight = 0f, Description = "" },
-                new EquipmentPiece { Name = "Rusty Sword", Type = EquipmentType.Weapon, Category = "Sword", Subcategory = "Arming Sword", Rank = Rank.Inept, Points = 5, Weight = 0.8f, Description = "A dull, rusty sword." },
-                new EquipmentPiece { Name = "Old Axe", Type = EquipmentType.Weapon, Category = "Axe", Subcategory = "Battleaxe", Rank = Rank.Inept, Points = 6, Weight = 1.0f, Description = "A heavy, old axe." },
-                new EquipmentPiece { Name = "Wooden Club", Type = EquipmentType.Weapon, Category = "Bludgeon", Subcategory = "Club", Rank = Rank.Inept, Points = 4, Weight = 0.7f, Description = "A simple wooden club." },
-                new EquipmentPiece { Name = "Iron Dagger", Type = EquipmentType.Weapon, Category = "Dagger", Subcategory = "Stiletto", Rank = Rank.Inept, Points = 3, Weight = 0.3f, Description = "A short iron dagger." },
-                new EquipmentPiece { Name = "Training Spear", Type = EquipmentType.Weapon, Category = "Polearm", Subcategory = "Spear", Rank = Rank.Inept, Points = 5, Weight = 1.2f, Description = "A blunt training spear." },
-            };
-            logger?.LogOperation("SeedEquipment", $"Weapons to seed: {weapons.Count}");
-            var armours = new List<EquipmentPiece>
+                logger?.LogError($"SeedEquipment: equipment_seed.json not found at {jsonPath}");
+                return;
+            }
+            var json = await File.ReadAllTextAsync(jsonPath);
+            var items = JsonSerializer.Deserialize<List<JsonEquipmentSeed>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (items == null)
             {
-                new EquipmentPiece { Name = "Old Leather Tunic", Type = EquipmentType.Armour, Category = "Body", Subcategory = "Shirt", Rank = Rank.Inept, Points = 2, Weight = 0.5f, Description = "Worn leather tunic." },
-                new EquipmentPiece { Name = "Padded Cap", Type = EquipmentType.Armour, Category = "Head", Subcategory = "Padded Cap", Rank = Rank.Inept, Points = 1, Weight = 0.2f, Description = "Simple padded cap." },
-                new EquipmentPiece { Name = "Ragged Trousers", Type = EquipmentType.Armour, Category = "Legs", Subcategory = "Trousers", Rank = Rank.Inept, Points = 1, Weight = 0.3f, Description = "Torn cloth trousers." },
-                new EquipmentPiece { Name = "Worn Boots", Type = EquipmentType.Armour, Category = "Feet", Subcategory = "Boots", Rank = Rank.Inept, Points = 1, Weight = 0.4f, Description = "Old leather boots." },
-                new EquipmentPiece { Name = "Cloth Gloves", Type = EquipmentType.Armour, Category = "Hands", Subcategory = "Gloves", Rank = Rank.Inept, Points = 1, Weight = 0.1f, Description = "Basic cloth gloves." },
-            };
-            logger?.LogOperation("SeedEquipment", $"Armours to seed: {armours.Count}");
-            var aspirantWeapons = new List<EquipmentPiece>
+                logger?.LogError("SeedEquipment: Failed to parse equipment_seed.json");
+                return;
+            }
+            logger?.LogOperation("SeedEquipment", $"Loaded {items.Count} equipment items from JSON");
+            await repo.DeleteAllAsync();
+            foreach (var item in items)
             {
-                new EquipmentPiece { Name = "Aspirant Sword", Type = EquipmentType.Weapon, Category = "Sword", Subcategory = "Arming Sword", Rank = Rank.Aspirant, Points = 8, Weight = 0.9f, Description = "A sharper sword for aspirants." },
-                new EquipmentPiece { Name = "Aspirant Axe", Type = EquipmentType.Weapon, Category = "Axe", Subcategory = "Battleaxe", Rank = Rank.Aspirant, Points = 9, Weight = 1.1f, Description = "A better axe for aspirants." },
-                new EquipmentPiece { Name = "Aspirant Club", Type = EquipmentType.Weapon, Category = "Bludgeon", Subcategory = "Club", Rank = Rank.Aspirant, Points = 7, Weight = 0.8f, Description = "A heavier club for aspirants." },
-                new EquipmentPiece { Name = "Aspirant Dagger", Type = EquipmentType.Weapon, Category = "Dagger", Subcategory = "Stiletto", Rank = Rank.Aspirant, Points = 6, Weight = 0.4f, Description = "A sharper dagger for aspirants." },
-                new EquipmentPiece { Name = "Aspirant Spear", Type = EquipmentType.Weapon, Category = "Polearm", Subcategory = "Spear", Rank = Rank.Aspirant, Points = 8, Weight = 1.3f, Description = "A pointed spear for aspirants." },
-            };
-            logger?.LogOperation("SeedEquipment", $"Aspirant weapons to seed: {aspirantWeapons.Count}");
-            var aspirantArmours = new List<EquipmentPiece>
-            {
-                new EquipmentPiece { Name = "Aspirant Leather Vest", Type = EquipmentType.Armour, Category = "Body", Subcategory = "Shirt", Rank = Rank.Aspirant, Points = 4, Weight = 0.6f, Description = "Sturdier leather vest." },
-                new EquipmentPiece { Name = "Aspirant Cap", Type = EquipmentType.Armour, Category = "Head", Subcategory = "Padded Cap", Rank = Rank.Aspirant, Points = 2, Weight = 0.25f, Description = "Better padded cap." },
-                new EquipmentPiece { Name = "Aspirant Trousers", Type = EquipmentType.Armour, Category = "Legs", Subcategory = "Trousers", Rank = Rank.Aspirant, Points = 2, Weight = 0.35f, Description = "Reinforced trousers." },
-                new EquipmentPiece { Name = "Aspirant Boots", Type = EquipmentType.Armour, Category = "Feet", Subcategory = "Boots", Rank = Rank.Aspirant, Points = 2, Weight = 0.45f, Description = "Sturdier boots." },
-                new EquipmentPiece { Name = "Aspirant Gloves", Type = EquipmentType.Armour, Category = "Hands", Subcategory = "Gloves", Rank = Rank.Aspirant, Points = 2, Weight = 0.15f, Description = "Reinforced gloves." },
-            };
-            logger?.LogOperation("SeedEquipment", $"Aspirant armours to seed: {aspirantArmours.Count}");
-            foreach (var eq in weapons) { logger?.LogOperation("SeedEquipment", $"Adding: {eq.Name}"); await repo.AddAsync(eq); }
-            foreach (var eq in armours) { logger?.LogOperation("SeedEquipment", $"Adding: {eq.Name}"); await repo.AddAsync(eq); }
-            foreach (var eq in aspirantWeapons) { logger?.LogOperation("SeedEquipment", $"Adding: {eq.Name}"); await repo.AddAsync(eq); }
-            foreach (var eq in aspirantArmours) { logger?.LogOperation("SeedEquipment", $"Adding: {eq.Name}"); await repo.AddAsync(eq); }
+                var eq = item.ToEquipmentPiece();
+                logger?.LogOperation("SeedEquipment", $"Adding: {eq.Name}");
+                await repo.AddAsync(eq);
+            }
             logger?.LogOperation("SeedEquipment", "Seeding complete");
+            var all = await repo.GetAllAsync();
+            logger?.LogOperation("SeedEquipment", $"Row count after seeding: {all.Count}");
+            System.IO.File.AppendAllText("repo_debug.log", $"[DEBUG][SeedEquipment] Row count after seeding: {all.Count}\n");
         }
         catch (Exception ex)
         {
             logger?.LogError($"[SeedEquipment] Error: {ex.Message}", ex);
             System.Diagnostics.Debug.WriteLine($"[SeedEquipment] Error: {ex.Message}\n{ex.StackTrace}");
             File.AppendAllText("seed_error.log", $"[{DateTime.Now}] {ex.Message}\n{ex.StackTrace}\n");
+        }
+    }
+
+    // Helper class for JSON mapping
+    private class JsonEquipmentSeed
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public int MinRank { get; set; }
+        public string? Quality { get; set; }
+        public string? Condition { get; set; }
+        public Dictionary<string, float> Stats { get; set; } = new();
+        public EquipmentPiece ToEquipmentPiece()
+        {
+            var eq = new EquipmentPiece(null!)
+            {
+                Name = Name,
+                Type = ParseType(Type),
+                Rank = (Rank)MinRank,
+                Quality = ParseQuality(Quality),
+                Condition = ParseCondition(Condition),
+                Stats = new Dictionary<StatType, float>(),
+                // Optionally map Category/Subcategory/Description if present in JSON
+            };
+            foreach (var kv in Stats)
+            {
+                if (Enum.TryParse<StatType>(kv.Key, true, out var statType))
+                    eq.Stats[statType] = kv.Value;
+            }
+            return eq;
+        }
+        private EquipmentQuality ParseQuality(string? quality)
+        {
+            if (!string.IsNullOrWhiteSpace(quality) && Enum.TryParse<EquipmentQuality>(quality.Replace(" ", ""), true, out var result))
+                return result;
+            return EquipmentQuality.Common;
+        }
+        private EquipmentCondition ParseCondition(string? condition)
+        {
+            if (!string.IsNullOrWhiteSpace(condition) && Enum.TryParse<EquipmentCondition>(condition.Replace(" ", ""), true, out var result))
+                return result;
+            return EquipmentCondition.Good;
+        }
+        private EquipmentType ParseType(string type)
+        {
+            if (type.Contains("Weapon", StringComparison.OrdinalIgnoreCase)) return EquipmentType.Weapon;
+            if (type.Contains("Armour", StringComparison.OrdinalIgnoreCase) || type.Contains("Armor", StringComparison.OrdinalIgnoreCase)) return EquipmentType.Armour;
+            if (type.Contains("Shield", StringComparison.OrdinalIgnoreCase)) return EquipmentType.Shield;
+            // Fallback: try to parse
+            if (Enum.TryParse<EquipmentType>(type, true, out var result)) return result;
+            return EquipmentType.Weapon;
         }
     }
 }

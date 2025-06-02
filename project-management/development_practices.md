@@ -19,6 +19,14 @@
 ## Async/Await
 - Use async methods for all I/O and database operations.
 
+## Database Environment Awareness
+- **Always use the correct database file for the current build configuration.**
+    - In DEBUG mode, the database file is `exanima_tools_dev.db`.
+    - In RELEASE/production mode, the database file is `exanima_tools.db`.
+    - Use `DbManager.GetDbPath()` to obtain the correct path in all code and tools.
+- When running tools or scripts (such as database dumps or seeds), always confirm you are targeting the correct database file for your environment.
+- Document any environment-specific data or schema differences here.
+
 ## Unit Testing
 - Use MSTest for all unit and UI logic tests.
 - Ensure all public methods are testable and covered by tests.

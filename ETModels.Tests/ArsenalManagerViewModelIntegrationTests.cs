@@ -27,7 +27,7 @@ namespace ETModels.Tests
         public async Task AddAndRemoveEquipment_UpdatesUIAndDb()
         {
             // Arrange
-            var equipmentRepo = new EquipmentRepository(_connectionString);
+            var equipmentRepo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
             var arsenalRepo = new ArsenalRepository(_connectionString);
             var eq = new EquipmentPiece { Name = "Test Dagger", Type = EquipmentType.Weapon };
             await equipmentRepo.AddAsync(eq);
@@ -55,7 +55,7 @@ namespace ETModels.Tests
         public async Task EquipmentFiltering_Works_ForAllFilterTypesAndCombinations()
         {
             // Arrange: Seed DB with diverse equipment
-            var equipmentRepo = new EquipmentRepository(_connectionString);
+            var equipmentRepo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
             var arsenalRepo = new ArsenalRepository(_connectionString);
             var items = new[]
             {

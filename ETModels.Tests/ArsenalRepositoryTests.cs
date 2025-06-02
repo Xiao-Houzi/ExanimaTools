@@ -22,7 +22,7 @@ namespace ETModels.Tests
         {
             TestDb = $"TestArsenal_{System.Threading.Interlocked.Increment(ref _testCounter)}.db";
             if (File.Exists(TestDb)) File.Delete(TestDb);
-            equipmentRepo = new EquipmentRepository(ConnStr);
+            equipmentRepo = new EquipmentRepository(ConnStr, new FileLoggingService("logs"));
             arsenalRepo = new ArsenalRepository(ConnStr);
             // Seed some equipment with unique names
             await equipmentRepo.AddAsync(new EquipmentPiece { Name = $"SwordA_{_testCounter}", Type = EquipmentType.Weapon });

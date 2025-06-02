@@ -27,7 +27,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Border Background="#222" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
+        <Border Background="{DynamicResource AppBackgroundBrush}" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
             <StackPanel>
                 <TextBlock Text="{Binding AddDialogTitle}" FontWeight="Bold" Margin="0,0,0,8" Foreground="White"/>
                 <TextBox Watermark="Name" Text="{Binding NewCompanyMember.Name, Mode=TwoWay}" Background="#111" Foreground="White"/>

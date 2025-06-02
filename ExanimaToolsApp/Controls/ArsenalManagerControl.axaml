@@ -7,134 +7,84 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="ExanimaTools.Controls.ArsenalManagerControl"
-             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400">
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700">
     <UserControl.Resources>
         <controls:NotNullToBoolConverter x:Key="NotNullToBoolConverter"/>
         <controls:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
         <local:EquipmentTypeAndCategoryToDrawingConverter x:Key="EquipmentTypeAndCategoryToDrawingConverter"/>
         <local:GeometryToStringConverter x:Key="GeometryToStringConverter"/>
+        <local:FilterFieldEqualsConverter x:Key="FilterFieldEqualsConverter"/>
+        <local:StatToPipDisplayViewModelConverter x:Key="StatToPipDisplayViewModelConverter"/>
     </UserControl.Resources>
-    <Grid RowDefinitions="Auto,Auto,*,Auto,*,Auto" ColumnDefinitions="*">
-        <!-- Add buttons for Arsenal (moved above form) -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-            <Button Content="Add Weapon" Command="{Binding ShowAddWeaponFormCommand}" Margin="0,0,8,0"/>
-            <Button Content="Add Armour" Command="{Binding ShowAddArmourFormCommand}" Margin="0,0,8,0"/>
-            <Button Content="Add Shield" Command="{Binding ShowAddShieldFormCommand}"/>
-        </StackPanel>
-        <!-- Add/Edit Equipment Dialog -->
-        <Border Grid.Row="1" Background="#222" Padding="16" CornerRadius="8" IsVisible="{Binding IsAddDialogOpen}">
-            <StackPanel>
-                <TextBlock Text="{Binding AddDialogTitle}" FontWeight="Bold" Margin="0,0,0,8" Foreground="White"/>
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Border Width="128" Height="256" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#222" VerticalAlignment="Top" Margin="0,0,8,0">
-                        <Grid>
-                            <ContentControl DataContext="{Binding NewEquipment}">
-                                <Image Width="120" Height="120"
-                                       Source="{Binding ImagePath, Mode=OneWay}"
-                                       Stretch="Uniform"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </ContentControl>
-                        </Grid>
-                    </Border>
-                    <StackPanel Orientation="Vertical" Spacing="4">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <TextBox Width="120" Watermark="Name" Text="{Binding NewEquipment.Name, Mode=TwoWay}"/>
-                            <ComboBox Width="120" ItemsSource="{Binding CategoryOptions}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"/>
-                            <ComboBox Width="120" ItemsSource="{Binding SubcategoryOptions}" SelectedItem="{Binding SelectedSubcategory, Mode=TwoWay}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                            <ComboBox Width="100" ItemsSource="{Binding EquipmentQualities}" SelectedItem="{Binding NewEquipment.Quality, Mode=TwoWay}"/>
-                            <ComboBox Width="100" ItemsSource="{Binding EquipmentConditions}" SelectedItem="{Binding NewEquipment.Condition, Mode=TwoWay}"/>
-                            <ComboBox Width="100" ItemsSource="{Binding AllRanks}" SelectedItem="{Binding NewEquipment.Rank, Mode=TwoWay}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                            <TextBlock Text="Weight:" VerticalAlignment="Center"/>
-                            <Slider Width="100" Minimum="0" Maximum="1" Value="{Binding NewEquipment.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </StackPanel>
-                        <!-- Stat pips -->
-                        <ItemsControl ItemsSource="{Binding NewEquipmentStatPips}" Margin="0,8,0,0">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding ShortStatLabel}" FontWeight="SemiBold" Width="110"/>
-                                        <controls:PipDisplayControl DataContext="{Binding PipDisplayViewModel}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
-                            <ComboBox Width="140" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
-                            <Button Content="Add Stat" Command="{Binding AddStatCommand}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                            <Button Content="Save" Command="{Binding SaveNewEquipmentCommand}"/>
-                            <Button Content="Cancel" Command="{Binding CloseAddDialogCommand}"/>
-                            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="8,0,0,0"/>
-                            <TextBlock Text="{Binding ConfirmationMessage}" Foreground="Green" Margin="8,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
+    <Grid RowDefinitions="Auto,*">
+        <!-- Top area: Pool tree/stat card side by side, no extra columns -->
+        <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="8">
+            <!-- Add buttons for Arsenal (moved above form) -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <Button Content="Add Weapon" Command="{Binding ShowAddWeaponFormCommand}" Margin="0,0,8,0"/>
+                <Button Content="Add Armour" Command="{Binding ShowAddArmourFormCommand}" Margin="0,0,8,0"/>
+                <Button Content="Add Shield" Command="{Binding ShowAddShieldFormCommand}"/>
             </StackPanel>
-        </Border>
-        <!-- Title -->
-        <TextBlock Grid.Row="1" Text="Equipment Pool (Database)" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
-        <!-- Filters UI -->
-        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,0,0,8" Spacing="4">
-            <TextBlock Text="Filters:" FontWeight="SemiBold"/>
-            <ItemsControl ItemsSource="{Binding Filters}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                            <!-- Field selector -->
-                            <ComboBox Width="100" ItemsSource="{Binding DataContext.EquipmentFilterFields, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding FilterField, Mode=TwoWay}"/>
-                            <!-- Operator selector -->
-                            <ComboBox Width="90" ItemsSource="{Binding AvailableOperators}" SelectedItem="{Binding Operator, Mode=TwoWay}"/>
-                            <!-- Value selector: dynamic -->
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.ContentTemplate>
-                                    <DataTemplate DataType="viewmodels:EquipmentFilterViewModel">
-                                        <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <ContentControl>
-                                                <ContentControl.ContentTemplate>
-                                                    <DataTemplate>
-                                                        <ComboBox Width="100" ItemsSource="{Binding AvailableValues}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
-                                                    </DataTemplate>
-                                                </ContentControl.ContentTemplate>
-                                                <ContentControl.IsVisible>
-                                                    <MultiBinding Converter="{StaticResource NotNullToBoolConverter}">
-                                                        <Binding Path="AvailableValues"/>
-                                                    </MultiBinding>
-                                                </ContentControl.IsVisible>
-                                            </ContentControl>
-                                            <ContentControl>
-                                                <ContentControl.ContentTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Spacing="4">
-                                                            <ComboBox Width="90" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
-                                                            <TextBox Width="60" Text="{Binding StatValue, Mode=TwoWay}" Watermark="Value"/>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ContentControl.ContentTemplate>
-                                                <ContentControl.IsVisible>
-                                                    <Binding Path="FilterField" ConverterParameter="Stat" Converter="{StaticResource NotNullToBoolConverter}"/>
-                                                </ContentControl.IsVisible>
-                                            </ContentControl>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ContentControl.ContentTemplate>
-                            </ContentControl>
-                            <Button Content="✕" Command="{Binding RemoveCommand}" Background="#800" Foreground="White" Width="24" Height="24"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Content="Add Filter" Command="{Binding AddFilterCommand}" Width="100"/>
+            <!-- Add/Edit Equipment Dialog -->
+            <controls:EquipmentEditorControl DataContext="{Binding}" />
+            <!-- Title -->
+            <TextBlock Text="Equipment Pool (Database)" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+            <!-- Filters UI -->
+            <StackPanel Orientation="Vertical" Margin="0,0,0,8" Spacing="4">
+                <TextBlock Text="Filters:" FontWeight="SemiBold"/>
+                <ItemsControl ItemsSource="{Binding Filters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                                <!-- Field selector -->
+                                <ComboBox Width="100" ItemsSource="{Binding DataContext.EquipmentFilterFields, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding FilterField, Mode=TwoWay}"/>
+                                <!-- Operator selector -->
+                                <ComboBox Width="90" ItemsSource="{Binding AvailableOperators}" SelectedItem="{Binding Operator, Mode=TwoWay}"/>
+                                <!-- Value selector: dynamic -->
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.ContentTemplate>
+                                        <DataTemplate DataType="viewmodels:EquipmentFilterViewModel">
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <!-- Category value dropdown -->
+                                                <StackPanel Orientation="Vertical" IsVisible="{Binding FilterField, Converter={StaticResource FilterFieldEqualsConverter}, ConverterParameter=Category}">
+                                                    <ComboBox Width="100" ItemsSource="{Binding AvailableValues}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
+                                                </StackPanel>
+                                                <!-- Condition value dropdown -->
+                                                <StackPanel Orientation="Vertical" IsVisible="{Binding FilterField, Converter={StaticResource FilterFieldEqualsConverter}, ConverterParameter=Condition}">
+                                                    <ComboBox Width="100" ItemsSource="{Binding AvailableValues}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
+                                                </StackPanel>
+                                                <!-- Rank value dropdown -->
+                                                <StackPanel Orientation="Vertical" IsVisible="{Binding FilterField, Converter={StaticResource FilterFieldEqualsConverter}, ConverterParameter=Rank}">
+                                                    <ComboBox Width="100" ItemsSource="{Binding AvailableValues}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
+                                                </StackPanel>
+                                                <!-- Stat controls -->
+                                                <StackPanel Orientation="Horizontal" IsVisible="{Binding FilterField, Converter={StaticResource FilterFieldEqualsConverter}, ConverterParameter=Stat}">
+                                                    <ComboBox Width="90" ItemsSource="{Binding AvailableStatTypes}" SelectedItem="{Binding SelectedStatType, Mode=TwoWay}"/>
+                                                    <TextBox Width="60" Text="{Binding StatValue, Mode=TwoWay}" Watermark="Value"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ContentControl.ContentTemplate>
+                                </ContentControl>
+                                <Button Content="✕" Command="{Binding RemoveCommand}" Background="#800" Foreground="White" Width="24" Height="24"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="Add Filter" Command="{Binding AddFilterCommand}" Width="100"/>
+            </StackPanel>
+            <!-- Equipment Database TreeView and Stat Card Side-by-Side -->
+
+            <Grid ColumnDefinitions="*, Auto" >
+                <!-- TreeView -->
+                <controls:EquipmentTreeControl DataContext="{Binding PoolTreeViewModel}" Grid.Column="0"/>
+                <!-- Stat Card -->
+                <controls:EquipmentStatCardControl Grid.Column="1" DataContext="{Binding StatCardViewModel}" />
+            </Grid>
+
         </StackPanel>
-        <!-- Equipment Database TreeView -->
-        <controls:EquipmentTreeControl Grid.Row="4"
-            DataContext="{Binding PoolTreeViewModel}" />
-        <!-- Arsenal Title and TreeView in a vertical stack -->
-        <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,8,0,0">
+        <!-- Bottom area: Arsenal tree full width -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,16,0,0">
             <TextBlock Text="Your Arsenal" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
             <controls:EquipmentTreeControl DataContext="{Binding ArsenalTreeViewModel}" />
         </StackPanel>

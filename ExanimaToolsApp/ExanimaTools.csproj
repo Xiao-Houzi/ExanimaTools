@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Include="Themes\AppTheme.axaml" />
     <AvaloniaResource Include="Assets\*.png" />
   </ItemGroup>
-
 </Project>

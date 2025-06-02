@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
@@ -32,6 +33,9 @@ namespace ExanimaTools.ViewModels
         {
             _logger = logger;
             _logger?.LogOperation("EquipmentFilterViewModel", "Created");
+            FilterField = EquipmentFilterField.Category;
+            UpdateAvailableOperators();
+            UpdateAvailableValues();
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         private EquipmentFilterField filterField;
@@ -43,6 +47,7 @@ namespace ExanimaTools.ViewModels
                 if (filterField != value)
                 {
                     filterField = value;
+                    Value = null; // Clear value before updating available values
                     OnPropertyChanged(nameof(FilterField));
                     _logger?.Log($"FilterField changed: {filterField}");
                     UpdateAvailableOperators();
@@ -61,9 +66,33 @@ namespace ExanimaTools.ViewModels
         public ICommand? RemoveCommand { get; set; }
 
         // Dynamic lists for UI
-        public List<EquipmentFilterOperator> AvailableOperators { get; private set; } = new();
-        public List<object> AvailableValues { get; private set; } = new();
-        public List<string> AvailableStatTypes { get; private set; } = new();
+        private ObservableCollection<EquipmentFilterOperator> availableOperators = new();
+        public ObservableCollection<EquipmentFilterOperator> AvailableOperators
+        {
+            get => availableOperators;
+            set
+            {
+                if (availableOperators != value)
+                {
+                    availableOperators = value;
+                    OnPropertyChanged(nameof(AvailableOperators));
+                }
+            }
+        }
+        private ObservableCollection<string> availableValues = new();
+        public ObservableCollection<string> AvailableValues
+        {
+            get => availableValues;
+            set
+            {
+                if (availableValues != value)
+                {
+                    availableValues = value;
+                    OnPropertyChanged(nameof(AvailableValues));
+                }
+            }
+        }
+        public ObservableCollection<string> AvailableStatTypes { get; private set; } = new();
         public float StatValue
         {
             get => Value is float f ? f : 0f;
@@ -74,54 +103,89 @@ namespace ExanimaTools.ViewModels
             get => StatName;
             set { StatName = value; OnPropertyChanged(nameof(SelectedStatType)); }
         }
-        public EquipmentFilterViewModel()
-        {
-            FilterField = EquipmentFilterField.Category;
-            UpdateAvailableOperators();
-            UpdateAvailableValues();
-        }
         private void UpdateAvailableOperators()
         {
-            AvailableOperators.Clear();
+            var newOps = new List<EquipmentFilterOperator>();
             switch (FilterField)
             {
                 case EquipmentFilterField.Category:
                 case EquipmentFilterField.Condition:
-                    AvailableOperators.Add(EquipmentFilterOperator.Equals);
-                    AvailableOperators.Add(EquipmentFilterOperator.NotEquals);
+                    newOps.Add(EquipmentFilterOperator.Equals);
+                    newOps.Add(EquipmentFilterOperator.NotEquals);
                     break;
                 case EquipmentFilterField.Rank:
                 case EquipmentFilterField.Stat:
-                    AvailableOperators.AddRange(new[] {
-                        EquipmentFilterOperator.Equals, EquipmentFilterOperator.NotEquals,
-                        EquipmentFilterOperator.GreaterThan, EquipmentFilterOperator.LessThan,
-                        EquipmentFilterOperator.GreaterOrEqual, EquipmentFilterOperator.LessOrEqual });
+                    newOps.Add(EquipmentFilterOperator.Equals);
+                    newOps.Add(EquipmentFilterOperator.NotEquals);
+                    newOps.Add(EquipmentFilterOperator.GreaterThan);
+                    newOps.Add(EquipmentFilterOperator.LessThan);
+                    newOps.Add(EquipmentFilterOperator.GreaterOrEqual);
+                    newOps.Add(EquipmentFilterOperator.LessOrEqual);
                     break;
             }
-            OnPropertyChanged(nameof(AvailableOperators));
+            AvailableOperators = new ObservableCollection<EquipmentFilterOperator>(newOps);
+            // Always set Operator to a valid value or null
+            if (AvailableOperators.Count > 0)
+            {
+                Operator = AvailableOperators[0];
+            }
+            else
+            {
+                Operator = default;
+            }
+            OnPropertyChanged(nameof(Operator));
         }
-        private void UpdateAvailableValues()
+        public void UpdateAvailableValues()
         {
-            AvailableValues.Clear();
+            _logger?.Log($"UpdateAvailableValues called for FilterField={FilterField}");
+            var newValues = new List<string>();
             AvailableStatTypes.Clear();
             if (FilterField == EquipmentFilterField.Category && ArsenalManagerViewModel.StaticCategoryOptions != null)
             {
-                AvailableValues.AddRange(ArsenalManagerViewModel.StaticCategoryOptions);
+                foreach (var v in ArsenalManagerViewModel.StaticCategoryOptions)
+                {
+                    _logger?.Log($"Adding category value: {v}");
+                    newValues.Add(v);
+                }
             }
             else if (FilterField == EquipmentFilterField.Condition)
             {
-                AvailableValues.AddRange(Enum.GetValues(typeof(EquipmentCondition)).Cast<object>());
+                foreach (var v in Enum.GetValues(typeof(EquipmentCondition)).Cast<object>())
+                {
+                    _logger?.Log($"Adding condition value: {v}");
+                    newValues.Add(v.ToString()!);
+                }
             }
             else if (FilterField == EquipmentFilterField.Rank)
             {
-                AvailableValues.AddRange(Enum.GetValues(typeof(Rank)).Cast<object>());
+                foreach (var v in Enum.GetValues(typeof(Rank)).Cast<object>())
+                {
+                    _logger?.Log($"Adding rank value: {v}");
+                    newValues.Add(v.ToString()!);
+                }
             }
             else if (FilterField == EquipmentFilterField.Stat && ArsenalManagerViewModel.StaticStatTypes != null)
             {
-                AvailableStatTypes.AddRange(ArsenalManagerViewModel.StaticStatTypes.Select(st => st.ToString()));
+                foreach (var st in ArsenalManagerViewModel.StaticStatTypes.Select(st => st.ToString()))
+                {
+                    _logger?.Log($"Adding stat type: {st}");
+                    AvailableStatTypes.Add(st);
+                }
             }
+            AvailableValues = new ObservableCollection<string>(newValues);
+            _logger?.Log($"AvailableValues now has {AvailableValues.Count} items: [{string.Join(", ", AvailableValues)}]");
             OnPropertyChanged(nameof(AvailableValues));
             OnPropertyChanged(nameof(AvailableStatTypes));
+            // Always set Value to a valid value or null
+            if (AvailableValues.Count > 0)
+            {
+                Value = AvailableValues[0];
+            }
+            else
+            {
+                Value = null;
+            }
+            OnPropertyChanged(nameof(Value));
         }
         public void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

@@ -1,11 +1,4 @@
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_ETModels.Tests
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.csproj.AssemblyReference.cache
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.GeneratedMSBuildEditorConfig.editorconfig
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.AssemblyInfoInputs.cache
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.AssemblyInfo.cs
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.csproj.CoreCompileInputs.cache
-D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.sourcelink.json
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\testhost.dll
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\ExanimaTools.deps.json
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\ExanimaTools.runtimeconfig.json
@@ -250,6 +243,13 @@ D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\ExanimaTools.Models.p
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\ExanimaTools.pdb
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\ExanimaTools.Persistence.pdb
 D:\Dev\GameSupport\Exanima\ETModels.Tests\bin\Debug\net9.0\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.csproj.AssemblyReference.cache
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\Avalonia\Resources.Inputs.cache
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.AssemblyInfoInputs.cache
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.AssemblyInfo.cs
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.csproj.CoreCompileInputs.cache
+D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.sourcelink.json
 D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.48D55312.Up2Date
 D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\ETModels.Tests.dll
 D:\Dev\GameSupport\Exanima\ETModels.Tests\obj\Debug\net9.0\refint\ETModels.Tests.dll
