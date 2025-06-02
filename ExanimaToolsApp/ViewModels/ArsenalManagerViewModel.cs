@@ -138,7 +138,21 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     public EquipmentTreeNodeViewModel? SelectedPoolTreeItem
     {
         get => selectedPoolTreeItem;
-        set { if (selectedPoolTreeItem != value) { selectedPoolTreeItem = value; OnPropertyChanged(nameof(SelectedPoolTreeItem)); if (value?.EquipmentPiece != null) SelectedDatabaseEquipment = value.EquipmentPiece; } }
+        set
+        {
+            if (selectedPoolTreeItem != value)
+            {
+                selectedPoolTreeItem = value;
+                _logger?.Log($"[DEBUG] SelectedPoolTreeItem set: {value?.EquipmentPiece?.Name ?? "null"}");
+                if (value?.EquipmentPiece != null)
+                {
+                    _logger?.Log($"[DEBUG] Selected EquipmentPiece stats: {string.Join(", ", value.EquipmentPiece.Stats.Select(kv => $"{kv.Key}={kv.Value}"))}");
+                }
+                OnPropertyChanged(nameof(SelectedPoolTreeItem));
+                OnPropertyChanged(nameof(StatCardViewModel)); // Ensure stat card updates
+                if (value?.EquipmentPiece != null) SelectedDatabaseEquipment = value.EquipmentPiece;
+            }
+        }
     }
     private EquipmentTreeNodeViewModel? selectedArsenalTreeItem;
     public EquipmentTreeNodeViewModel? SelectedArsenalTreeItem
@@ -173,7 +187,22 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         _logger?.LogOperation("ArsenalManagerViewModel", "Created");
         _ = LoadAsync();
         if (StaticCategoryOptions == null)
-            StaticCategoryOptions = new List<string> { "Weapon", "Armour", "Shield" };
+        {
+            // Use all possible categories from weapon, armour, and shield maps
+            var categories = new HashSet<string>();
+            foreach (var cat in EquipmentManagerViewModel.WeaponCategorySubcategoryMap.Keys)
+                categories.Add(cat);
+            foreach (var cat in EquipmentManagerViewModel.ArmourCategorySubcategoryMap.Keys)
+                categories.Add(cat);
+            // Add shield subcategories as well
+            if (EquipmentManagerViewModel.WeaponCategorySubcategoryMap.TryGetValue("Shield", out var shieldCats))
+                foreach (var cat in shieldCats)
+                    categories.Add(cat);
+            StaticCategoryOptions = categories.ToList();
+            // --- Fix: Update all filter viewmodels after static list is set ---
+            foreach (var filter in Filters)
+                filter.UpdateAvailableValues();
+        }
         if (StaticStatTypes == null)
             StaticStatTypes = System.Enum.GetValues(typeof(StatType)).Cast<StatType>().ToList();
         AddToArsenalCommand = new AsyncSimpleCommand(param => AddToArsenalAsync(param));
@@ -203,7 +232,25 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         ShowAddArmourFormCommand = new SimpleCommand(ShowAddArmourForm);
         ShowAddShieldFormCommand = new SimpleCommand(ShowAddShieldForm);
         AddFilterCommand = new SimpleCommand(AddFilter);
-        Filters.CollectionChanged += (s, e) => ApplyFilters();
+        editEquipmentFromTreeCommand = new SimpleCommand(() =>
+        {
+            if (SelectedPoolTreeItem?.EquipmentPiece != null)
+                EditEquipmentFromTree(SelectedPoolTreeItem.EquipmentPiece);
+        });
+        Filters.CollectionChanged += (s, e) => {
+            ApplyFilters();
+            // Always update AvailableValues for new filters
+            if (e.NewItems != null)
+                foreach (var filter in e.NewItems.OfType<EquipmentFilterViewModel>())
+                    filter.UpdateAvailableValues();
+        };
+        // Synchronize PoolTreeViewModel.SelectedTreeItem with SelectedPoolTreeItem
+        PoolTreeViewModel.PropertyChanged += (s, e) => {
+            if (e.PropertyName == nameof(PoolTreeViewModel.SelectedTreeItem))
+            {
+                SelectedPoolTreeItem = PoolTreeViewModel.SelectedTreeItem;
+            }
+        };
     }
     private async Task LoadAsync()
     {
@@ -477,7 +524,11 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private void ShowAddWeaponForm()
     {
         _logger?.Log("ShowAddWeaponForm called");
+        addFormMode = AddFormMode.Weapon;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Weapon, Category = "Sword" };
+        SetCategoryOptionsForMode();
+        SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+        UpdateAvailableStatTypes();
         UpdateNewEquipmentDrawing();
         AddDialogTitle = "Add Weapon";
         IsEditMode = false;
@@ -486,7 +537,11 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private void ShowAddArmourForm()
     {
         _logger?.Log("ShowAddArmourForm called");
+        addFormMode = AddFormMode.Armour;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Armour, Category = "Body" };
+        SetCategoryOptionsForMode();
+        SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+        UpdateAvailableStatTypes();
         UpdateNewEquipmentDrawing();
         AddDialogTitle = "Add Armour";
         IsEditMode = false;
@@ -495,7 +550,11 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private void ShowAddShieldForm()
     {
         _logger?.Log("ShowAddShieldForm called");
+        addFormMode = AddFormMode.Shield;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Shield, Category = "Buckler" };
+        SetCategoryOptionsForMode();
+        SelectedCategory = CategoryOptions.FirstOrDefault() ?? string.Empty;
+        UpdateAvailableStatTypes();
         UpdateNewEquipmentDrawing();
         AddDialogTitle = "Add Shield";
         IsEditMode = false;
@@ -529,13 +588,17 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void AddFilter()
     {
-        var filter = new EquipmentFilterViewModel { FilterField = EquipmentFilterField.Category, Operator = EquipmentFilterOperator.Equals };
+        var filter = new EquipmentFilterViewModel(_logger) { FilterField = EquipmentFilterField.Category, Operator = EquipmentFilterOperator.Equals };
         filter.RemoveCommand = new SimpleCommand(() => { Filters.Remove(filter); });
         Filters.Add(filter);
+        OnPropertyChanged(nameof(Filters)); // Force UI refresh
     }
     private void ApplyFilters()
     {
         FilteredEquipment = new ObservableCollection<EquipmentPiece>(GetFilteredEquipment(_allEquipment, Filters));
+        BuildTree(FilteredEquipment, PoolTree);
+        PoolTreeViewModel.TreeItems = PoolTree; // Notify UI
+        _logger?.Log($"ApplyFilters: PoolTree rebuilt with {PoolTree.Count} root nodes from {FilteredEquipment.Count} filtered equipment.");
     }
     public static List<EquipmentPiece> GetFilteredEquipment(IEnumerable<EquipmentPiece> source, IEnumerable<EquipmentFilterViewModel> filters)
     {
@@ -667,5 +730,113 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         if (drawing != null)
             _logger?.Log($"Drawing.Geometry: {drawing.Geometry?.ToString() ?? "null"}");
         NewEquipmentDrawing = drawing;
+    }
+    // Returns a list of StatPipViewModel for pip stats (excluding Weight) for the selected item
+    public List<StatPipViewModel> SelectedPoolTreeItemPipStats
+    {
+        get
+        {
+            var result = new List<StatPipViewModel>();
+            var eq = SelectedPoolTreeItem?.EquipmentPiece;
+            if (eq == null || eq.Stats == null) return result;
+            foreach (var kvp in eq.Stats)
+            {
+                if (kvp.Key == StatType.Weight) continue;
+                if (IsPipStat(kvp.Key))
+                {
+                    result.Add(new StatPipViewModel(kvp.Key, kvp.Value, v => eq.SetStat(kvp.Key, v)));
+                }
+            }
+            // Optionally sort by stat type for consistent display
+            result.Sort((a, b) => a.Stat.ToString().CompareTo(b.Stat.ToString()));
+            return result;
+        }
+    }
+    // Helper: which stats are pip stats (should match add form logic)
+    public static bool IsPipStat(StatType stat)
+    {
+        return stat == StatType.Balance || stat == StatType.Impact || stat == StatType.Slash || stat == StatType.Crush ||
+               stat == StatType.Pierce || stat == StatType.Thrust || stat == StatType.Points ||
+               stat == StatType.SlashProtection || stat == StatType.CrushProtection || stat == StatType.PierceProtection ||
+               stat == StatType.Coverage || stat == StatType.Encumbrance;
+    }
+    // ViewModel for the stat card control
+    public EquipmentStatCardViewModel? StatCardViewModel
+    {
+        get
+        {
+            var eq = SelectedPoolTreeItem?.EquipmentPiece;
+            if (eq == null) return null;
+            return new EquipmentStatCardViewModel(eq, EditEquipmentFromTreeCommand, _logger);
+        }
+    }
+    // Expose EditEquipmentFromTreeCommand for stat card
+    public ICommand EditEquipmentFromTreeCommand => editEquipmentFromTreeCommand;
+    private readonly ICommand editEquipmentFromTreeCommand;
+    // Helper ViewModel for stat card
+    public class EquipmentStatCardViewModel
+    {
+        public EquipmentPiece EquipmentPiece { get; }
+        public List<StatPipViewModel> PipStats { get; }
+        public ICommand EditEquipmentFromTreeCommand { get; }
+        public EquipmentStatCardViewModel(EquipmentPiece eq, ICommand editCommand, ILoggingService? logger = null)
+        {
+            EquipmentPiece = eq;
+            PipStats = new List<StatPipViewModel>();
+            logger?.Log($"[DEBUG] [EquipmentStatCardViewModel] Stats for {eq.Name}: {string.Join(", ", eq.Stats.Select(kv => $"{kv.Key}={kv.Value}"))}");
+            foreach (var kvp in eq.Stats)
+            {
+                logger?.Log($"[DEBUG]   Stat: {kvp.Key}, Value: {kvp.Value}, IsPipStat: {ArsenalManagerViewModel.IsPipStat(kvp.Key)}");
+                if (kvp.Key == StatType.Weight) continue;
+                if (ArsenalManagerViewModel.IsPipStat(kvp.Key))
+                    PipStats.Add(new StatPipViewModel(kvp.Key, kvp.Value, v => eq.SetStat(kvp.Key, v), logger));
+            }
+            PipStats.Sort((a, b) => a.Stat.ToString().CompareTo(b.Stat.ToString()));
+            EditEquipmentFromTreeCommand = editCommand;
+        }
+    }
+    private void EditEquipmentFromTree(EquipmentPiece? equipment)
+    {
+        if (equipment == null) return;
+        // Manual copy for editing
+        NewEquipment = new EquipmentPiece {
+            Name = equipment.Name,
+            Type = equipment.Type,
+            Category = equipment.Category,
+            Subcategory = equipment.Subcategory,
+            Rank = equipment.Rank,
+            Points = equipment.Points,
+            Weight = equipment.Weight,
+            Description = equipment.Description,
+            Quality = equipment.Quality,
+            Condition = equipment.Condition,
+            Slot = equipment.Slot,
+            Layer = equipment.Layer,
+            ImagePath = equipment.ImagePath,
+            Stats = new Dictionary<StatType, float>(equipment.Stats)
+        };
+        // Ensure dropdowns and pip stats are always updated
+        addFormMode = equipment.Type switch
+        {
+            EquipmentType.Weapon => AddFormMode.Weapon,
+            EquipmentType.Armour => AddFormMode.Armour,
+            EquipmentType.Shield => AddFormMode.Shield,
+            _ => AddFormMode.None
+        };
+        SetCategoryOptionsForMode();
+        // Set selected values after options are filled
+        if (!string.IsNullOrEmpty(equipment.Category) && CategoryOptions.Contains(equipment.Category))
+            SelectedCategory = equipment.Category;
+        else if (CategoryOptions.Count > 0)
+            SelectedCategory = CategoryOptions[0];
+        if (!string.IsNullOrEmpty(equipment.Subcategory) && SubcategoryOptions.Contains(equipment.Subcategory))
+            SelectedSubcategory = equipment.Subcategory;
+        else if (SubcategoryOptions.Count > 0)
+            SelectedSubcategory = SubcategoryOptions[0];
+        UpdateAvailableStatTypes();
+        SyncStatPipViewModels();
+        IsAddDialogOpen = true;
+        AddDialogTitle = $"Edit {equipment.Name}";
+        // Set form mode, etc. as needed
     }
 }
