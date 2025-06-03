@@ -1,0 +1,72 @@
+<!--
+  CompanyMemberManagementControl.axaml
+  UI for managing company members: top-level info, tabbed skills/magic/equipment, and equipment assignment from arsenal.
+-->
+<UserControl x:Class="ExanimaTools.Controls.CompanyMemberManagementControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+    mc:Ignorable="d">
+    <StackPanel Margin="16" Spacing="12">
+        <TextBlock Text="{Binding DebugInfo}" Foreground="Orange" FontWeight="Bold"/>
+        <!-- Top-level info -->
+        <StackPanel Orientation="Horizontal" Spacing="16">
+            <TextBlock Text="Name:" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Name}" Width="160"/>
+            <TextBlock Text="Role:" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Role}" Width="120"/>
+            <TextBlock Text="Rank:" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Rank}" Width="120"/>
+        </StackPanel>
+        <!-- Tabbed UI for Skills, Magic, Equipment -->
+        <TabControl>
+            <TabItem Header="Skills">
+                <TextBlock Text="[Skills UI here]"/>
+            </TabItem>
+            <TabItem Header="Magic">
+                <TextBlock Text="[Magic UI here]"/>
+            </TabItem>
+            <TabItem Header="Equipment">
+                <StackPanel>
+                    <TextBlock Text="Assigned Equipment (Personal Pool)" FontWeight="Bold"/>
+                    <!-- List assigned equipment per slot/layer -->
+                    <ItemsControl ItemsSource="{Binding Model.EquipmentProfiles[Rank].EquippedItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="{Binding Key}" FontWeight="Bold"/>
+                                    <ItemsControl ItemsSource="{Binding Value}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                    <TextBlock Text="("/>
+                                                    <TextBlock Text="{Binding Layer}"/>
+                                                    <TextBlock Text=")"/>
+                                                    <Button Content="Unassign" Command="{Binding DataContext.UnassignEquipmentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="Assign from Arsenal" FontWeight="Bold" Margin="0,12,0,0"/>
+                    <!-- Arsenal selection and assignment UI goes here -->
+                    <ComboBox ItemsSource="{Binding ArsenalEquipment}" SelectedItem="{Binding SelectedArsenalEquipment}" Width="200">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Assign to Slot" Command="{Binding AssignEquipmentCommand}"/>
+                    <TextBlock Text="Cannot assign the same item to more than one member." Foreground="Red" IsVisible="{Binding AssignmentErrorVisible}"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>

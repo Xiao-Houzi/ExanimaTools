@@ -16,7 +16,12 @@
             <!-- Tabbed Panel Area -->
             <TabControl DockPanel.Dock="Top" Margin="24,24,24,24" x:Name="MainTabControl">
                 <TabItem Header="Company">
-                    <controls:CompanyControl/>
+                    <StackPanel>
+                        <controls:CompanyControl/>
+                        <Separator Margin="0,12,0,12"/>
+                        <TextBlock Text="Selected Member Management" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <controls:CompanyMemberManagementControl DataContext="{Binding SelectedCompanyMemberViewModel}"/>
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="Arsenal">
                     <controls:ArsenalManagerControl/>

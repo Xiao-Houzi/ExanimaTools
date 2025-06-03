@@ -46,11 +46,41 @@ public class CompanyViewModel : INotifyPropertyChanged
         set { if (companyMembers != value) { companyMembers = value; OnPropertyChanged(nameof(CompanyMembers)); } }
     }
 
+    private CompanyMemberViewModel? selectedCompanyMemberViewModel;
+    public CompanyMemberViewModel? SelectedCompanyMemberViewModel
+    {
+        get => selectedCompanyMemberViewModel;
+        set
+        {
+            if (selectedCompanyMemberViewModel != value)
+            {
+                selectedCompanyMemberViewModel = value;
+                OnPropertyChanged(nameof(SelectedCompanyMemberViewModel));
+                selectedCompanyMemberViewModel?.UpdateFromModel();
+            }
+        }
+    }
+
     private CompanyMember? selectedCompanyMember;
     public CompanyMember? SelectedCompanyMember
     {
         get => selectedCompanyMember;
-        set { if (selectedCompanyMember != value) { selectedCompanyMember = value; OnPropertyChanged(nameof(SelectedCompanyMember)); } }
+        set
+        {
+            if (selectedCompanyMember != value)
+            {
+                selectedCompanyMember = value;
+                OnPropertyChanged(nameof(SelectedCompanyMember));
+                if (selectedCompanyMember != null)
+                {
+                    SelectedCompanyMemberViewModel = new CompanyMemberViewModel(selectedCompanyMember);
+                }
+                else
+                {
+                    SelectedCompanyMemberViewModel = null;
+                }
+            }
+        }
     }
 
     private string? searchText;
@@ -178,6 +208,9 @@ public class CompanyViewModel : INotifyPropertyChanged
         var members = await _companyMemberRepository.GetAllAsync();
         foreach (var member in members)
             CompanyMembers.Add(member);
+        // Select the first member by default if any exist
+        if (CompanyMembers.Count > 0 && SelectedCompanyMember == null)
+            SelectedCompanyMember = CompanyMembers[0];
     }
 
     private void CloseAddDialog()

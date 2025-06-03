@@ -36,6 +36,8 @@ public partial class MainWindow : Window
                 this.Topmost = true;
             }
         }
+        // Set the DataContext for the window so all bindings work
+        this.DataContext = new ExanimaTools.ViewModels.CompanyViewModel();
     }
 
     public string? StatusMessage { get; set; }

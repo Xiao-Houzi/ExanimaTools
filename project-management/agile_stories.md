@@ -41,14 +41,6 @@
 - UI for assigning equipment profiles to team members.
 - Persist assignment in data model.
 
-## Equipment & Arsenal
-
-### Equipment Display Controls (3 points)
-**As a user, I want each piece of equipment to be displayed in a card/control showing its details and stats.**
-- Show name, type, stats (pips/half-pips), description, make, quality, and condition.
-- Use visual indicators for pips/half-pips.
-- Support editing or removing equipment from the database (optional).
-
 ## Loadouts & Assignment
 
 ### Assign Gear from Arsenal to Team Members (per Rank) (3 points)
