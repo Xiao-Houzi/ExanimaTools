@@ -62,7 +62,14 @@ namespace ExanimaTools.Models
             get => _stats;
             set
             {
-                _stats = value.ToDictionary(kv => kv.Key, kv => Math.Clamp(kv.Value, 0, 10));
+                if (value == null)
+                {
+                    _stats = new Dictionary<StatType, float>();
+                }
+                else
+                {
+                    _stats = new Dictionary<StatType, float>(value);
+                }
                 _logger?.LogOperation("Set Stats", string.Join(",", _stats.Select(kv => $"{kv.Key}:{kv.Value}")));
             }
         }

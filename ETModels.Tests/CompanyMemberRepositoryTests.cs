@@ -236,4 +236,35 @@ public class CompanyMemberRepositoryTests
         Assert.IsTrue(head[0].Stats.ContainsKey(StatType.CrushProtection));
         Assert.AreEqual(8, head[0].Stats[StatType.CrushProtection]);
     }
+
+    [TestMethod]
+    public async Task AssignEquipmentToProfile_PreventsDuplicatesAndPersists()
+    {
+        // Insert required equipment
+        using (var cmd = _connection!.CreateCommand())
+        {
+            cmd.CommandText = @"INSERT INTO Equipment (Name, Type, Description) VALUES
+                ('Sword', 0, 'Sharp blade'),
+                ('Sword2', 0, 'Backup blade')";
+            cmd.ExecuteNonQuery();
+        }
+        var repo = new CompanyMemberRepository(_connection!);
+        var member = new CompanyMember { Name = "AssignGuy", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
+        var eq1 = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Slot = EquipmentSlot.Hands };
+        var eq2 = new EquipmentPiece { Name = "Sword2", Type = EquipmentType.Weapon, Slot = EquipmentSlot.Hands };
+        // Assign to Novice profile
+        Assert.IsTrue(member.AssignEquipmentToProfile(Rank.Novice, EquipmentSlot.Hands, eq1));
+        // Duplicate assignment should be prevented
+        Assert.IsFalse(member.AssignEquipmentToProfile(Rank.Novice, EquipmentSlot.Hands, eq1));
+        // Assign another weapon
+        Assert.IsTrue(member.AssignEquipmentToProfile(Rank.Novice, EquipmentSlot.Hands, eq2));
+        // Persist
+        await repo.AddAsync(member);
+        var loaded = await repo.GetByIdAsync("AssignGuy");
+        Assert.IsNotNull(loaded);
+        var hands = loaded.EquipmentProfiles[Rank.Novice].EquippedItems[EquipmentSlot.Hands];
+        Assert.AreEqual(2, hands.Count);
+        Assert.AreEqual("Sword", hands[0].Name);
+        Assert.AreEqual("Sword2", hands[1].Name);
+    }
 }

@@ -121,4 +121,54 @@ public class CompanyMember
     public Sex Sex { get; set; }
     public MemberType Type { get; set; } = MemberType.Recruit;
     public Dictionary<Rank, EquipmentProfile> EquipmentProfiles { get; set; } = new();
+
+    public bool AssignEquipmentToProfile(Rank rank, EquipmentSlot slot, EquipmentPiece equipment, ArmourLayer? layer = null)
+    {
+        if (!EquipmentProfiles.ContainsKey(rank))
+            EquipmentProfiles[rank] = new EquipmentProfile(_logger) { Name = $"{Name} {rank} Loadout" };
+        var profile = EquipmentProfiles[rank];
+        if (!profile.EquippedItems.ContainsKey(slot))
+            profile.EquippedItems[slot] = new List<EquipmentPiece>();
+        // Prevent duplicate assignment (by Id, slot, and layer)
+        if (profile.EquippedItems[slot].Any(e => e.Id == equipment.Id && e.Layer == layer))
+        {
+            _logger?.LogOperation("AssignEquipmentToProfile", $"Duplicate prevented: {equipment.Name} (Id={equipment.Id}) already assigned to {slot} ({layer}) for {Name} [{rank}]");
+            return false;
+        }
+        var eqCopy = new EquipmentPiece(_logger)
+        {
+            Id = equipment.Id,
+            Name = equipment.Name,
+            Type = equipment.Type,
+            Slot = slot,
+            Layer = layer,
+            Stats = new Dictionary<StatType, float>(equipment.Stats),
+            Description = equipment.Description,
+            Quality = equipment.Quality,
+            Condition = equipment.Condition,
+            Category = equipment.Category,
+            Subcategory = equipment.Subcategory,
+            Rank = equipment.Rank,
+            Points = equipment.Points,
+            ImagePath = equipment.ImagePath
+        };
+        profile.EquippedItems[slot].Add(eqCopy);
+        _logger?.LogOperation("AssignEquipmentToProfile", $"Assigned {equipment.Name} (Id={equipment.Id}) to {Name} [{rank}] Slot={slot} Layer={layer}");
+        return true;
+    }
+    public bool UnassignEquipmentFromProfile(Rank rank, EquipmentSlot slot, int equipmentId, ArmourLayer? layer = null)
+    {
+        if (!EquipmentProfiles.ContainsKey(rank))
+            return false;
+        var profile = EquipmentProfiles[rank];
+        if (!profile.EquippedItems.ContainsKey(slot))
+            return false;
+        var removed = profile.EquippedItems[slot].RemoveAll(e => e.Id == equipmentId && (layer == null || e.Layer == layer));
+        if (removed > 0)
+        {
+            _logger?.LogOperation("UnassignEquipmentFromProfile", $"Unassigned equipmentId={equipmentId} from {Name} [{rank}] Slot={slot} Layer={layer}");
+            return true;
+        }
+        return false;
+    }
 }
