@@ -9,8 +9,7 @@ $patterns = @(
 $folders = @(
     ".",
     ".\ETModels.Tests",
-    ".\ExanimaTools.Persistence",
-    ".\ExanimaToolsApp"
+    ".\ExanimaTools.Persistence"
 )
 foreach ($folder in $folders) {
     foreach ($pattern in $patterns) {

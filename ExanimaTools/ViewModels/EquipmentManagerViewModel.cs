@@ -13,7 +13,6 @@ using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using System.IO;
 using ExanimaTools.ViewModels;
-using ExanimaToolsApp;
 using System.ComponentModel;
 
 namespace ExanimaTools.ViewModels

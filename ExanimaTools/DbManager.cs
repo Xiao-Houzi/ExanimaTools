@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace ExanimaToolsApp
+namespace ExanimaTools
 {
     public static class DbManager
     {

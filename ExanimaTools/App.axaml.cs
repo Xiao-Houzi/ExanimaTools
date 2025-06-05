@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ExanimaTools.Models;
-using ExanimaToolsApp;
 using System;
 using System.IO;
 

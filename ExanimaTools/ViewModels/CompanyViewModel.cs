@@ -18,7 +18,7 @@ public class CompanyViewModel : INotifyPropertyChanged
     public CompanyViewModel(ILoggingService? logger = null)
     {
         _logger = logger;
-        var dbPath = ExanimaToolsApp.DbManager.GetDbPath();
+        var dbPath = DbManager.GetDbPath();
         _companyMemberRepository = new CompanyMemberRepository($"Data Source={dbPath}");
         companyMembers = new ObservableCollection<CompanyMember>();
         NewCompanyMember = new CompanyMemberViewModel();

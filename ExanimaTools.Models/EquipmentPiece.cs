@@ -108,7 +108,7 @@ namespace ExanimaTools.Models
         public List<object> GetPipStatsViewModels()
         {
             var pipStats = new List<object>();
-            var vmType = System.Reflection.Assembly.Load("ExanimaToolsApp").GetType("ExanimaTools.ViewModels.StatPipViewModel");
+            var vmType = System.Reflection.Assembly.Load("ExanimaTools").GetType("ExanimaTools.ViewModels.StatPipViewModel");
             if (vmType == null) return pipStats;
             var ctor = vmType.GetConstructor(new[] { typeof(StatType), typeof(float), typeof(Action<float>), typeof(object) });
             foreach (var kvp in Stats)

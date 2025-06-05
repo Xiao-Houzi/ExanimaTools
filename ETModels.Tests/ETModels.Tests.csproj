@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExanimaTools.Models\ExanimaTools.Models.csproj" />
     <ProjectReference Include="..\ExanimaTools.Persistence\ExanimaTools.Persistence.csproj" />
-    <ProjectReference Include="..\ExanimaToolsApp\ExanimaTools.csproj" />
+    <ProjectReference Include="..\ExanimaTools\ExanimaTools.csproj" />
   </ItemGroup>
 
   <ItemGroup>

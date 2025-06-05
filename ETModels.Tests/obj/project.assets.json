@@ -3708,8 +3708,8 @@
     },
     "ExanimaTools/1.0.0": {
       "type": "project",
-      "path": "../ExanimaToolsApp/ExanimaTools.csproj",
-      "msbuildProject": "../ExanimaToolsApp/ExanimaTools.csproj"
+      "path": "../ExanimaTools/ExanimaTools.csproj",
+      "msbuildProject": "../ExanimaTools/ExanimaTools.csproj"
     },
     "ExanimaTools.Models/1.0.0": {
       "type": "project",
@@ -3773,8 +3773,8 @@
             "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Persistence\\ExanimaTools.Persistence.csproj": {
               "projectPath": "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Persistence\\ExanimaTools.Persistence.csproj"
             },
-            "D:\\Dev\\GameSupport\\Exanima\\ExanimaToolsApp\\ExanimaTools.csproj": {
-              "projectPath": "D:\\Dev\\GameSupport\\Exanima\\ExanimaToolsApp\\ExanimaTools.csproj"
+            "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools\\ExanimaTools.csproj": {
+              "projectPath": "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools\\ExanimaTools.csproj"
             }
           }
         }

@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using ExanimaTools.Persistence;
 using ExanimaTools.ViewModels;
-using ExanimaToolsApp;
 using ExanimaTools.Models;
 
 namespace ExanimaTools.Controls

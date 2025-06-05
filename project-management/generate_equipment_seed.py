@@ -4,7 +4,7 @@ from pathlib import Path
 
 # Path to your markdown table and output JSON
 MD_PATH = Path(r'd:/Dev/GameSupport/Exanima/project-management/Exanima_Equipment_Stats.md')
-JSON_PATH = Path(r'd:/Dev/GameSupport/Exanima/ExanimaToolsApp/project-management/equipment_seed.json')
+JSON_PATH = Path(r'd:/Dev/GameSupport/Exanima/ExanimaTools/project-management/equipment_seed.json')
 
 # Define variant templates
 VARIANTS = [

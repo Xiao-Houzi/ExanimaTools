@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using ExanimaTools.Persistence;
 using ExanimaTools.Models;
-using ExanimaToolsApp;
 
 namespace ExanimaTools;
 

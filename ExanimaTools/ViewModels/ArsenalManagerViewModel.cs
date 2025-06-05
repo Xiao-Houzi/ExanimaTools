@@ -709,11 +709,11 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             string? imageFile = null;
             if (!string.IsNullOrWhiteSpace(NewEquipment.Category))
             {
-                imageFile = $"avares://ExanimaToolsApp/Assets/{NewEquipment.Type.ToString().ToLowerInvariant()}_{NewEquipment.Category.ToLowerInvariant().Replace(" ", "_")}.png";
+                imageFile = $"avares://ExanimaTools/Assets/{NewEquipment.Type.ToString().ToLowerInvariant()}_{NewEquipment.Category.ToLowerInvariant().Replace(" ", "_")}.png";
             }
             else
             {
-                imageFile = $"avares://ExanimaToolsApp/Assets/{NewEquipment.Type.ToString().ToLowerInvariant()}.png";
+                imageFile = $"avares://ExanimaTools/Assets/{NewEquipment.Type.ToString().ToLowerInvariant()}.png";
             }
             if (NewEquipment.ImagePath != imageFile)
             {
