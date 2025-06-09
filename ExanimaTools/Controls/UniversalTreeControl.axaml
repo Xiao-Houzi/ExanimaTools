@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ExanimaTools.Controls"
+             xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+             x:Class="ExanimaTools.Controls.UniversalTreeControl">
+    <UserControl.Resources>
+        <controls:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter"/>
+        <controls:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <controls:EquipmentPiecePropertySafeConverter x:Key="EquipmentPiecePropertySafeConverter"/>
+    </UserControl.Resources>
+    <Border BorderBrush="Silver" BorderThickness="2" CornerRadius="4" Padding="4">
+        <TreeView ItemsSource="{Binding TreeItems, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                  SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate DataType="viewmodels:EquipmentTreeNodeViewModel" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" FontWeight="{Binding IsLeaf, Converter={StaticResource BooleanToFontWeightConverter}}"/>
+                        <!-- Only show count for non-leaf nodes -->
+                        <TextBlock Text=" (" IsVisible="{Binding IsLeaf, Converter={StaticResource InverseBooleanConverter}}"/>
+                        <TextBlock Text="{Binding TotalDescendantCount}" IsVisible="{Binding IsLeaf, Converter={StaticResource InverseBooleanConverter}}"/>
+                        <TextBlock Text=")" IsVisible="{Binding IsLeaf, Converter={StaticResource InverseBooleanConverter}}"/>
+                        <TextBlock Text="  "/>
+                        <!-- Only show these for leaf nodes, and use safe converter -->
+                        <TextBlock Text="{Binding EquipmentPiece.Rank, Converter={StaticResource EquipmentPiecePropertySafeConverter}}" IsVisible="{Binding IsLeaf}"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Quality, Converter={StaticResource EquipmentPiecePropertySafeConverter}}" IsVisible="{Binding IsLeaf}"/>
+                        <TextBlock Text="{Binding EquipmentPiece.Condition, Converter={StaticResource EquipmentPiecePropertySafeConverter}}" IsVisible="{Binding IsLeaf}"/>
+                    </StackPanel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Border>
+</UserControl>
