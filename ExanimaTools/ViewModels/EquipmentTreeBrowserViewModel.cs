@@ -6,6 +6,12 @@ using ExanimaTools.Models;
 
 namespace ExanimaTools.ViewModels
 {
+    public class ActionButtonViewModel
+    {
+        public string Label { get; set; } = string.Empty;
+        public ICommand? Command { get; set; }
+    }
+
     public class EquipmentTreeBrowserViewModel : INotifyPropertyChanged
     {
         private readonly ILoggingService? _logger;
@@ -47,6 +53,16 @@ namespace ExanimaTools.ViewModels
         {
             get => actionCommand;
             set { if (actionCommand != value) { actionCommand = value; OnPropertyChanged(nameof(ActionCommand)); } }
+        }
+
+        public ObservableCollection<ActionButtonViewModel> ActionButtons { get; } = new();
+
+        // Helper to set actions in bulk
+        public void SetActions(IEnumerable<(string label, ICommand? command)> actions)
+        {
+            ActionButtons.Clear();
+            foreach (var (label, command) in actions)
+                ActionButtons.Add(new ActionButtonViewModel { Label = label, Command = command });
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

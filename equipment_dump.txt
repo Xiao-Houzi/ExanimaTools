@@ -1,208 +1,1331 @@
-Equipment DB Dump (02/06/2025 23:04:30)
-Count: 25
-- Id: 51, Name: Rusted Longsword, Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Inept, Points: 2, Weight: 1.5, Desc: A rusted, battered longsword.
+Equipment DB Dump (08/06/2025 10:42:10)
+Count: 186
+- Id: 1141, Name: Arena Dagger (Crude), Type: Weapon, Category: Knife, Subcategory: Dagger, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
   Stats:
-    Impact: 2.5
-    Slash: 3
-    Pierce: 1.5
-    Balance: 2
-    Points: 2
-    Weight: 1.5
-- Id: 52, Name: Battered Longsword, Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Inept, Points: 3, Weight: 2, Desc: A battered but serviceable longsword.
-  Stats:
-    Impact: 2.5
-    Slash: 3
-    Pierce: 2
-    Balance: 2.5
-    Points: 3
-    Weight: 2
-- Id: 53, Name: Worn Hatchet, Type: Weapon, Category: Axe, Subcategory: Handaxe, Rank: Inept, Points: 2, Weight: 1, Desc: A small, worn hatchet.
-  Stats:
-    Impact: 2
+    Weight: 0.5
+    Impact: 1
+    Balance: 4.5
     Slash: 2
-    Crush: 1
-    Balance: 1.5
-    Points: 2
-    Weight: 1
-- Id: 54, Name: Rusty Sword, Type: Weapon, Category: Sword, Subcategory: Arming Sword, Rank: Inept, Points: 4, Weight: 1.5, Desc: A dull, rusty sword.
+    Thrust: 2.5
+- Id: 1142, Name: Arena Dagger (Decent), Type: Weapon, Category: Knife, Subcategory: Dagger, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
   Stats:
+    Weight: 0.5
+    Impact: 1
+    Balance: 5
+    Slash: 2.5
+    Thrust: 3
+- Id: 1143, Name: Arena Dagger (Well Made), Type: Weapon, Category: Knife, Subcategory: Dagger, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1
+    Balance: 5.5
+    Slash: 3
+    Thrust: 3.5
+- Id: 1144, Name: Rusty Cleaver (Crude), Type: Weapon, Category: Knife, Subcategory: Cleaver, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
     Impact: 2
+    Balance: 2.5
+    Slash: 2.5
+    Thrust: 1
+- Id: 1145, Name: Rusty Cleaver (Decent), Type: Weapon, Category: Knife, Subcategory: Cleaver, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3
+    Slash: 3
+    Thrust: 1
+- Id: 1146, Name: Rusty Cleaver (Well Made), Type: Weapon, Category: Knife, Subcategory: Cleaver, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3.5
+    Slash: 3.5
+    Thrust: 1
+- Id: 1147, Name: Hand Saw (Crude), Type: Weapon, Category: Knife, Subcategory: Hand Saw, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1.5
+    Balance: 2
     Slash: 2
     Pierce: 1
-    Balance: 2
-    Points: 4
-    Weight: 1.5
-- Id: 55, Name: Old Axe, Type: Weapon, Category: Axe, Subcategory: Battleaxe, Rank: Inept, Points: 5, Weight: 2, Desc: A heavy, old axe.
+    Thrust: 1
+- Id: 1148, Name: Hand Saw (Decent), Type: Weapon, Category: Knife, Subcategory: Hand Saw, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
   Stats:
+    Weight: 0.5
+    Impact: 1.5
+    Balance: 2.5
+    Slash: 2.5
+    Pierce: 1
+    Thrust: 1
+- Id: 1149, Name: Hand Saw (Well Made), Type: Weapon, Category: Knife, Subcategory: Hand Saw, Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1.5
+    Balance: 3
+    Slash: 3
+    Pierce: 1
+    Thrust: 1
+- Id: 1150, Name: Shortsword (Crude), Type: Weapon, Category: Sword, Subcategory: Shortsword, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3.5
+    Slash: 2.5
+    Thrust: 2
+- Id: 1151, Name: Shortsword (Decent), Type: Weapon, Category: Sword, Subcategory: Shortsword, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 4
+    Slash: 3
+    Thrust: 2
+- Id: 1152, Name: Shortsword (Well Made), Type: Weapon, Category: Sword, Subcategory: Shortsword, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 4.5
+    Slash: 3.5
+    Thrust: 2
+- Id: 1153, Name: Arena Sword (Crude), Type: Weapon, Category: Sword, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3
+    Slash: 3
+    Thrust: 2
+- Id: 1154, Name: Arena Sword (Decent), Type: Weapon, Category: Sword, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2.5
+    Balance: 3.5
+    Slash: 3.5
+    Thrust: 2.5
+- Id: 1155, Name: Arena Sword (Well Made), Type: Weapon, Category: Sword, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
     Impact: 3
+    Balance: 4
+    Slash: 4
+    Thrust: 3
+- Id: 1156, Name: Rusty Longsword (Crude), Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 2.5
+    Balance: 2.5
+    Slash: 3.5
+    Thrust: 2.5
+- Id: 1157, Name: Rusty Longsword (Decent), Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3
+    Balance: 3
+    Slash: 4
+    Thrust: 3
+- Id: 1158, Name: Rusty Longsword (Well Made), Type: Weapon, Category: Sword, Subcategory: Longsword, Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3.5
+    Balance: 3.5
+    Slash: 4.5
+    Thrust: 3.5
+- Id: 1159, Name: Iron Mace (Crude), Type: Weapon, Category: Bludgeon, Subcategory: Mace, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3
+    Balance: 2
+    Crush: 3
+- Id: 1160, Name: Iron Mace (Decent), Type: Weapon, Category: Bludgeon, Subcategory: Mace, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3.5
+    Balance: 2
+    Crush: 3.5
+- Id: 1161, Name: Iron Mace (Well Made), Type: Weapon, Category: Bludgeon, Subcategory: Mace, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 4
+    Balance: 2
+    Crush: 4
+- Id: 1162, Name: Wooden Quarterstaff (Crude), Type: Weapon, Category: Bludgeon, Subcategory: Quarterstaff, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 2.5
+    Crush: 2
+    Thrust: 1
+- Id: 1163, Name: Wooden Quarterstaff (Decent), Type: Weapon, Category: Bludgeon, Subcategory: Quarterstaff, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3
+    Crush: 2
+    Thrust: 1
+- Id: 1164, Name: Wooden Quarterstaff (Well Made), Type: Weapon, Category: Bludgeon, Subcategory: Quarterstaff, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3.5
+    Crush: 2
+    Thrust: 1
+- Id: 1165, Name: Spiked Club (Crude), Type: Weapon, Category: Bludgeon, Subcategory: Club, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 2
+    Crush: 2
+    Pierce: 1
+- Id: 1166, Name: Spiked Club (Decent), Type: Weapon, Category: Bludgeon, Subcategory: Club, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2.5
+    Balance: 2.5
+    Crush: 2.5
+    Pierce: 1
+- Id: 1167, Name: Spiked Club (Well Made), Type: Weapon, Category: Bludgeon, Subcategory: Club, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 3
+    Balance: 3
+    Crush: 3
+    Pierce: 1
+- Id: 1168, Name: Hatchet (Crude), Type: Weapon, Category: Axe, Subcategory: Hatchet, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 2.5
+    Slash: 2
+    Thrust: 1
+- Id: 1169, Name: Hatchet (Decent), Type: Weapon, Category: Axe, Subcategory: Hatchet, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3
+    Slash: 2
+    Thrust: 1
+- Id: 1170, Name: Hatchet (Well Made), Type: Weapon, Category: Axe, Subcategory: Hatchet, Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 2
+    Balance: 3.5
+    Slash: 2
+    Thrust: 1
+- Id: 1171, Name: Poleaxe (Crude), Type: Weapon, Category: Axe, Subcategory: Poleaxe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3
+    Balance: 2
+    Slash: 2.5
+    Thrust: 2
+- Id: 1172, Name: Poleaxe (Decent), Type: Weapon, Category: Axe, Subcategory: Poleaxe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3.5
+    Balance: 2.5
+    Slash: 3
+    Thrust: 2.5
+- Id: 1173, Name: Poleaxe (Well Made), Type: Weapon, Category: Axe, Subcategory: Poleaxe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 4
+    Balance: 3
+    Slash: 3.5
+    Thrust: 3
+- Id: 1174, Name: Battle Axe (Crude), Type: Weapon, Category: Axe, Subcategory: Battle Axe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3
+    Balance: 2
+    Slash: 3.5
+    Thrust: 2
+- Id: 1175, Name: Battle Axe (Decent), Type: Weapon, Category: Axe, Subcategory: Battle Axe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3.5
+    Balance: 2
+    Slash: 4
+    Thrust: 2
+- Id: 1176, Name: Battle Axe (Well Made), Type: Weapon, Category: Axe, Subcategory: Battle Axe, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 4
+    Balance: 2
+    Slash: 4.5
+    Thrust: 2
+- Id: 1177, Name: Sledgehammer (Crude), Type: Weapon, Category: Hammer, Subcategory: Sledgehammer, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3.5
+    Balance: 1.5
+    Crush: 3.5
+- Id: 1178, Name: Sledgehammer (Decent), Type: Weapon, Category: Hammer, Subcategory: Sledgehammer, Rank: Adept, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Impact: 4
+    Balance: 1.5
+    Crush: 4
+- Id: 1179, Name: Sledgehammer (Well Made), Type: Weapon, Category: Hammer, Subcategory: Sledgehammer, Rank: Adept, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Impact: 4.5
+    Balance: 1.5
+    Crush: 4.5
+- Id: 1180, Name: War Hammer (Crude), Type: Weapon, Category: Hammer, Subcategory: War Hammer, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3
+    Balance: 2
+    Crush: 3
+    Thrust: 2
+- Id: 1181, Name: War Hammer (Decent), Type: Weapon, Category: Hammer, Subcategory: War Hammer, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3.5
+    Balance: 2
+    Crush: 3.5
+    Thrust: 2
+- Id: 1182, Name: War Hammer (Well Made), Type: Weapon, Category: Hammer, Subcategory: War Hammer, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 4
+    Balance: 2
+    Crush: 4
+    Thrust: 2
+- Id: 1183, Name: Maul (Crude), Type: Weapon, Category: Hammer, Subcategory: Maul, Rank: Expert, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Impact: 4
+    Balance: 1
+    Crush: 4
+- Id: 1184, Name: Maul (Decent), Type: Weapon, Category: Hammer, Subcategory: Maul, Rank: Expert, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Impact: 4.5
+    Balance: 1
+    Crush: 4.5
+- Id: 1185, Name: Maul (Well Made), Type: Weapon, Category: Hammer, Subcategory: Maul, Rank: Expert, Points: 0, Weight: 3.5, Desc: 
+  Stats:
+    Weight: 3.5
+    Impact: 5
+    Balance: 1
+    Crush: 5
+- Id: 1186, Name: Short Spear (Crude), Type: Weapon, Category: Polearm, Subcategory: Spear, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 2
+    Balance: 2.5
+    Pierce: 2
+    Thrust: 2.5
+- Id: 1187, Name: Short Spear (Decent), Type: Weapon, Category: Polearm, Subcategory: Spear, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 2
+    Balance: 3
+    Pierce: 2
+    Thrust: 3
+- Id: 1188, Name: Short Spear (Well Made), Type: Weapon, Category: Polearm, Subcategory: Spear, Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 2
+    Balance: 3.5
+    Pierce: 2
+    Thrust: 3.5
+- Id: 1189, Name: Halberd (Crude), Type: Weapon, Category: Polearm, Subcategory: Halberd, Rank: Expert, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3
+    Balance: 2
+    Slash: 2.5
+    Pierce: 2
+    Thrust: 3
+- Id: 1190, Name: Halberd (Decent), Type: Weapon, Category: Polearm, Subcategory: Halberd, Rank: Expert, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Impact: 3.5
+    Balance: 2
+    Slash: 3
+    Pierce: 2
+    Thrust: 3.5
+- Id: 1191, Name: Halberd (Well Made), Type: Weapon, Category: Polearm, Subcategory: Halberd, Rank: Expert, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Impact: 4
+    Balance: 2
+    Slash: 3.5
+    Pierce: 2
+    Thrust: 4
+- Id: 1192, Name: Voulge (Crude), Type: Weapon, Category: Polearm, Subcategory: Voulge, Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 2.5
+    Balance: 2
+    Slash: 3
+    Pierce: 1.5
+    Thrust: 2
+- Id: 1193, Name: Voulge (Decent), Type: Weapon, Category: Polearm, Subcategory: Voulge, Rank: Adept, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Impact: 3
+    Balance: 2
+    Slash: 3.5
+    Pierce: 1.5
+    Thrust: 2.5
+- Id: 1194, Name: Voulge (Well Made), Type: Weapon, Category: Polearm, Subcategory: Voulge, Rank: Adept, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Impact: 3.5
+    Balance: 2
+    Slash: 4
+    Pierce: 1.5
+    Thrust: 3
+- Id: 1195, Name: Torch (Crude), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 2.5
+- Id: 1196, Name: Torch (Decent), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3
+- Id: 1197, Name: Torch (Well Made), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3.5
+- Id: 1198, Name: Wooden Stake (Crude), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 2.5
+    Thrust: 0.5
+- Id: 1199, Name: Wooden Stake (Decent), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3
+    Thrust: 0.5
+- Id: 1200, Name: Wooden Stake (Well Made), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3.5
+    Thrust: 0.5
+- Id: 1201, Name: Cage Bar (Crude), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 3
+    Balance: 2
+    Crush: 0.5
+- Id: 1202, Name: Cage Bar (Decent), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 3.5
+    Balance: 2
+    Crush: 0.5
+- Id: 1203, Name: Cage Bar (Well Made), Type: Weapon, Category: Unconventional, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 4
+    Balance: 2
+    Crush: 0.5
+- Id: 1204, Name: Dagger (Ornate) (Crude), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1
+    Balance: 4.5
+    Slash: 2
+    Thrust: 2
+- Id: 1205, Name: Dagger (Ornate) (Decent), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1
+    Balance: 5
+    Slash: 2.5
+    Thrust: 2.5
+- Id: 1206, Name: Dagger (Ornate) (Well Made), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Novice, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 1
+    Balance: 5.5
+    Slash: 3
+    Thrust: 3
+- Id: 1207, Name: Sword (Twisted) (Crude), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 3.5
+    Slash: 3
+    Thrust: 2
+- Id: 1208, Name: Sword (Twisted) (Decent), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 4
+    Slash: 3.5
+    Thrust: 2.5
+- Id: 1209, Name: Sword (Twisted) (Well Made), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Impact: 2
+    Balance: 4.5
+    Slash: 4
+    Thrust: 3
+- Id: 1210, Name: Flanged Mace (Socket) (Crude), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 3
+    Balance: 2
+    Crush: 3
+- Id: 1211, Name: Flanged Mace (Socket) (Decent), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 3.5
+    Balance: 2
+    Crush: 3.5
+- Id: 1212, Name: Flanged Mace (Socket) (Well Made), Type: Weapon, Category: Special, Subcategory: One-Handed, Rank: Adept, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Impact: 4
+    Balance: 2
+    Crush: 4
+- Id: 1213, Name: Two-Handed Sword (Flat) (Crude), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3
+    Balance: 3
+    Slash: 3.5
+- Id: 1214, Name: Two-Handed Sword (Flat) (Decent), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3.5
+    Balance: 3.5
+    Slash: 4
+- Id: 1215, Name: Two-Handed Sword (Flat) (Well Made), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 4
+    Balance: 4
+    Slash: 4.5
+- Id: 1216, Name: Poleaxe (Golems) (Crude), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3
+    Balance: 2
+    Slash: 2.5
+    Thrust: 2.5
+- Id: 1217, Name: Poleaxe (Golems) (Decent), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 3.5
+    Balance: 2.5
+    Slash: 3
+    Thrust: 3
+- Id: 1218, Name: Poleaxe (Golems) (Well Made), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Impact: 4
+    Balance: 3
+    Slash: 3.5
+    Thrust: 3.5
+- Id: 1219, Name: Pole Hammer (Golems) (Crude), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3
+    Balance: 2
+    Crush: 3.5
+    Thrust: 2.5
+- Id: 1220, Name: Pole Hammer (Golems) (Decent), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 3.5
+    Balance: 2
+    Crush: 4
+    Thrust: 3
+- Id: 1221, Name: Pole Hammer (Golems) (Well Made), Type: Weapon, Category: Special, Subcategory: Two-Handed, Rank: Expert, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Impact: 4
+    Balance: 2
+    Crush: 4.5
+    Thrust: 3.5
+- Id: 1222, Name: Wooden Buckler (Crude), Type: Weapon, Category: Buckler, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Coverage: 2
+- Id: 1223, Name: Wooden Buckler (Decent), Type: Weapon, Category: Buckler, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Coverage: 2
+- Id: 1224, Name: Wooden Buckler (Well Made), Type: Weapon, Category: Buckler, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Coverage: 2
+- Id: 1225, Name: Iron Buckler (Crude), Type: Weapon, Category: Buckler, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Coverage: 2
+- Id: 1226, Name: Iron Buckler (Decent), Type: Weapon, Category: Buckler, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Coverage: 2.5
+- Id: 1227, Name: Iron Buckler (Well Made), Type: Weapon, Category: Buckler, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Coverage: 3
+- Id: 1228, Name: Heater Shield (Crude), Type: Weapon, Category: Medium, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Coverage: 2.5
+- Id: 1229, Name: Heater Shield (Decent), Type: Weapon, Category: Medium, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Coverage: 3
+- Id: 1230, Name: Heater Shield (Well Made), Type: Weapon, Category: Medium, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Coverage: 3.5
+- Id: 1231, Name: Kite Shield (Crude), Type: Weapon, Category: Large, Subcategory: , Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Coverage: 3
+- Id: 1232, Name: Kite Shield (Decent), Type: Weapon, Category: Large, Subcategory: , Rank: Adept, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Coverage: 3.5
+- Id: 1233, Name: Kite Shield (Well Made), Type: Weapon, Category: Large, Subcategory: , Rank: Adept, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Coverage: 4
+- Id: 1234, Name: Tower Shield (Crude), Type: Weapon, Category: Tower, Subcategory: , Rank: Expert, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Coverage: 3.5
+- Id: 1235, Name: Tower Shield (Decent), Type: Weapon, Category: Tower, Subcategory: , Rank: Expert, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Coverage: 4
+- Id: 1236, Name: Tower Shield (Well Made), Type: Weapon, Category: Tower, Subcategory: , Rank: Expert, Points: 0, Weight: 3.5, Desc: 
+  Stats:
+    Weight: 3.5
+    Coverage: 4.5
+- Id: 1237, Name: Shirt (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1238, Name: Shirt (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1239, Name: Shirt (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1240, Name: Tunic (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1241, Name: Tunic (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1242, Name: Tunic (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1243, Name: Padded Vest (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2
+    Crush: 1.5
+    Pierce: 1.5
+    Coverage: 2
+    Encumbrance: 0.5
+- Id: 1244, Name: Padded Vest (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2
+    Crush: 1.5
+    Pierce: 1.5
+    Coverage: 2
+    Encumbrance: 0.5
+- Id: 1245, Name: Padded Vest (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2
+    Crush: 1.5
+    Pierce: 1.5
+    Coverage: 2
+    Encumbrance: 0.5
+- Id: 1246, Name: Gambeson (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Slash: 2
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1247, Name: Gambeson (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
     Slash: 2.5
     Crush: 2
-    Balance: 1
-    Points: 5
-    Weight: 2
-- Id: 56, Name: Wooden Club, Type: Weapon, Category: Bludgeon, Subcategory: Club, Rank: Inept, Points: 1, Weight: 1, Desc: A simple wooden club.
-  Stats:
-    Impact: 1.5
-    Crush: 2
-    Balance: 1
-    Points: 1
-    Weight: 1
-- Id: 57, Name: Iron Dagger, Type: Weapon, Category: Dagger, Subcategory: Stiletto, Rank: Inept, Points: 1, Weight: 0.5, Desc: A short iron dagger.
-  Stats:
-    Impact: 0.5
     Pierce: 2
-    Balance: 2.5
-    Points: 1
-    Weight: 0.5
-- Id: 58, Name: Training Spear, Type: Weapon, Category: Polearm, Subcategory: Spear, Rank: Inept, Points: 2, Weight: 2, Desc: A blunt training spear.
+    Coverage: 2.5
+    Encumbrance: 1
+- Id: 1248, Name: Gambeson (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 2, Desc: 
   Stats:
-    Impact: 1
-    Thrust: 2.5
-    Balance: 1.5
-    Points: 2
     Weight: 2
-- Id: 59, Name: Old Leather Tunic, Type: Armour, Category: Body, Subcategory: Shirt, Rank: Inept, Points: 2, Weight: 1, Desc: Worn leather tunic.
+    Slash: 3
+    Crush: 2
+    Pierce: 2
+    Coverage: 3
+    Encumbrance: 1
+- Id: 1249, Name: Mail Shirt (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 2.5, Desc: 
   Stats:
-    SlashProtection: 1
-    CrushProtection: 0.5
-    PierceProtection: 0.5
-    ImpactResistance: 0.5
+    Weight: 2.5
+    Slash: 3
+    Crush: 2
+    Pierce: 2.5
+    Coverage: 2.5
+    Encumbrance: 1.5
+- Id: 1250, Name: Mail Shirt (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Slash: 3.5
+    Crush: 2.5
+    Pierce: 3
+    Coverage: 3
+    Encumbrance: 1.5
+- Id: 1251, Name: Mail Shirt (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 3.5, Desc: 
+  Stats:
+    Weight: 3.5
+    Slash: 4
+    Crush: 3
+    Pierce: 3.5
+    Coverage: 3.5
+    Encumbrance: 1.5
+- Id: 1252, Name: Brigandine (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Slash: 2.5
+    Crush: 2.5
+    Pierce: 2
+    Coverage: 2.5
+    Encumbrance: 1.5
+- Id: 1253, Name: Brigandine (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Slash: 3
+    Crush: 3
+    Pierce: 2.5
+    Coverage: 3
+    Encumbrance: 1.5
+- Id: 1254, Name: Brigandine (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Novice, Points: 0, Weight: 3.5, Desc: 
+  Stats:
+    Weight: 3.5
+    Slash: 3.5
+    Crush: 3.5
+    Pierce: 3
+    Coverage: 3.5
+    Encumbrance: 1.5
+- Id: 1255, Name: Cuirass (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Adept, Points: 0, Weight: 3.5, Desc: 
+  Stats:
+    Weight: 3.5
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 3
+    Encumbrance: 2
+- Id: 1256, Name: Cuirass (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Adept, Points: 0, Weight: 4, Desc: 
+  Stats:
+    Weight: 4
+    Slash: 4
+    Crush: 3.5
+    Pierce: 3.5
+    Coverage: 3.5
+    Encumbrance: 2
+- Id: 1257, Name: Cuirass (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Adept, Points: 0, Weight: 4.5, Desc: 
+  Stats:
+    Weight: 4.5
+    Slash: 4.5
+    Crush: 4
+    Pierce: 4
+    Coverage: 4
+    Encumbrance: 2
+- Id: 1258, Name: Surcoat (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1259, Name: Surcoat (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1260, Name: Surcoat (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1261, Name: Tabard (Crude), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1262, Name: Tabard (Decent), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1263, Name: Tabard (Well Made), Type: Weapon, Category: Torso, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1264, Name: Hood (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1265, Name: Hood (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1266, Name: Hood (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1267, Name: Cap (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1268, Name: Cap (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1269, Name: Cap (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1270, Name: Leather Cap (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
     Encumbrance: 0.5
-    Points: 2
-    Weight: 1
-- Id: 60, Name: Padded Cap, Type: Armour, Category: Head, Subcategory: Padded Cap, Rank: Inept, Points: 1, Weight: 0.5, Desc: Simple padded cap.
+- Id: 1271, Name: Leather Cap (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
   Stats:
-    SlashProtection: 0.5
-    CrushProtection: 0.5
-    PierceProtection: 0.2
-    ImpactResistance: 0.5
-    Encumbrance: 0.2
-    Points: 1
     Weight: 0.5
-- Id: 61, Name: Ragged Trousers, Type: Armour, Category: Legs, Subcategory: Trousers, Rank: Inept, Points: 1, Weight: 0.5, Desc: Torn cloth trousers.
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1272, Name: Leather Cap (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
   Stats:
-    SlashProtection: 0.2
-    CrushProtection: 0.1
-    PierceProtection: 0.1
-    ImpactResistance: 0.1
-    Encumbrance: 0.1
-    Points: 1
     Weight: 0.5
-- Id: 62, Name: Worn Boots, Type: Armour, Category: Feet, Subcategory: Boots, Rank: Inept, Points: 1, Weight: 0.5, Desc: Old leather boots.
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1273, Name: Kettle Helm (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
   Stats:
-    SlashProtection: 0.3
-    CrushProtection: 0.2
-    PierceProtection: 0.1
-    ImpactResistance: 0.2
-    Encumbrance: 0.1
-    Points: 1
-    Weight: 0.5
-- Id: 63, Name: Cloth Gloves, Type: Armour, Category: Hands, Subcategory: Gloves, Rank: Inept, Points: 1, Weight: 0.5, Desc: Basic cloth gloves.
-  Stats:
-    SlashProtection: 0.1
-    CrushProtection: 0.1
-    PierceProtection: 0.1
-    ImpactResistance: 0.1
-    Encumbrance: 0.1
-    Points: 1
-    Weight: 0.5
-- Id: 64, Name: Aspirant Sword, Type: Weapon, Category: Sword, Subcategory: Arming Sword, Rank: Aspirant, Points: 6, Weight: 1.5, Desc: A sharper sword for aspirants.
-  Stats:
-    Impact: 2.8
-    Slash: 3.2
-    Pierce: 2.2
-    Balance: 3
-    Points: 6
     Weight: 1.5
-- Id: 65, Name: Aspirant Axe, Type: Weapon, Category: Axe, Subcategory: Battleaxe, Rank: Aspirant, Points: 7, Weight: 2, Desc: A better axe for aspirants.
+    Slash: 2.5
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1274, Name: Kettle Helm (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
   Stats:
-    Impact: 3.5
+    Weight: 1.5
     Slash: 3
     Crush: 2.5
-    Balance: 1.5
-    Points: 7
-    Weight: 2
-- Id: 66, Name: Aspirant Club, Type: Weapon, Category: Bludgeon, Subcategory: Club, Rank: Aspirant, Points: 4, Weight: 1.5, Desc: A heavier club for aspirants.
-  Stats:
-    Impact: 2
-    Crush: 2.5
-    Balance: 1.5
-    Points: 4
-    Weight: 1.5
-- Id: 67, Name: Aspirant Dagger, Type: Weapon, Category: Dagger, Subcategory: Stiletto, Rank: Aspirant, Points: 2, Weight: 0.5, Desc: A sharper dagger for aspirants.
-  Stats:
-    Impact: 0.8
     Pierce: 2.5
-    Balance: 3
-    Points: 2
-    Weight: 0.5
-- Id: 68, Name: Aspirant Spear, Type: Weapon, Category: Polearm, Subcategory: Spear, Rank: Aspirant, Points: 5, Weight: 2, Desc: A pointed spear for aspirants.
-  Stats:
-    Impact: 1.5
-    Thrust: 3.5
-    Balance: 2
-    Points: 5
-    Weight: 2
-- Id: 69, Name: Aspirant Leather Vest, Type: Armour, Category: Body, Subcategory: Shirt, Rank: Aspirant, Points: 3, Weight: 1.5, Desc: Sturdier leather vest.
-  Stats:
-    SlashProtection: 1.5
-    CrushProtection: 1
-    PierceProtection: 1
-    ImpactResistance: 1
-    Encumbrance: 0.5
-    Points: 3
-    Weight: 1.5
-- Id: 70, Name: Aspirant Cap, Type: Armour, Category: Head, Subcategory: Padded Cap, Rank: Aspirant, Points: 2, Weight: 0.5, Desc: Better padded cap.
-  Stats:
-    SlashProtection: 0.8
-    CrushProtection: 0.7
-    PierceProtection: 0.4
-    ImpactResistance: 0.7
-    Encumbrance: 0.3
-    Points: 2
-    Weight: 0.5
-- Id: 71, Name: Aspirant Trousers, Type: Armour, Category: Legs, Subcategory: Trousers, Rank: Aspirant, Points: 2, Weight: 0.5, Desc: Reinforced trousers.
-  Stats:
-    SlashProtection: 0.5
-    CrushProtection: 0.3
-    PierceProtection: 0.3
-    ImpactResistance: 0.3
-    Encumbrance: 0.2
-    Points: 2
-    Weight: 0.5
-- Id: 72, Name: Aspirant Boots, Type: Armour, Category: Feet, Subcategory: Boots, Rank: Aspirant, Points: 2, Weight: 0.5, Desc: Sturdier boots.
-  Stats:
-    SlashProtection: 0.4
-    CrushProtection: 0.3
-    PierceProtection: 0.2
-    ImpactResistance: 0.3
-    Encumbrance: 0.2
-    Points: 2
-    Weight: 0.5
-- Id: 73, Name: Aspirant Gloves, Type: Armour, Category: Hands, Subcategory: Gloves, Rank: Aspirant, Points: 1, Weight: 0.5, Desc: Reinforced gloves.
-  Stats:
-    SlashProtection: 0.2
-    CrushProtection: 0.2
-    PierceProtection: 0.2
-    ImpactResistance: 0.2
-    Encumbrance: 0.1
-    Points: 1
-    Weight: 0.5
-- Id: 74, Name: Wooden Buckler, Type: Shield, Category: Shield, Subcategory: Buckler, Rank: Inept, Points: 2, Weight: 1, Desc: A small, round wooden buckler.
-  Stats:
-    ImpactResistance: 1.5
-    SlashProtection: 1
-    CrushProtection: 1
-    PierceProtection: 0.5
-    Encumbrance: 0.5
-    Points: 2
-    Weight: 1
-- Id: 75, Name: Iron Heater Shield, Type: Shield, Category: Shield, Subcategory: Heater, Rank: Aspirant, Points: 4, Weight: 2, Desc: A sturdy iron heater shield.
-  Stats:
-    ImpactResistance: 2.5
-    SlashProtection: 2
-    CrushProtection: 2
-    PierceProtection: 1.5
+    Coverage: 2.5
     Encumbrance: 1
-    Points: 4
+- Id: 1275, Name: Kettle Helm (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 3
+    Encumbrance: 1
+- Id: 1276, Name: Nasal Helm (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1277, Name: Nasal Helm (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2.5
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1278, Name: Nasal Helm (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Novice, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1279, Name: Great Helm (Crude), Type: Weapon, Category: Head, Subcategory: , Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
     Weight: 2
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 3
+    Encumbrance: 1.5
+- Id: 1280, Name: Great Helm (Decent), Type: Weapon, Category: Head, Subcategory: , Rank: Adept, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Slash: 4
+    Crush: 3.5
+    Pierce: 3.5
+    Coverage: 3.5
+    Encumbrance: 1.5
+- Id: 1281, Name: Great Helm (Well Made), Type: Weapon, Category: Head, Subcategory: , Rank: Adept, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Slash: 4.5
+    Crush: 4
+    Pierce: 4
+    Coverage: 4
+    Encumbrance: 1.5
+- Id: 1282, Name: Leather Gloves (Crude), Type: Weapon, Category: Hands, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1283, Name: Leather Gloves (Decent), Type: Weapon, Category: Hands, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1284, Name: Leather Gloves (Well Made), Type: Weapon, Category: Hands, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1285, Name: Cloth Gloves (Crude), Type: Weapon, Category: Hands, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1286, Name: Cloth Gloves (Decent), Type: Weapon, Category: Hands, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1287, Name: Cloth Gloves (Well Made), Type: Weapon, Category: Hands, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1288, Name: Mail Mittens (Crude), Type: Weapon, Category: Hands, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1289, Name: Mail Mittens (Decent), Type: Weapon, Category: Hands, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1290, Name: Mail Mittens (Well Made), Type: Weapon, Category: Hands, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1291, Name: Plate Gauntlets (Crude), Type: Weapon, Category: Hands, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2.5
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1292, Name: Plate Gauntlets (Decent), Type: Weapon, Category: Hands, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3
+    Crush: 2.5
+    Pierce: 2.5
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1293, Name: Plate Gauntlets (Well Made), Type: Weapon, Category: Hands, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1294, Name: Shoes (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1295, Name: Shoes (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1296, Name: Shoes (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1297, Name: Sandals (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1298, Name: Sandals (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1299, Name: Sandals (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1300, Name: Leather Boots (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1301, Name: Leather Boots (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1302, Name: Leather Boots (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1303, Name: Tall Boots (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1304, Name: Tall Boots (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1305, Name: Tall Boots (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 1
+    Crush: 1
+    Pierce: 1
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1306, Name: Mail Boots (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1307, Name: Mail Boots (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1308, Name: Mail Boots (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Novice, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 2
+    Crush: 1.5
+    Pierce: 2
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1309, Name: Plate Sabatons (Crude), Type: Weapon, Category: Feet, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 2.5
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1310, Name: Plate Sabatons (Decent), Type: Weapon, Category: Feet, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3
+    Crush: 2.5
+    Pierce: 2.5
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1311, Name: Plate Sabatons (Well Made), Type: Weapon, Category: Feet, Subcategory: , Rank: Adept, Points: 0, Weight: 1.5, Desc: 
+  Stats:
+    Weight: 1.5
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1312, Name: Leather Leggings (Crude), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1313, Name: Leather Leggings (Decent), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1314, Name: Leather Leggings (Well Made), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 1, Desc: 
+  Stats:
+    Weight: 1
+    Slash: 1.5
+    Crush: 1
+    Pierce: 1
+    Coverage: 1.5
+    Encumbrance: 0.5
+- Id: 1315, Name: Cloth Leggings (Crude), Type: Weapon, Category: Legs, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1316, Name: Cloth Leggings (Decent), Type: Weapon, Category: Legs, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1317, Name: Cloth Leggings (Well Made), Type: Weapon, Category: Legs, Subcategory: , Rank: Inept, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1318, Name: Mail Chausses (Crude), Type: Weapon, Category: Legs, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Slash: 2
+    Crush: 2
+    Pierce: 2
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1319, Name: Mail Chausses (Decent), Type: Weapon, Category: Legs, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Slash: 2.5
+    Crush: 2
+    Pierce: 2.5
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1320, Name: Mail Chausses (Well Made), Type: Weapon, Category: Legs, Subcategory: , Rank: Novice, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Slash: 3
+    Crush: 2
+    Pierce: 3
+    Coverage: 2
+    Encumbrance: 1
+- Id: 1321, Name: Plate Greaves (Crude), Type: Weapon, Category: Legs, Subcategory: , Rank: Adept, Points: 0, Weight: 2, Desc: 
+  Stats:
+    Weight: 2
+    Slash: 3
+    Crush: 2.5
+    Pierce: 2.5
+    Coverage: 2
+    Encumbrance: 1.5
+- Id: 1322, Name: Plate Greaves (Decent), Type: Weapon, Category: Legs, Subcategory: , Rank: Adept, Points: 0, Weight: 2.5, Desc: 
+  Stats:
+    Weight: 2.5
+    Slash: 3.5
+    Crush: 3
+    Pierce: 3
+    Coverage: 2.5
+    Encumbrance: 1.5
+- Id: 1323, Name: Plate Greaves (Well Made), Type: Weapon, Category: Legs, Subcategory: , Rank: Adept, Points: 0, Weight: 3, Desc: 
+  Stats:
+    Weight: 3
+    Slash: 4
+    Crush: 3.5
+    Pierce: 3.5
+    Coverage: 3
+    Encumbrance: 1.5
+- Id: 1324, Name: Surcoat (Legs) (Crude), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1325, Name: Surcoat (Legs) (Decent), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0
+- Id: 1326, Name: Surcoat (Legs) (Well Made), Type: Weapon, Category: Legs, Subcategory: , Rank: Aspirant, Points: 0, Weight: 0.5, Desc: 
+  Stats:
+    Weight: 0.5
+    Slash: 0.5
+    Crush: 0.5
+    Pierce: 0.5
+    Coverage: 1
+    Encumbrance: 0

@@ -69,7 +69,7 @@
 - Show a confirmation or error message on save.
 - Team member input validation is inline and always allows Save, with errors shown next to fields.
 - Add Team Member dialog is always accessible from the Team Manager tab.
-- All CommunityToolkit.Mvvm dependencies removed from TeamManagerViewModel and TeamMemberViewModel; standard C# and Avalonia MVVM patterns used.
+- All CommunityToolkit.Mvvm dependencies removed from CompanyManagerViewModel and CompanyMemberViewModel; standard C# and Avalonia MVVM patterns used.
 - Team members are persisted to SQLite, with schema initialization handled automatically.
 - All build/runtime errors resolved; dialog and team list update as expected.
 

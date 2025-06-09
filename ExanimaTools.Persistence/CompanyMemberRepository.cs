@@ -35,7 +35,13 @@ public class CompanyMemberRepository
 
     private SqliteConnection GetConnection()
     {
-        return _externalConnection ?? new SqliteConnection(_connectionString);
+        if (_externalConnection != null)
+        {
+            if (_externalConnection.State != System.Data.ConnectionState.Open)
+                throw new InvalidOperationException("External connection must be open.");
+            return _externalConnection;
+        }
+        return new SqliteConnection(_connectionString);
     }
 
     private static async Task EnsureConnectionOpenAsync(SqliteConnection conn)
@@ -132,7 +138,12 @@ public class CompanyMemberRepository
             var profileId = (long)await profileCmd.ExecuteScalarAsync();
             foreach (var (slot, items) in profile.EquippedItems)
             {
-                foreach (var item in items)
+                // Deduplicate by (Name, Type, Slot, Layer)
+                var uniqueItems = items
+                    .GroupBy(e => (e.Name, e.Type, e.Slot, e.Layer))
+                    .Select(g => g.First())
+                    .ToList();
+                foreach (var item in uniqueItems)
                 {
                     var itemCmd = conn.CreateCommand();
                     itemCmd.CommandText = "INSERT INTO EquippedItems (ProfileId, Slot, Layer, EquipmentName, Type, Description, Quality, Condition, StatsJson) VALUES ($pid, $slot, $layer, $ename, $type, $desc, $qual, $cond, $stats)";
@@ -226,7 +237,12 @@ public class CompanyMemberRepository
             var profileId = (long)await profileCmd.ExecuteScalarAsync();
             foreach (var (slot, items) in profile.EquippedItems)
             {
-                foreach (var item in items)
+                // Deduplicate by (Name, Type, Slot, Layer)
+                var uniqueItems = items
+                    .GroupBy(e => (e.Name, e.Type, e.Slot, e.Layer))
+                    .Select(g => g.First())
+                    .ToList();
+                foreach (var item in uniqueItems)
                 {
                     var itemCmd = conn.CreateCommand();
                     itemCmd.CommandText = "INSERT INTO EquippedItems (ProfileId, Slot, Layer, EquipmentName, Type, Description, Quality, Condition, StatsJson) VALUES ($pid, $slot, $layer, $ename, $type, $desc, $qual, $cond, $stats)";

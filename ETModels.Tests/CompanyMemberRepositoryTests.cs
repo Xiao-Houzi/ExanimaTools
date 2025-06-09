@@ -19,13 +19,24 @@ public class CompanyMemberRepositoryTests
     {
         _connection = new SqliteConnection(_connectionString);
         await _connection.OpenAsync();
-        var cmd = _connection.CreateCommand();
-        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
-            Name TEXT PRIMARY KEY,
-            Type INTEGER,
-            Description TEXT
-        )";
-        await cmd.ExecuteNonQueryAsync();
+        // Ensure Equipment table exists for tests on the same connection
+        using (var cmd = _connection.CreateCommand())
+        {
+            cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Name TEXT UNIQUE,
+                Type INTEGER,
+                Description TEXT,
+                Category TEXT,
+                Subcategory TEXT,
+                Rank INTEGER DEFAULT 0,
+                Points INTEGER DEFAULT 0,
+                Weight REAL DEFAULT 0,
+                Stats TEXT
+            )";
+            cmd.ExecuteNonQuery();
+        }
+        var eqRepo = new EquipmentRepository(_connection, new FileLoggingService("logs"));
         var repo = new CompanyMemberRepository(_connection); // new overload
         await repo.InitializeSchemaAsync();
     }
@@ -248,10 +259,12 @@ public class CompanyMemberRepositoryTests
                 ('Sword2', 0, 'Backup blade')";
             cmd.ExecuteNonQuery();
         }
+        var eqRepo = new EquipmentRepository(_connection!, new FileLoggingService("logs"));
+        var allEq = await eqRepo.GetAllAsync();
+        var eq1 = allEq.Find(e => e.Name == "Sword")!;
+        var eq2 = allEq.Find(e => e.Name == "Sword2")!;
         var repo = new CompanyMemberRepository(_connection!);
         var member = new CompanyMember { Name = "AssignGuy", Role = Role.Fighter, Rank = Rank.Novice, Sex = Sex.Male, Type = MemberType.Recruit };
-        var eq1 = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Slot = EquipmentSlot.Hands };
-        var eq2 = new EquipmentPiece { Name = "Sword2", Type = EquipmentType.Weapon, Slot = EquipmentSlot.Hands };
         // Assign to Novice profile
         Assert.IsTrue(member.AssignEquipmentToProfile(Rank.Novice, EquipmentSlot.Hands, eq1));
         // Duplicate assignment should be prevented

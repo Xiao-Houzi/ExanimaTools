@@ -10,6 +10,14 @@ namespace ExanimaTools.Persistence
         {
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
+            MigrateEquipmentTable(conn);
+        }
+
+        public static void MigrateEquipmentTable(SqliteConnection? externalConn)
+        {
+            var conn = externalConn ?? throw new ArgumentNullException(nameof(externalConn));
+            if (conn.State != System.Data.ConnectionState.Open)
+                conn.Open();
             var columns = new HashSet<string>();
             using (var pragmaCmd = conn.CreateCommand())
             {
@@ -39,7 +47,12 @@ namespace ExanimaTools.Persistence
                 alter.CommandText = "ALTER TABLE Equipment ADD COLUMN Weight REAL DEFAULT 0";
                 alter.ExecuteNonQuery();
             }
-            // Add more migration steps as needed
+            if (!columns.Contains("Stats"))
+            {
+                using var alter = conn.CreateCommand();
+                alter.CommandText = "ALTER TABLE Equipment ADD COLUMN Stats TEXT DEFAULT '{}'";
+                alter.ExecuteNonQuery();
+            }
         }
     }
 }

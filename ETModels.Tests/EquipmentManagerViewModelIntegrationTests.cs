@@ -23,14 +23,17 @@ namespace ETModels.Tests
             }
         }
 
+        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+
         [TestMethod]
         public async Task EditEquipment_UpdatesItemInDbAndCountUnchanged()
         {
             // Arrange
-            var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+            var logger = new FileLoggingService("logs");
+            var repo = GetTestEquipmentRepository();
             var eq = new EquipmentPiece { Name = "TestSword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords", Rank = Rank.Novice, Points = 10, Weight = 0.5f };
             await repo.AddAsync(eq);
-            var vm = new EquipmentManagerViewModel(null);
+            var vm = new EquipmentManagerViewModel(logger);
             typeof(EquipmentManagerViewModel)
                 .GetField("_equipmentRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 ?.SetValue(vm, repo);

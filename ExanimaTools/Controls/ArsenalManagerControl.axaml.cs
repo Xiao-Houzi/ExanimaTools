@@ -14,9 +14,8 @@ namespace ExanimaTools.Controls
             logger?.LogOperation("ArsenalManagerControl", "Created");
             if (DataContext == null)
             {
-                var dbPath = DbManager.GetDbPath();
-                var equipmentRepo = new EquipmentRepository($"Data Source={dbPath}", logger);
-                var arsenalRepo = new ArsenalRepository($"Data Source={dbPath}");
+                var equipmentRepo = DbManager.GetEquipmentRepository(logger);
+                var arsenalRepo = DbManager.GetArsenalRepository();
                 DataContext = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, logger);
             }
         }

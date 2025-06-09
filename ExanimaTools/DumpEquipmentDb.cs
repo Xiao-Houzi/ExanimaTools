@@ -16,17 +16,13 @@ public static class DumpEquipmentDb
         {
             resolvedDbPath = dbPath;
         }
-        else if (useDevDb)
-        {
-            resolvedDbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "exanima_tools_dev.db");
-        }
         else
         {
-            resolvedDbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "exanima_tools.db");
+            resolvedDbPath = DbManager.GetDbPath();
         }
         logger ??= new FileLoggingService("logs");
         logger.LogOperation("DumpEquipmentDb", $"Using DB path: {resolvedDbPath}");
-        var repo = new EquipmentRepository($"Data Source={resolvedDbPath}", logger);
+        var repo = DbManager.GetEquipmentRepository(logger);
         var all = await repo.GetAllAsync();
         logger.LogOperation("DumpEquipmentDb", $"Found {all.Count} equipment items in database.");
         using var writer = new StreamWriter(outPath, false);

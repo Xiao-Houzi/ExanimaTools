@@ -108,7 +108,7 @@ public class CompanyMember
     public CompanyMember(ILoggingService? logger = null)
     {
         _logger = logger;
-        _logger?.LogOperation("Create TeamMember", $"Name={_name}");
+        _logger?.LogOperation("Create CompanyMember", $"Name={_name}");
     }
     private string _name = string.Empty;
     public string Name

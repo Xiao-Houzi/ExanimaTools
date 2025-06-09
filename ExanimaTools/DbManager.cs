@@ -1,16 +1,15 @@
 using System;
 using System.IO;
+using ExanimaTools.Persistence;
+using ExanimaTools.Models;
+using Microsoft.Data.Sqlite;
 
 namespace ExanimaTools
 {
     public static class DbManager
     {
         private static string? _dbPath;
-#if DEBUG
-        public static string DbFileName { get; } = "exanima_tools_dev.db";
-#else
-        public static string DbFileName { get; } = "exanima_tools.db";
-#endif
+public static string DbFileName { get; } = "exanima_tools.db";
         public static string GetDbPath()
         {
             if (_dbPath == null)
@@ -19,6 +18,27 @@ namespace ExanimaTools
                 _dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DbFileName);
             }
             return _dbPath;
+        }
+
+        public static void SetDbPath(string path)
+        {
+            _dbPath = path;
+        }
+
+        public static EquipmentRepository GetEquipmentRepository(ILoggingService logger, SqliteConnection? connection = null)
+        {
+            if (connection != null)
+                return new EquipmentRepository(connection, logger);
+            var dbPath = GetDbPath();
+            return new EquipmentRepository($"Data Source={dbPath}", logger);
+        }
+
+        public static ArsenalRepository GetArsenalRepository(SqliteConnection? connection = null)
+        {
+            if (connection != null)
+                return new ArsenalRepository(connection);
+            var dbPath = GetDbPath();
+            return new ArsenalRepository($"Data Source={dbPath}");
         }
     }
 }

@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ExanimaTools.Controls.ArsenalTreeItemView">
+    <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="{Binding Name}" FontWeight="Bold" Width="120"/>
+        <TextBlock Text="{Binding EquipmentPiece.Rank}" Width="80" IsVisible="{Binding IsLeaf}"/>
+        <TextBlock Text="{Binding EquipmentPiece.Quality}" Width="80" IsVisible="{Binding IsLeaf}"/>
+        <TextBlock Text="{Binding EquipmentPiece.Condition}" Width="80" IsVisible="{Binding IsLeaf}"/>
+        <!-- Render a button for each injected action on leaf nodes -->
+        <ItemsControl ItemsSource="{Binding DataContext.ActionButtons, RelativeSource={RelativeSource AncestorType=UserControl}}" IsVisible="{Binding IsLeaf}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Label}"
+                            Command="{Binding Command}"
+                            CommandParameter="{Binding DataContext.EquipmentPiece, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            Margin="8,0,0,0"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

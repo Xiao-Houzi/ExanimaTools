@@ -1,3 +1,4 @@
+using ExanimaTools;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using Microsoft.Data.Sqlite;
@@ -11,34 +12,41 @@ namespace ETModels.Tests;
 [TestClass]
 public class EquipmentRepositoryTests
 {
-    private string _dbPath = "TestEquipment.db";
+    private string _dbPath = $"TestEquipment_{System.Guid.NewGuid()}.db";
     private string _connectionString => $"Data Source={_dbPath}";
+    private SqliteConnection? _connection;
 
     [TestInitialize]
     public void Init()
     {
-        // Only try to delete the test DB in the current directory (test runner output)
         if (File.Exists(_dbPath))
         {
             try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
         }
-        using var conn = new SqliteConnection(_connectionString);
-        conn.Open();
-        var cmd = conn.CreateCommand();
-        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Equipment (
-            Name TEXT PRIMARY KEY,
-            Type INTEGER,
-            Description TEXT,
-            Category TEXT,
-            Subcategory TEXT
-        )";
-        cmd.ExecuteNonQuery();
+        DbManager.SetDbPath(_dbPath);
+        _connection = new SqliteConnection(_connectionString);
+        _connection.Open();
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        _connection?.Dispose();
+        if (File.Exists(_dbPath))
+        {
+            try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
+        }
+    }
+
+    private EquipmentRepository GetTestEquipmentRepository()
+    {
+        return DbManager.GetEquipmentRepository(new FileLoggingService("logs"), _connection);
     }
 
     [TestMethod]
     public async Task AddAndGetAllAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        var repo = GetTestEquipmentRepository();
         var eq = new EquipmentPiece { Name = "Sword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords" };
         await repo.AddAsync(eq);
         List<EquipmentPiece> all = await repo.GetAllAsync();
@@ -57,7 +65,7 @@ public class EquipmentRepositoryTests
     [TestMethod]
     public async Task UpdateAndDeleteAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        var repo = GetTestEquipmentRepository();
         var eq = new EquipmentPiece { Name = "Axe", Type = EquipmentType.Weapon, Description = "Heavy", Category = "Weapon", Subcategory = "Axes" };
         await repo.AddAsync(eq);
         // Update
@@ -79,7 +87,7 @@ public class EquipmentRepositoryTests
     [TestMethod]
     public async Task GetByIdAsync_Works()
     {
-        var repo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        var repo = GetTestEquipmentRepository();
         var eq = new EquipmentPiece { Name = "Mace", Type = EquipmentType.Weapon, Description = "Blunt", Category = "Weapon", Subcategory = "Bludgeons" };
         await repo.AddAsync(eq);
         var found = await repo.GetByIdAsync(eq.Id);

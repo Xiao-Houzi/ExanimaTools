@@ -21,18 +21,22 @@ namespace ETModels.Tests
             {
                 try { File.Delete(_dbPath); } catch { /* ignore if locked */ }
             }
+            // No manual table creation! Let repository handle schema.
         }
+
+        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        private ArsenalRepository GetTestArsenalRepository() => new ArsenalRepository(_connectionString);
 
         [TestMethod]
         public async Task AddAndRemoveEquipment_UpdatesUIAndDb()
         {
             // Arrange
-            var equipmentRepo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
-            var arsenalRepo = new ArsenalRepository(_connectionString);
+            var equipmentRepo = GetTestEquipmentRepository();
+            var arsenalRepo = GetTestArsenalRepository();
             var eq = new EquipmentPiece { Name = "Test Dagger", Type = EquipmentType.Weapon };
             await equipmentRepo.AddAsync(eq);
             var all = await equipmentRepo.GetAllAsync();
-            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo);
+            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new FileLoggingService("test_log.txt"));
             // Wait for async load
             await Task.Delay(100);
             // Add twice
@@ -45,7 +49,7 @@ namespace ETModels.Tests
             Assert.AreEqual(2, arsenal.Equipment.Count(e => e.Id == all[0].Id));
             // Remove one
             vm.SelectedArsenalEquipment = vm.ArsenalEquipment.First(e => e.Id == all[0].Id);
-            await vm.RemoveFromArsenalAsync();
+            await vm.RemoveFromArsenalAsync(null);
             Assert.AreEqual(1, vm.ArsenalEquipment.Count(e => e.Id == all[0].Id));
             arsenal = await arsenalRepo.GetArsenalAsync(equipmentRepo);
             Assert.AreEqual(1, arsenal.Equipment.Count(e => e.Id == all[0].Id));
@@ -55,8 +59,8 @@ namespace ETModels.Tests
         public async Task EquipmentFiltering_Works_ForAllFilterTypesAndCombinations()
         {
             // Arrange: Seed DB with diverse equipment
-            var equipmentRepo = new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
-            var arsenalRepo = new ArsenalRepository(_connectionString);
+            var equipmentRepo = GetTestEquipmentRepository();
+            var arsenalRepo = GetTestArsenalRepository();
             var items = new[]
             {
                 new EquipmentPiece { Name = "Sword1", Type = EquipmentType.Weapon, Category = "Weapon", Subcategory = "Swords", Condition = EquipmentCondition.Good, Rank = Rank.Novice, Stats = new() { { StatType.Slash, 7 }, { StatType.Weight, 2 } } },
@@ -66,7 +70,7 @@ namespace ETModels.Tests
                 new EquipmentPiece { Name = "Chest1", Type = EquipmentType.Armour, Category = "Armour", Subcategory = "Body", Condition = EquipmentCondition.Good, Rank = Rank.Master, Stats = new() { { StatType.ImpactResistance, 9 }, { StatType.Weight, 5 } } },
             };
             foreach (var eq in items) await equipmentRepo.AddAsync(eq);
-            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo);
+            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new FileLoggingService("test_log.txt"));
             await Task.Delay(100); // Wait for async load
             var loadAsync = vm.GetType().GetMethod("LoadAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (loadAsync != null) await (Task)loadAsync.Invoke(vm, null)!;

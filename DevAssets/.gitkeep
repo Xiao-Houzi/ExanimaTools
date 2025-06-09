@@ -1,0 +1,2 @@
+// This folder is for development-only assets such as seed data, test fixtures, and other files not required in production builds.
+// Place equipment_seed.json here for seeding the database during development.

@@ -19,9 +19,9 @@ namespace ExanimaTools.ViewModels
 {
     public class EquipmentManagerViewModel : INotifyPropertyChanged
     {
-        private readonly ILoggingService? _logger;
+        private readonly ILoggingService _logger;
         private readonly EquipmentRepository _equipmentRepository;
-        private const string DefaultDbFile = "exanima_tools.db";
+        // Only exanima_tools.db is used now; see DbManager for path logic.
 
         // Command properties
         public ICommand AddEquipmentCommand { get; }
@@ -33,10 +33,10 @@ namespace ExanimaTools.ViewModels
         public ICommand AddStatCommand { get; }
         public ICommand EditEquipmentFromTreeCommand { get; }
 
-        public EquipmentManagerViewModel(ILoggingService? logger = null)
+        public EquipmentManagerViewModel(ILoggingService logger)
         {
-            _logger = logger;
-            _logger?.LogOperation("EquipmentManagerViewModel", "Created");
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger.LogOperation("EquipmentManagerViewModel", "Created");
             NewEquipment = new EquipmentPiece(_logger);
             NewEquipment.Rank = Rank.Inept;
             var dbPath = DbManager.GetDbPath();
@@ -294,11 +294,7 @@ namespace ExanimaTools.ViewModels
                 error = "Equipment name is required.";
                 return false;
             }
-            if (EquipmentList.Any(e => e != equipment && e.Name == equipment.Name))
-            {
-                error = $"An equipment named '{equipment.Name}' already exists.";
-                return false;
-            }
+            // Removed uniqueness check by name; uniqueness is now by Id only.
             // Prevent subcategory from being the same as category
             if (!string.IsNullOrEmpty(equipment.Category) && equipment.Category == equipment.Subcategory)
             {
@@ -664,22 +660,36 @@ namespace ExanimaTools.ViewModels
                     var bySubcat = catGroup.GroupBy(e => e.Subcategory);
                     foreach (var subGroup in bySubcat)
                     {
-                        if (subGroup.Count() == 1 && subGroup.Key == subGroup.First().Name)
-                        {
-                            catNode.Children.Add(new EquipmentTreeNodeViewModel(subGroup.First()));
-                        }
-                        else
-                        {
-                            var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
-                            foreach (var eq in subGroup)
-                                subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
-                            catNode.Children.Add(subNode);
-                        }
+                        // Always create a subcategory node, even if only one child
+                        var subNode = new EquipmentTreeNodeViewModel(subGroup.Key);
+                        foreach (var eq in subGroup)
+                            subNode.Children.Add(new EquipmentTreeNodeViewModel(eq));
+                        catNode.Children.Add(subNode);
                     }
                     typeNode.Children.Add(catNode);
                 }
+                // Ensure root node is always expandable by adding a dummy child if empty
+                if (typeNode.Children.Count == 0)
+                {
+                    typeNode.Children.Add(new EquipmentTreeNodeViewModel("<empty>"));
+                }
                 EquipmentTree.Add(typeNode);
             }
+        }
+
+        // RelayCommand implementation (if not present)
+        public class RelayCommand<T> : ICommand
+        {
+            private readonly Action<T?> _execute;
+            private readonly Func<T?, bool>? _canExecute;
+            public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
+            {
+                _execute = execute;
+                _canExecute = canExecute;
+            }
+            public bool CanExecute(object? parameter) => _canExecute == null || _canExecute((T?)parameter);
+            public void Execute(object? parameter) => _execute((T?)parameter);
+            public event EventHandler? CanExecuteChanged { add { } remove { } }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

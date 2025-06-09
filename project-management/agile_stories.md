@@ -18,7 +18,7 @@
 ### Team Display UI (3 points)
 **As a user, I want to see a list of all team members, each represented by a TeamMember control, so I can view and manage my team at a glance.**
 - Display all team members in a scrollable list or panel on the Team Manager tab.
-- Each member should use the TeamMember control, showing their characteristics and loadout dropdown.
+- Each member should use the CompanyMember control, showing their characteristics and loadout dropdown.
 - Support editing and removing team members from the list.
 
 ### Team Member Control (3 points)

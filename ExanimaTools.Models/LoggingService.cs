@@ -42,9 +42,13 @@ namespace ExanimaTools.Models
             _queue.Enqueue(line);
         }
 
-        public void LogOperation(string operation, string? details = null)
+        public void LogOperation(string operation, string? message = null)
         {
-            Log($"OPERATION: {operation}{(details != null ? $" | {details}" : "")}");
+            // Always write all LogOperation calls to the log file, no filtering
+            var logLine = $"OPERATION: {operation} | {message}";
+            var logPath = Path.Combine("logs", $"log_{DateTime.Now:yyyyMMdd}.txt");
+            Directory.CreateDirectory("logs");
+            File.AppendAllText(logPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {logLine}\n");
         }
 
         public void LogError(string message, Exception? ex = null)

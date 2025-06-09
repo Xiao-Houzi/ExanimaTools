@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ExanimaTools.Controls"
+             x:Class="ExanimaTools.Controls.UniversalTreeTestControl">
+    <StackPanel Spacing="8">
+        <TextBlock Text="Universal Tree Test" FontWeight="Bold" FontSize="18" Margin="0,0,0,8"/>
+        <controls:UniversalTreeControl
+            TreeItems="{Binding TestTreeItems}"
+            SelectedItem="{Binding SelectedTestItem, Mode=TwoWay}"
+            ItemTemplate="{Binding TestItemTemplate}"
+            Filter="{Binding TestFilter}" Height="400"/>
+        <TextBlock Text="Selected: {Binding SelectedTestItem}"/>
+    </StackPanel>
+</UserControl>

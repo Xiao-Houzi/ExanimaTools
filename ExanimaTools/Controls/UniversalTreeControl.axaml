@@ -14,6 +14,19 @@
             <TreeView.ItemTemplate>
                 <TreeDataTemplate DataType="viewmodels:EquipmentTreeNodeViewModel" ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Action buttons for leaf nodes, rendered leftmost -->
+                        <StackPanel Orientation="Horizontal" IsVisible="{Binding IsLeaf}">
+                            <ItemsControl ItemsSource="{Binding ActionButtons}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding Label}"
+                                                Command="{Binding Command}"
+                                                CommandParameter="{Binding DataContext.EquipmentPiece, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"
+                                                Margin="0,0,8,0"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                         <TextBlock Text="{Binding Name}" FontWeight="{Binding IsLeaf, Converter={StaticResource BooleanToFontWeightConverter}}"/>
                         <!-- Only show count for non-leaf nodes -->
                         <TextBlock Text=" (" IsVisible="{Binding IsLeaf, Converter={StaticResource InverseBooleanConverter}}"/>

@@ -27,3 +27,23 @@
 
 (See agile_stories.md for backlog and future stories.)
 
+## Universal Tree Control (Reusable, Builder-based, Filterable)
+
+**Goal:** Create a universal tree control that can be tailored to any current or future tree view in the app, with a silver border, injectable item view, and filter-driven content.
+
+**Acceptance Criteria:**
+- A new Avalonia control (UniversalTreeControl) exists in Controls/.
+- The control uses a builder pattern to generate its tree structure from any data source.
+- The item view/template is injectable, allowing custom display for any node type.
+- The control has a silver border by default (Avalonia styling).
+- The control exposes a filter property or delegate, and updates its content dynamically based on the filter (compatible with existing filter viewmodels).
+- Existing tree views (e.g., Arsenal, Equipment, Company) can be migrated to use this control with minimal changes.
+- Usage and extension are documented for future developers.
+
+**Steps:**
+1. Design and implement UniversalTreeControl.axaml/.cs with border and template injection.
+2. Implement UniversalTreeBuilder<T> to generate tree structures from flat or hierarchical data.
+3. Add filter support (property or delegate) and ensure dynamic updates.
+4. Replace one existing tree view as a proof of concept.
+5. Document usage and extension in the project-management folder.
+

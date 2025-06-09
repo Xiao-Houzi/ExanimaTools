@@ -15,6 +15,13 @@
         <local:GeometryToStringConverter x:Key="GeometryToStringConverter"/>
         <local:FilterFieldEqualsConverter x:Key="FilterFieldEqualsConverter"/>
         <local:StatToPipDisplayViewModelConverter x:Key="StatToPipDisplayViewModelConverter"/>
+        <!-- Injected DataTemplates for UniversalTreeControl -->
+        <DataTemplate x:Key="PoolTreeItemTemplate">
+            <controls:PoolTreeItemView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ArsenalTreeItemTemplate">
+            <controls:ArsenalTreeItemView/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,*">
         <!-- Top area: Pool tree/stat card side by side, no extra columns -->
@@ -77,16 +84,26 @@
 
             <Grid ColumnDefinitions="*, Auto" >
                 <!-- TreeView -->
-                <controls:EquipmentTreeControl DataContext="{Binding PoolTreeViewModel}" Grid.Column="0"/>
+                <controls:UniversalTreeControl 
+                    TreeItems="{Binding PoolTreeViewModel.TreeItems}"
+                    SelectedItem="{Binding PoolTreeViewModel.SelectedTreeItem, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource PoolTreeItemTemplate}"
+                    Filter="{Binding PoolTreeViewModel.SearchText}" 
+                    Grid.Column="0"/>
                 <!-- Stat Card -->
                 <controls:EquipmentStatCardControl Grid.Column="1" DataContext="{Binding StatCardViewModel}" />
             </Grid>
-
+            <!-- DEBUG: Show PoolTree root node names -->
+            <TextBlock Text="{Binding PoolTreeRootNames}" Foreground='Red' FontWeight='Bold' FontSize='12' Margin='0,0,0,4'/>
         </StackPanel>
         <!-- Bottom area: Arsenal tree full width -->
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,16,0,0">
             <TextBlock Text="Your Arsenal" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
-            <controls:EquipmentTreeControl DataContext="{Binding ArsenalTreeViewModel}" />
+            <controls:UniversalTreeControl 
+                TreeItems="{Binding ArsenalTreeViewModel.TreeItems}"
+                SelectedItem="{Binding ArsenalTreeViewModel.SelectedTreeItem, Mode=TwoWay}"
+                ItemTemplate="{StaticResource ArsenalTreeItemTemplate}"
+                Filter="{Binding ArsenalTreeViewModel.SearchText}" />
         </StackPanel>
     </Grid>
 </UserControl>

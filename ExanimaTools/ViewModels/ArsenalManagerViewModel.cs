@@ -17,7 +17,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
 {
     private readonly EquipmentRepository _equipmentRepository;
     private readonly ArsenalRepository _arsenalRepository;
-    private readonly ILoggingService? _logger;
+    private readonly ILoggingService _logger;
 
     private ObservableCollection<EquipmentPiece> filteredEquipment = new();
     public ObservableCollection<EquipmentPiece> FilteredEquipment
@@ -63,7 +63,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         set {
             if (isAddDialogOpen != value) {
                 isAddDialogOpen = value;
-                _logger?.Log($"IsAddDialogOpen changed: {isAddDialogOpen}");
+                _logger.Log($"IsAddDialogOpen changed: {isAddDialogOpen}");
                 OnPropertyChanged(nameof(IsAddDialogOpen));
             }
         }
@@ -80,7 +80,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                 if (newEquipment != null && newEquipment is INotifyPropertyChanged npcNew)
                     npcNew.PropertyChanged += NewEquipment_PropertyChanged;
                 OnPropertyChanged(nameof(NewEquipment));
-                _logger?.Log($"NewEquipment changed: Type={newEquipment?.Type}, Category={newEquipment?.Category}");
+                _logger.Log($"NewEquipment changed: Type={newEquipment?.Type}, Category={newEquipment?.Category}");
                 UpdateNewEquipmentDrawing();
             }
         }
@@ -89,7 +89,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private void NewEquipment_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(EquipmentPiece.Type) || e.PropertyName == nameof(EquipmentPiece.Category)) {
-            _logger?.Log($"NewEquipment property changed: {e.PropertyName}");
+            _logger.Log($"NewEquipment property changed: {e.PropertyName}");
             UpdateNewEquipmentDrawing();
         }
     }
@@ -144,10 +144,10 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             if (selectedPoolTreeItem != value)
             {
                 selectedPoolTreeItem = value;
-                _logger?.Log($"[DEBUG] SelectedPoolTreeItem set: {value?.EquipmentPiece?.Name ?? "null"}");
+                _logger.Log($"[DEBUG] SelectedPoolTreeItem set: {value?.EquipmentPiece?.Name ?? "null"}");
                 if (value?.EquipmentPiece != null)
                 {
-                    _logger?.Log($"[DEBUG] Selected EquipmentPiece stats: {string.Join(", ", value.EquipmentPiece.Stats.Select(kv => $"{kv.Key}={kv.Value}"))}");
+                    _logger.Log($"[DEBUG] Selected EquipmentPiece stats: {string.Join(", ", value.EquipmentPiece.Stats.Select(kv => $"{kv.Key}={kv.Value}"))}");
                 }
                 OnPropertyChanged(nameof(SelectedPoolTreeItem));
                 OnPropertyChanged(nameof(StatCardViewModel)); // Ensure stat card updates
@@ -176,16 +176,17 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private List<EquipmentPiece> _allEquipment = new(); // Cache for filtering
     public static List<string>? StaticCategoryOptions;
     public static List<StatType>? StaticStatTypes;
-    public ArsenalManagerViewModel(EquipmentRepository equipmentRepo, ArsenalRepository arsenalRepo, ILoggingService? logger = null)
+    private IUniversalTreeBuilder<EquipmentPiece> _universalTreeBuilder;
+    public ArsenalManagerViewModel(EquipmentRepository equipmentRepository, ArsenalRepository arsenalRepository, ILoggingService logger)
     {
-        _equipmentRepository = equipmentRepo;
-        _arsenalRepository = arsenalRepo;
-        _logger = logger;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _equipmentRepository = equipmentRepository ?? throw new ArgumentNullException(nameof(equipmentRepository));
+        _arsenalRepository = arsenalRepository ?? throw new ArgumentNullException(nameof(arsenalRepository));
         if (_logger == null)
             System.Diagnostics.Debug.WriteLine("[DEBUG] ArsenalManagerViewModel: Logger is null!");
         else
             _logger.LogOperation("ArsenalManagerViewModel", "Logger injected and not null");
-        _logger?.LogOperation("ArsenalManagerViewModel", "Created");
+        _logger.LogOperation("ArsenalManagerViewModel", "Created");
         _ = LoadAsync();
         if (StaticCategoryOptions == null)
         {
@@ -206,8 +207,8 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         }
         if (StaticStatTypes == null)
             StaticStatTypes = System.Enum.GetValues(typeof(StatType)).Cast<StatType>().ToList();
-        AddToArsenalCommand = new AsyncSimpleCommand(param => AddToArsenalAsync(param));
-        RemoveFromArsenalCommand = new AsyncSimpleCommand(param => RemoveFromArsenalAsync());
+        AddToArsenalCommand = new RelayCommand<EquipmentPiece?>(AddToArsenal, CanAddToArsenal);
+        RemoveFromArsenalCommand = new RelayCommand<EquipmentPiece?>(RemoveFromArsenal, CanRemoveFromArsenal);
         PoolTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
         {
             TreeItems = PoolTree,
@@ -252,67 +253,95 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                 SelectedPoolTreeItem = PoolTreeViewModel.SelectedTreeItem;
             }
         };
+        _universalTreeBuilder = new UniversalTreeBuilder<EquipmentPiece>(
+            e => e.Name,
+            e => new List<EquipmentPiece>(), // Children selector: flat for now, can be made hierarchical
+            null // Actions selector: can be provided if needed
+        );
     }
     private async Task LoadAsync()
     {
-        _logger?.LogOperation("ArsenalManagerViewModel", "LoadAsync called");
-        _logger?.Log("LoadAsync: Loading all equipment and arsenal...");
+        _logger.LogOperation("ArsenalManagerViewModel", "LoadAsync called");
+        _logger.Log("LoadAsync: Loading all equipment and arsenal...");
         var allEquipment = await _equipmentRepository.GetAllAsync();
         _allEquipment = allEquipment.ToList();
-        _logger?.Log($"LoadAsync: Loaded {_allEquipment.Count} equipment pieces.");
+        _logger.Log($"LoadAsync: Loaded {_allEquipment.Count} equipment pieces.");
+        // If DB is empty, seed from equipment_seed.json
+        if (_allEquipment.Count == 0)
+        {
+            _logger.Log("LoadAsync: Equipment DB is empty, seeding from equipment_seed.json");
+            await ExanimaTools.SeedEquipment.SeedAsync(null, _logger);
+            allEquipment = await _equipmentRepository.GetAllAsync();
+            _allEquipment = allEquipment.ToList();
+            _logger.Log($"LoadAsync: Reloaded {_allEquipment.Count} equipment pieces after seeding.");
+        }
         FilteredEquipment = new ObservableCollection<EquipmentPiece>(_allEquipment);
         var arsenal = await _arsenalRepository.GetArsenalAsync(_equipmentRepository);
-        _logger?.Log($"LoadAsync: Arsenal contains {arsenal.Equipment.Count} equipment pieces.");
+        _logger.Log($"LoadAsync: Arsenal contains {arsenal.Equipment.Count} equipment pieces.");
         ArsenalEquipment.Clear();
         foreach (var eq in arsenal.Equipment)
             ArsenalEquipment.Add(eq);
-        // Do not assign a new ObservableCollection to ArsenalTree or ArsenalTreeViewModel.TreeItems
+
+        // After seeding and loading ArsenalEquipment, log the type distribution
+        var typeCounts = ArsenalEquipment.GroupBy(e => e.Type)
+            .Select(g => $"{g.Key}: {g.Count()}")
+            .ToList();
+        _logger.Log($"DEBUG: ArsenalEquipment type counts: {string.Join(", ", typeCounts)}");
+
+        // Always build trees from current ArsenalEquipment and FilteredEquipment
         BuildTree(FilteredEquipment, PoolTree);
-        // PoolTreeViewModel.TreeItems = PoolTree; // Only needed if PoolTree instance changes
         BuildTree(ArsenalEquipment, ArsenalTree);
+        // Notify UI
+        PoolTreeViewModel.TreeItems = PoolTree;
+        ArsenalTreeViewModel.TreeItems = ArsenalTree;
+        _logger.Log($"LoadAsync: PoolTree nodes: {PoolTree.Count}, ArsenalTree nodes: {ArsenalTree.Count}");
+        // Do not assign a new ObservableCollection to ArsenalTree or ArsenalTreeViewModel.TreeItems
+        // BuildTree(FilteredEquipment, PoolTree);
+        // PoolTreeViewModel.TreeItems = PoolTree; // Only needed if PoolTree instance changes
+        // BuildTree(ArsenalEquipment, ArsenalTree);
         // ArsenalTreeViewModel.TreeItems = ArsenalTree; // Only needed if ArsenalTree instance changes
-        _logger?.Log($"LoadAsync: PoolTree nodes: {PoolTree.Count}, ArsenalTree nodes: {ArsenalTree.Count}");
-        // Seed shields in LoadAsync if ArsenalEquipment is empty
-        if (ArsenalEquipment.Count == 0)
-        {
-            _logger?.Log("DEBUG: ArsenalEquipment is empty, seeding test Weapon, Armour, and Shield");
-            ArsenalEquipment.Add(new EquipmentPiece {
-                Name = "DEBUG TEST SWORD",
-                Type = EquipmentType.Weapon,
-                Category = "Sword",
-                Subcategory = "Short Sword",
-                Condition = EquipmentCondition.Good,
-                Quality = EquipmentQuality.Common,
-                Rank = Rank.Inept,
-                Slot = EquipmentSlot.Hands,
-                Layer = null,
-                Stats = new Dictionary<StatType, float> { { StatType.Impact, 1.0f } }
-            });
-            ArsenalEquipment.Add(new EquipmentPiece {
-                Name = "DEBUG TEST CAP",
-                Type = EquipmentType.Armour,
-                Category = "Head",
-                Subcategory = "Cap",
-                Condition = EquipmentCondition.Good,
-                Quality = EquipmentQuality.Common,
-                Rank = Rank.Inept,
-                Slot = EquipmentSlot.Head,
-                Layer = ArmourLayer.Padding,
-                Stats = new Dictionary<StatType, float> { { StatType.ImpactResistance, 0.5f } }
-            });
-            ArsenalEquipment.Add(new EquipmentPiece {
-                Name = "DEBUG TEST SHIELD",
-                Type = EquipmentType.Shield,
-                Category = "Round Shield",
-                Subcategory = "Small Round Shield",
-                Condition = EquipmentCondition.Good,
-                Quality = EquipmentQuality.Common,
-                Rank = Rank.Inept,
-                Slot = EquipmentSlot.Hands,
-                Layer = null,
-                Stats = new Dictionary<StatType, float> { { StatType.Coverage, 0.8f } }
-            });
-        }
+        // _logger?.Log($"LoadAsync: PoolTree nodes: {PoolTree.Count}, ArsenalTree nodes: {ArsenalTree.Count}");
+        // // Seed shields in LoadAsync if ArsenalEquipment is empty
+        // if (ArsenalEquipment.Count == 0)
+        // {
+        //     _logger?.Log("DEBUG: ArsenalEquipment is empty, seeding test Weapon, Armour, and Shield");
+        //     ArsenalEquipment.Add(new EquipmentPiece {
+        //         Name = "DEBUG TEST SWORD",
+        //         Type = EquipmentType.Weapon,
+        //         Category = "Sword",
+        //         Subcategory = "Short Sword",
+        //         Condition = EquipmentCondition.Good,
+        //         Quality = EquipmentQuality.Common,
+        //         Rank = Rank.Inept,
+        //         Slot = EquipmentSlot.Hands,
+        //         Layer = null,
+        //         Stats = new Dictionary<StatType, float> { { StatType.Impact, 1.0f } }
+        //     });
+        //     ArsenalEquipment.Add(new EquipmentPiece {
+        //         Name = "DEBUG TEST CAP",
+        //         Type = EquipmentType.Armour,
+        //         Category = "Head",
+        //         Subcategory = "Cap",
+        //         Condition = EquipmentCondition.Good,
+        //         Quality = EquipmentQuality.Common,
+        //         Rank = Rank.Inept,
+        //         Slot = EquipmentSlot.Head,
+        //         Layer = ArmourLayer.Padding,
+        //         Stats = new Dictionary<StatType, float> { { StatType.ImpactResistance, 0.5f } }
+        //     });
+        //     ArsenalEquipment.Add(new EquipmentPiece {
+        //         Name = "DEBUG TEST SHIELD",
+        //         Type = EquipmentType.Shield,
+        //         Category = "Round Shield",
+        //         Subcategory = "Small Round Shield",
+        //         Condition = EquipmentCondition.Good,
+        //         Quality = EquipmentQuality.Common,
+        //         Rank = Rank.Inept,
+        //         Slot = EquipmentSlot.Hands,
+        //         Layer = null,
+        //         Stats = new Dictionary<StatType, float> { { StatType.Coverage, 0.8f } }
+        //     });
+        // }
     }
     private async Task FilterEquipment()
     {
@@ -324,77 +353,181 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         BuildTree(FilteredEquipment, PoolTree);
         PoolTreeViewModel.TreeItems = PoolTree; // Notify UI
     }
+    private void AddToArsenal(EquipmentPiece? piece)
+    {
+        if (piece == null) return;
+        var poolNode = FindNodeByPiece(PoolTreeViewModel.TreeItems, piece);
+        if (poolNode != null)
+        {
+            RemoveNode(PoolTreeViewModel.TreeItems, poolNode);
+            ArsenalTreeViewModel.TreeItems.Add(poolNode);
+        }
+    }
+    private bool CanAddToArsenal(EquipmentPiece? piece) => piece != null;
+    private void RemoveFromArsenal(EquipmentPiece? piece)
+    {
+        if (piece == null) return;
+        var arsenalNode = FindNodeByPiece(ArsenalTreeViewModel.TreeItems, piece);
+        if (arsenalNode != null)
+        {
+            RemoveNode(ArsenalTreeViewModel.TreeItems, arsenalNode);
+            PoolTreeViewModel.TreeItems.Add(arsenalNode);
+        }
+    }
+    private bool CanRemoveFromArsenal(EquipmentPiece? piece) => piece != null;
+    private EquipmentTreeNodeViewModel? FindNodeByPiece(System.Collections.ObjectModel.ObservableCollection<EquipmentTreeNodeViewModel> nodes, EquipmentPiece piece)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.EquipmentPiece == piece) return node;
+            var found = FindNodeByPiece(node.Children, piece);
+            if (found != null) return found;
+        }
+        return null;
+    }
+    private void RemoveNode(System.Collections.ObjectModel.ObservableCollection<EquipmentTreeNodeViewModel> nodes, EquipmentTreeNodeViewModel node)
+    {
+        if (nodes.Remove(node)) return;
+        foreach (var n in nodes)
+        {
+            RemoveNode(n.Children, node);
+        }
+    }
     public async Task AddToArsenalAsync(object? parameter)
     {
-        _logger?.LogOperation("ArsenalManagerViewModel", "AddToArsenalAsync called");
+        _logger.LogOperation("ArsenalManagerViewModel", "AddToArsenalAsync called");
         var toAdd = parameter as EquipmentPiece ?? SelectedDatabaseEquipment;
-        _logger?.Log($"AddToArsenalAsync: Attempting to add equipment: {(toAdd != null ? toAdd.Name : "null")}");
+        _logger.Log($"AddToArsenalAsync: Attempting to add equipment: {(toAdd != null ? toAdd.Name : "null")}");
         if (toAdd == null)
         {
             StatusMessage = "Select equipment to add.";
             return;
         }
         await _arsenalRepository.AddToArsenalAsync(toAdd.Id);
-        ArsenalEquipment.Add(toAdd);
-        BuildTree(ArsenalEquipment, ArsenalTree);
-        ArsenalTreeViewModel.TreeItems = ArsenalTree; // Notify UI
+        // Always reload from DB after any change
+        await LoadAsync();
         StatusMessage = $"Added {toAdd.Name} to arsenal.";
-        _logger?.Log($"AddToArsenalAsync: ArsenalEquipment now has {ArsenalEquipment.Count} items. ArsenalTree nodes: {ArsenalTree.Count}");
     }
-    public async Task RemoveFromArsenalAsync()
+    public async Task RemoveFromArsenalAsync(object? parameter)
     {
-        _logger?.LogOperation("ArsenalManagerViewModel", "RemoveFromArsenalAsync called");
-        _logger?.Log($"RemoveFromArsenalAsync: Attempting to remove equipment: {(SelectedArsenalEquipment != null ? SelectedArsenalEquipment.Name : "null")}");
-        if (SelectedArsenalEquipment == null)
+        var toRemove = parameter as EquipmentPiece ?? SelectedArsenalEquipment;
+        _logger.LogOperation("ArsenalManagerViewModel", "RemoveFromArsenalAsync called");
+        _logger.Log($"RemoveFromArsenalAsync: Attempting to remove equipment: {(toRemove != null ? toRemove.Name : "null")}");
+        if (toRemove == null)
         {
             StatusMessage = "Select equipment to remove.";
             return;
         }
-        var name = SelectedArsenalEquipment.Name;
-        await _arsenalRepository.RemoveFromArsenalAsync(SelectedArsenalEquipment.Id);
-        ArsenalEquipment.Remove(SelectedArsenalEquipment);
-        BuildTree(ArsenalEquipment, ArsenalTree);
-        ArsenalTreeViewModel.TreeItems = ArsenalTree; // Notify UI
+        var name = toRemove.Name;
+        await _arsenalRepository.RemoveFromArsenalAsync(toRemove.Id);
+        // Always reload from DB after any change
+        await LoadAsync();
         StatusMessage = $"Removed {name} from arsenal.";
-        _logger?.Log($"RemoveFromArsenalAsync: ArsenalEquipment now has {ArsenalEquipment.Count} items. ArsenalTree nodes: {ArsenalTree.Count}");
     }
     private void BuildTree(ObservableCollection<EquipmentPiece> source, ObservableCollection<EquipmentTreeNodeViewModel> target)
     {
         target.Clear();
-        _logger?.Log($"BuildTree: Building tree from {source.Count} equipment pieces.");
-        // Always show at least Weapon and Armour and Shield root nodes
-        var allTypes = new[] { EquipmentType.Weapon, EquipmentType.Armour, EquipmentType.Shield };
-        var byType = source.GroupBy(e => e.Type).ToDictionary(g => g.Key, g => g.ToList());
-        foreach (var type in allTypes)
+        _logger.Log($"BuildTree: Building tree from {source.Count} equipment pieces.");
+        foreach (var eq in source)
         {
-            var typeNode = new EquipmentTreeNodeViewModel(type.ToString(), _logger);
-            if (byType.TryGetValue(type, out var items) && items.Count > 0)
+            _logger.Log($"BuildTree: Source item: Name={eq.Name}, Type={eq.Type}, Category={eq.Category}, Subcategory={eq.Subcategory}");
+        }
+
+        // Build a hierarchical tree: Type -> Category -> Subcategory -> EquipmentPiece
+        var grouped = source
+            .GroupBy(e => e.Type)
+            .OrderBy(g => g.Key.ToString())
+            .ToList();
+        _logger.Log($"BuildTree: Type groups count: {grouped.Count}");
+        foreach (var typeGroup in grouped)
+        {
+            _logger.Log($"BuildTree: Type group '{typeGroup.Key}' has {typeGroup.Count()} items");
+            var typeNode = new EquipmentTreeNodeViewModel(typeGroup.Key.ToString(), _logger)
             {
-                var byCategory = items.GroupBy(e => e.Category);
-                foreach (var catGroup in byCategory)
+                Children = new ObservableCollection<EquipmentTreeNodeViewModel>()
+            };
+            var categoryGroups = typeGroup
+                .GroupBy(e => e.Category)
+                .OrderBy(g => g.Key)
+                .ToList();
+            _logger.Log($"BuildTree:  Type '{typeGroup.Key}' category groups: {categoryGroups.Count}");
+            foreach (var catGroup in categoryGroups)
+            {
+                _logger.Log($"BuildTree:   Category group '{catGroup.Key}' has {catGroup.Count()} items");
+                var catNode = new EquipmentTreeNodeViewModel(catGroup.Key, _logger)
                 {
-                    var catNode = new EquipmentTreeNodeViewModel(catGroup.Key, _logger);
-                    var bySubcat = catGroup.GroupBy(e => e.Subcategory);
-                    foreach (var subGroup in bySubcat)
+                    Children = new ObservableCollection<EquipmentTreeNodeViewModel>()
+                };
+                var subcatGroups = catGroup
+                    .GroupBy(e => e.Subcategory)
+                    .OrderBy(g => g.Key)
+                    .ToList();
+                _logger.Log($"BuildTree:    Category '{catGroup.Key}' subcategory groups: {subcatGroups.Count}");
+                foreach (var subcatGroup in subcatGroups)
+                {
+                    _logger.Log($"BuildTree:     Subcategory group '{subcatGroup.Key}' has {subcatGroup.Count()} items");
+                    var subcatNode = new EquipmentTreeNodeViewModel(subcatGroup.Key, _logger)
                     {
-                        if (subGroup.Count() == 1 && subGroup.Key == subGroup.First().Name)
-                        {
-                            catNode.Children.Add(new EquipmentTreeNodeViewModel(subGroup.First(), _logger));
-                        }
-                        else
-                        {
-                            var subNode = new EquipmentTreeNodeViewModel(subGroup.Key, _logger);
-                            foreach (var eq in subGroup)
-                                subNode.Children.Add(new EquipmentTreeNodeViewModel(eq, _logger));
-                            catNode.Children.Add(subNode);
-                        }
+                        Children = new ObservableCollection<EquipmentTreeNodeViewModel>()
+                    };
+                    foreach (var eq in subcatGroup.OrderBy(e => e.Name))
+                    {
+                        _logger.Log($"BuildTree:      Adding EquipmentPiece node: {eq.Name}");
+                        var eqNode = new EquipmentTreeNodeViewModel(eq, _logger);
+                        subcatNode.Children.Add(eqNode);
                     }
-                    typeNode.Children.Add(catNode);
+                    catNode.Children.Add(subcatNode);
                 }
+                typeNode.Children.Add(catNode);
             }
             target.Add(typeNode);
         }
-        _logger?.Log($"BuildTree: Resulting tree has {target.Count} root nodes.");
+        // Inject action buttons for leaf nodes
+        if (target == PoolTree)
+            InjectLeafActions(target, "Add to Arsenal", AddToArsenalCommand, useAsync: true);
+        else if (target == ArsenalTree)
+            InjectLeafActions(target, "Remove from Arsenal", RemoveFromArsenalCommand, useAsync: true);
+        // Prune empty branches after building
+        PruneEmptyBranches(target);
+        _logger.Log($"BuildTree: Resulting tree has {target.Count} root nodes.");
+        foreach (var root in target)
+        {
+            DumpTreeToLog(root, 0);
+        }
+        if (target == PoolTree) UpdatePoolTreeRootNames();
+    }
+
+    // Recursively remove empty branches from the tree
+    private void PruneEmptyBranches(ObservableCollection<EquipmentTreeNodeViewModel> nodes)
+    {
+        for (int i = nodes.Count - 1; i >= 0; i--)
+        {
+            var node = nodes[i];
+            if (!node.IsLeaf && (node.Children == null || node.Children.Count == 0))
+            {
+                nodes.RemoveAt(i);
+            }
+            else if (node.Children != null && node.Children.Count > 0)
+            {
+                PruneEmptyBranches(node.Children);
+                // Remove this node if it became empty after pruning children
+                if (!node.IsLeaf && (node.Children == null || node.Children.Count == 0))
+                {
+                    nodes.RemoveAt(i);
+                }
+            }
+        }
+    }
+
+    private void DumpTreeToLog(EquipmentTreeNodeViewModel node, int indent)
+    {
+        string indentStr = new string(' ', indent * 2);
+        string nodeLabel = node.EquipmentPiece?.Name ?? node.ToString() ?? "<null>";
+        _logger.Log($"{indentStr}- {nodeLabel} (Children: {node.Children.Count})");
+        foreach (var child in node.Children)
+        {
+            DumpTreeToLog(child, indent + 1);
+        }
     }
     private void CloseAddDialog()
     {
@@ -409,13 +542,12 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             return;
         }
         await _equipmentRepository.AddAsync(NewEquipment);
-        FilteredEquipment.Add(NewEquipment);
-        PoolTree.Add(new EquipmentTreeNodeViewModel(NewEquipment));
+        // Always reload from DB after any change
+        await LoadAsync();
         StatusMessage = $"Added '{NewEquipment.Name}' to equipment pool.";
         ConfirmationMessage = StatusMessage;
         ErrorMessage = null;
         IsAddDialogOpen = false;
-        await LoadAsync();
     }
     private void NotifyCanExecuteChanged() { }
     private string selectedCategory = string.Empty;
@@ -469,7 +601,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private void SyncStatPipViewModels()
     {
         NewEquipmentStatPips.Clear();
-        _logger?.LogOperation("ArsenalManagerViewModel.SyncStatPipViewModels", $"NewEquipment instance: {NewEquipment.GetHashCode()}, Stats ref: {NewEquipment.Stats.GetHashCode()}, Stats count: {NewEquipment.Stats.Count}");
+        _logger.LogOperation("ArsenalManagerViewModel.SyncStatPipViewModels", $"NewEquipment instance: {NewEquipment.GetHashCode()}, Stats ref: {NewEquipment.Stats.GetHashCode()}, Stats count: {NewEquipment.Stats.Count}");
         foreach (var kvp in NewEquipment.Stats)
         {
             if (kvp.Key == StatType.Weight) continue;
@@ -525,7 +657,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void ShowAddWeaponForm()
     {
-        _logger?.Log("ShowAddWeaponForm called");
+        _logger.Log("ShowAddWeaponForm called");
         addFormMode = AddFormMode.Weapon;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Weapon, Category = "Sword" };
         SetCategoryOptionsForMode();
@@ -538,7 +670,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void ShowAddArmourForm()
     {
-        _logger?.Log("ShowAddArmourForm called");
+        _logger.Log("ShowAddArmourForm called");
         addFormMode = AddFormMode.Armour;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Armour, Category = "Body" };
         SetCategoryOptionsForMode();
@@ -551,7 +683,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void ShowAddShieldForm()
     {
-        _logger?.Log("ShowAddShieldForm called");
+        _logger.Log("ShowAddShieldForm called");
         addFormMode = AddFormMode.Shield;
         NewEquipment = new EquipmentPiece { Type = EquipmentType.Shield, Category = "Buckler" };
         SetCategoryOptionsForMode();
@@ -600,7 +732,8 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         FilteredEquipment = new ObservableCollection<EquipmentPiece>(GetFilteredEquipment(_allEquipment, Filters));
         BuildTree(FilteredEquipment, PoolTree);
         PoolTreeViewModel.TreeItems = PoolTree; // Notify UI
-        _logger?.Log($"ApplyFilters: PoolTree rebuilt with {PoolTree.Count} root nodes from {FilteredEquipment.Count} filtered equipment.");
+        UpdatePoolTreeRootNames();
+        _logger.Log($"ApplyFilters: PoolTree rebuilt with {PoolTree.Count} root nodes from {FilteredEquipment.Count} filtered equipment.");
     }
     public static List<EquipmentPiece> GetFilteredEquipment(IEnumerable<EquipmentPiece> source, IEnumerable<EquipmentFilterViewModel> filters)
     {
@@ -684,6 +817,34 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         public bool CanExecute(object? parameter) => true;
         public void Execute(object? parameter) => _execute();
     }
+    // RelayCommand<T> implementation for ArsenalManagerViewModel
+    public class RelayCommand<T> : ICommand
+    {
+        private readonly Action<T?> _execute;
+        private readonly Func<T?, bool>? _canExecute;
+        public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+        public bool CanExecute(object? parameter) => _canExecute == null || _canExecute((T?)parameter);
+        public void Execute(object? parameter) => _execute((T?)parameter);
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+    }
+    // Parameterized async command for use with action buttons
+    public class AsyncRelayCommand<T> : ICommand
+    {
+        private readonly Func<T?, Task> _execute;
+        private readonly Func<T?, bool>? _canExecute;
+        public AsyncRelayCommand(Func<T?, Task> execute, Func<T?, bool>? canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+        public bool CanExecute(object? parameter) => _canExecute == null || _canExecute((T?)parameter);
+        public async void Execute(object? parameter) => await _execute((T?)parameter);
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+    }
     public Array EquipmentFilterFields => System.Enum.GetValues(typeof(EquipmentFilterField));
     public Array EquipmentFilterOperators => System.Enum.GetValues(typeof(EquipmentFilterOperator));
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -694,7 +855,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         get => newEquipmentDrawing;
         set {
             if (newEquipmentDrawing != value) {
-                _logger?.Log($"NewEquipmentDrawing changed: {(value == null ? "null" : value.GetType().ToString())}, Geometry: {(value?.Geometry == null ? "null" : value.Geometry.ToString())}");
+                _logger.Log($"NewEquipmentDrawing changed: {(value == null ? "null" : value.GetType().ToString())}, Geometry: {(value?.Geometry == null ? "null" : value.Geometry.ToString())}");
                 newEquipmentDrawing = value;
                 OnPropertyChanged(nameof(NewEquipmentDrawing));
             }
@@ -702,7 +863,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void UpdateNewEquipmentDrawing()
     {
-        _logger?.Log($"UpdateNewEquipmentDrawing called. NewEquipment.Type={NewEquipment?.Type}, Category={NewEquipment?.Category}");
+        _logger.Log($"UpdateNewEquipmentDrawing called. NewEquipment.Type={NewEquipment?.Type}, Category={NewEquipment?.Category}");
         // Set image path based on type/category, but only if it would change
         if (NewEquipment != null)
         {
@@ -718,7 +879,7 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             if (NewEquipment.ImagePath != imageFile)
             {
                 NewEquipment.ImagePath = imageFile;
-                _logger?.Log($"Set NewEquipment.ImagePath: {imageFile}");
+                _logger.Log($"Set NewEquipment.ImagePath: {imageFile}");
             }
         }
         var req = new EquipmentDrawingRequest
@@ -728,9 +889,9 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         };
         var converter = new EquipmentTypeAndCategoryToDrawingConverter();
         var drawing = converter.Convert(req, typeof(EquipmentDrawingInfo), null, System.Globalization.CultureInfo.CurrentCulture) as EquipmentDrawingInfo;
-        _logger?.Log($"Drawing result: {(drawing == null ? "null" : $"Geometry={drawing.Geometry}, Fill={drawing.Fill}, Stroke={drawing.Stroke}")}");
+        _logger.Log($"Drawing result: {(drawing == null ? "null" : $"Geometry={drawing.Geometry}, Fill={drawing.Fill}, Stroke={drawing.Stroke}")}");
         if (drawing != null)
-            _logger?.Log($"Drawing.Geometry: {drawing.Geometry?.ToString() ?? "null"}");
+            _logger.Log($"Drawing.Geometry: {drawing.Geometry?.ToString() ?? "null"}");
         NewEquipmentDrawing = drawing;
     }
     // Returns a list of StatPipViewModel for pip stats (excluding Weight) for the selected item
@@ -845,5 +1006,47 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         IsAddDialogOpen = true;
         AddDialogTitle = $"Edit {equipment.Name}";
         // Set form mode, etc. as needed
+    }
+    public string PoolTreeRootNames => string.Join(", ", PoolTree.Select(n => n.Name));
+    // Raise property changed when PoolTree changes
+    private void UpdatePoolTreeRootNames() => OnPropertyChanged(nameof(PoolTreeRootNames));
+
+    private void InjectLeafActions(IEnumerable<EquipmentTreeNodeViewModel> nodes, string label, ICommand command, bool useAsync = false)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.IsLeaf)
+            {
+                node.ActionButtons.Clear();
+                if (useAsync && label == "Add to Arsenal")
+                {
+                    node.ActionButtons.Add(new ActionButtonViewModel {
+                        Label = label,
+                        Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
+                        {
+                            await AddToArsenalAsync(piece);
+                        })
+                    });
+                }
+                else if (useAsync && label == "Remove from Arsenal")
+                {
+                    node.ActionButtons.Add(new ActionButtonViewModel {
+                        Label = label,
+                        Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
+                        {
+                            await RemoveFromArsenalAsync(piece);
+                        })
+                    });
+                }
+                else
+                {
+                    node.ActionButtons.Add(new ActionButtonViewModel { Label = label, Command = command });
+                }
+            }
+            else if (node.Children != null && node.Children.Count > 0)
+            {
+                InjectLeafActions(node.Children, label, command, useAsync);
+            }
+        }
     }
 }
