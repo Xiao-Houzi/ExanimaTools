@@ -1025,6 +1025,9 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                         Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
                         {
                             await AddToArsenalAsync(piece);
+                            // After add, prune empty branches
+                            PruneEmptyBranches(PoolTree);
+                            PruneEmptyBranches(ArsenalTree);
                         })
                     });
                 }
@@ -1035,12 +1038,19 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                         Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
                         {
                             await RemoveFromArsenalAsync(piece);
+                            // After remove, prune empty branches
+                            PruneEmptyBranches(PoolTree);
+                            PruneEmptyBranches(ArsenalTree);
                         })
                     });
                 }
                 else
                 {
-                    node.ActionButtons.Add(new ActionButtonViewModel { Label = label, Command = command });
+                    // Fallback: use provided command (sync)
+                    node.ActionButtons.Add(new ActionButtonViewModel {
+                        Label = label,
+                        Command = command
+                    });
                 }
             }
             else if (node.Children != null && node.Children.Count > 0)
