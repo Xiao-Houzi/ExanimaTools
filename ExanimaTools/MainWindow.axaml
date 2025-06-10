@@ -20,7 +20,10 @@
                         <controls:CompanyControl/>
                         <Separator Margin="0,12,0,12"/>
                         <TextBlock Text="Selected Member Management" FontWeight="Bold" Margin="0,0,0,8"/>
-                        <controls:CompanyMemberManagementControl DataContext="{Binding SelectedCompanyMemberViewModel}"/>
+                        <TextBlock Text="{Binding ArsenalManagerViewModel, StringFormat='[MainWindow] ArsenalManagerViewModel: {0}'}" Foreground="Purple"/>
+                        <controls:CompanyMemberManagementControl 
+                            x:Name="MemberManagementControl"
+                            ArsenalManagerViewModel="{Binding ArsenalManagerViewModel}"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Arsenal">

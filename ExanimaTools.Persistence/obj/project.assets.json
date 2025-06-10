@@ -380,8 +380,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\ExanimaTools.Models.csproj": {
-              "projectPath": "D:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\ExanimaTools.Models.csproj"
+            "d:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\ExanimaTools.Models.csproj": {
+              "projectPath": "d:\\Dev\\GameSupport\\Exanima\\ExanimaTools.Models\\ExanimaTools.Models.csproj"
             }
           }
         }

@@ -27,8 +27,11 @@ public class CompanyViewModel : INotifyPropertyChanged
         OpenAddHirelingDialogCommand = new SimpleCommand(OpenAddHirelingDialog);
         CloseAddDialogCommand = new SimpleCommand(CloseAddDialog);
         AddCompanyMemberCommand = new SimpleCommand(AddCompanyMember);
-        _ = InitializeAndLoadAsync();
+        var equipmentRepo = DbManager.GetEquipmentRepository(_logger ?? ExanimaTools.App.LoggingServiceInstance!);
+        var arsenalRepo = DbManager.GetArsenalRepository();
+        _arsenalManagerViewModel = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, _logger ?? ExanimaTools.App.LoggingServiceInstance!);
         _logger?.LogOperation("CompanyViewModel", "Created");
+        _ = InitializeAndLoadAsync();
     }
 
     public CompanyViewModel() : this(ExanimaTools.App.LoggingServiceInstance) { }
@@ -70,14 +73,19 @@ public class CompanyViewModel : INotifyPropertyChanged
             if (selectedCompanyMember != value)
             {
                 selectedCompanyMember = value;
+                _logger?.LogOperation("CompanyViewModel", $"SelectedCompanyMember changed: {(selectedCompanyMember != null ? selectedCompanyMember.Name : "null")}");
                 OnPropertyChanged(nameof(SelectedCompanyMember));
                 if (selectedCompanyMember != null)
                 {
                     SelectedCompanyMemberViewModel = new CompanyMemberViewModel(selectedCompanyMember);
+                    _logger?.LogOperation("CompanyViewModel", $"SelectedCompanyMemberViewModel set: {selectedCompanyMember.Name}");
+                    _arsenalManagerViewModel.SelectedMemberId = selectedCompanyMember.Id;
                 }
                 else
                 {
                     SelectedCompanyMemberViewModel = null;
+                    _logger?.LogOperation("CompanyViewModel", "SelectedCompanyMemberViewModel set: null");
+                    _arsenalManagerViewModel.SelectedMemberId = null;
                 }
             }
         }
@@ -208,9 +216,18 @@ public class CompanyViewModel : INotifyPropertyChanged
         var members = await _companyMemberRepository.GetAllAsync();
         foreach (var member in members)
             CompanyMembers.Add(member);
-        // Select the first member by default if any exist
-        if (CompanyMembers.Count > 0 && SelectedCompanyMember == null)
-            SelectedCompanyMember = CompanyMembers[0];
+        // Select the manager by default if present, else null
+        var manager = CompanyMembers.FirstOrDefault(m => m.Role == Role.Manager);
+        if (manager != null)
+        {
+            _logger?.LogOperation("CompanyViewModel", $"Defaulting selection to manager: {manager.Name} (Id={manager.Id})");
+            SelectedCompanyMember = manager;
+        }
+        else
+        {
+            _logger?.LogOperation("CompanyViewModel", "No manager found, setting SelectedCompanyMember to null");
+            SelectedCompanyMember = null;
+        }
     }
 
     private void CloseAddDialog()
@@ -243,6 +260,15 @@ public class CompanyViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(CanAddNonManager));
     }
 
+    private ArsenalManagerViewModel _arsenalManagerViewModel;
+    public ArsenalManagerViewModel ArsenalManagerViewModel
+    {
+        get => _arsenalManagerViewModel;
+        set { if (_arsenalManagerViewModel != value) { _arsenalManagerViewModel = value; OnPropertyChanged(nameof(ArsenalManagerViewModel)); } }
+    }
+
+    public string DebugArsenalManagerVM => ArsenalManagerViewModel == null ? "null" : ArsenalManagerViewModel.GetType().Name;
+
     public static Role[] AllRoles { get; } = (Role[])System.Enum.GetValues(typeof(Role));
     public static Rank[] AllRanks { get; } = (Rank[])System.Enum.GetValues(typeof(Rank));
 
@@ -259,3 +285,4 @@ public class SimpleCommand : ICommand
     public bool CanExecute(object? parameter) => true;
     public void Execute(object? parameter) => _execute();
 }
+

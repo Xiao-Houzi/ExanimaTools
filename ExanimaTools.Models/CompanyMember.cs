@@ -109,6 +109,7 @@ public class CompanyMember
     {
         _logger = logger;
         _logger?.LogOperation("Create CompanyMember", $"Name={_name}");
+        Id = 0;
     }
     private string _name = string.Empty;
     public string Name
@@ -121,6 +122,7 @@ public class CompanyMember
     public Sex Sex { get; set; }
     public MemberType Type { get; set; } = MemberType.Recruit;
     public Dictionary<Rank, EquipmentProfile> EquipmentProfiles { get; set; } = new();
+    public int Id { get; set; }
 
     public bool AssignEquipmentToProfile(Rank rank, EquipmentSlot slot, EquipmentPiece equipment, ArmourLayer? layer = null)
     {

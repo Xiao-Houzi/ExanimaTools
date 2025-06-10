@@ -135,6 +135,10 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     private AddFormMode addFormMode = AddFormMode.None;
     public ObservableCollection<EquipmentTreeNodeViewModel> PoolTree { get; } = new();
     public ObservableCollection<EquipmentTreeNodeViewModel> ArsenalTree { get; } = new();
+    public ObservableCollection<EquipmentTreeNodeViewModel> MemberPoolTree { get; } = new();
+    public EquipmentTreeBrowserViewModel PoolTreeViewModel { get; }
+    public EquipmentTreeBrowserViewModel ArsenalTreeViewModel { get; }
+    public EquipmentTreeBrowserViewModel MemberPoolTreeViewModel { get; }
     private EquipmentTreeNodeViewModel? selectedPoolTreeItem;
     public EquipmentTreeNodeViewModel? SelectedPoolTreeItem
     {
@@ -161,8 +165,20 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         get => selectedArsenalTreeItem;
         set { if (selectedArsenalTreeItem != value) { selectedArsenalTreeItem = value; OnPropertyChanged(nameof(SelectedArsenalTreeItem)); if (value?.EquipmentPiece != null) SelectedArsenalEquipment = value.EquipmentPiece; } }
     }
-    public EquipmentTreeBrowserViewModel PoolTreeViewModel { get; }
-    public EquipmentTreeBrowserViewModel ArsenalTreeViewModel { get; }
+    private EquipmentTreeNodeViewModel? selectedMemberPoolTreeItem;
+    public EquipmentTreeNodeViewModel? SelectedMemberPoolTreeItem
+    {
+        get => selectedMemberPoolTreeItem;
+        set
+        {
+            if (selectedMemberPoolTreeItem != value)
+            {
+                selectedMemberPoolTreeItem = value;
+                OnPropertyChanged(nameof(SelectedMemberPoolTreeItem));
+                // Optionally update stat card or selection logic here
+            }
+        }
+    }
     public ICommand SaveNewEquipmentCommand { get; }
     public ICommand CloseAddDialogCommand { get; }
     public ICommand AddStatCommand { get; }
@@ -182,11 +198,39 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _equipmentRepository = equipmentRepository ?? throw new ArgumentNullException(nameof(equipmentRepository));
         _arsenalRepository = arsenalRepository ?? throw new ArgumentNullException(nameof(arsenalRepository));
-        if (_logger == null)
-            System.Diagnostics.Debug.WriteLine("[DEBUG] ArsenalManagerViewModel: Logger is null!");
-        else
-            _logger.LogOperation("ArsenalManagerViewModel", "Logger injected and not null");
+        _logger.LogOperation("ArsenalManagerViewModel", "Logger injected and not null");
         _logger.LogOperation("ArsenalManagerViewModel", "Created");
+        _logger.Log($"[LOG] ArsenalManagerViewModel constructor: About to initialize EquipmentTreeBrowserViewModels");
+        PoolTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
+        {
+            TreeItems = PoolTree,
+            SelectedTreeItem = SelectedPoolTreeItem,
+            SearchText = string.Empty,
+            ActionLabel = "Add",
+            ActionCommand = AddToArsenalCommand
+        };
+        _logger.Log($"[LOG] PoolTreeViewModel initialized: {PoolTreeViewModel != null}");
+        ArsenalTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
+        {
+            TreeItems = ArsenalTree,
+            SelectedTreeItem = SelectedArsenalTreeItem,
+            SearchText = string.Empty,
+            ActionLabel = "Remove",
+            ActionCommand = RemoveFromArsenalCommand
+        };
+        _logger.Log($"[LOG] ArsenalTreeViewModel initialized: {ArsenalTreeViewModel != null}");
+        MemberPoolTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
+        {
+            TreeItems = MemberPoolTree,
+            SelectedTreeItem = SelectedMemberPoolTreeItem,
+            SearchText = string.Empty,
+            ActionLabel = "Remove",
+            ActionCommand = null // Will be set per-member
+        };
+        _logger.Log($"[LOG] MemberPoolTreeViewModel initialized: {MemberPoolTreeViewModel != null}");
+        _logger.Log($"[LOG] ArsenalTreeViewModel.TreeItems: {(ArsenalTreeViewModel.TreeItems != null ? ArsenalTreeViewModel.TreeItems.Count.ToString() : "null")}");
+        _logger.Log($"[LOG] PoolTreeViewModel.TreeItems: {(PoolTreeViewModel.TreeItems != null ? PoolTreeViewModel.TreeItems.Count.ToString() : "null")}");
+        _logger.Log($"[LOG] MemberPoolTreeViewModel.TreeItems: {(MemberPoolTreeViewModel.TreeItems != null ? MemberPoolTreeViewModel.TreeItems.Count.ToString() : "null")}");
         _ = LoadAsync();
         if (StaticCategoryOptions == null)
         {
@@ -209,22 +253,6 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             StaticStatTypes = System.Enum.GetValues(typeof(StatType)).Cast<StatType>().ToList();
         AddToArsenalCommand = new RelayCommand<EquipmentPiece?>(AddToArsenal, CanAddToArsenal);
         RemoveFromArsenalCommand = new RelayCommand<EquipmentPiece?>(RemoveFromArsenal, CanRemoveFromArsenal);
-        PoolTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
-        {
-            TreeItems = PoolTree,
-            SelectedTreeItem = SelectedPoolTreeItem,
-            SearchText = string.Empty,
-            ActionLabel = "Add",
-            ActionCommand = AddToArsenalCommand
-        };
-        ArsenalTreeViewModel = new EquipmentTreeBrowserViewModel(_logger)
-        {
-            TreeItems = ArsenalTree,
-            SelectedTreeItem = SelectedArsenalTreeItem,
-            SearchText = string.Empty,
-            ActionLabel = "Remove",
-            ActionCommand = RemoveFromArsenalCommand
-        };
         // Ensure ArsenalTreeViewModel.TreeItems is set after construction
         ArsenalTreeViewModel.TreeItems = ArsenalTree;
         SaveNewEquipmentCommand = new AsyncSimpleCommand(_ => SaveNewEquipmentAsync());
@@ -281,7 +309,6 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         ArsenalEquipment.Clear();
         foreach (var eq in arsenal.Equipment)
             ArsenalEquipment.Add(eq);
-
         // After seeding and loading ArsenalEquipment, log the type distribution
         var typeCounts = ArsenalEquipment.GroupBy(e => e.Type)
             .Select(g => $"{g.Key}: {g.Count()}")
@@ -295,53 +322,6 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
         PoolTreeViewModel.TreeItems = PoolTree;
         ArsenalTreeViewModel.TreeItems = ArsenalTree;
         _logger.Log($"LoadAsync: PoolTree nodes: {PoolTree.Count}, ArsenalTree nodes: {ArsenalTree.Count}");
-        // Do not assign a new ObservableCollection to ArsenalTree or ArsenalTreeViewModel.TreeItems
-        // BuildTree(FilteredEquipment, PoolTree);
-        // PoolTreeViewModel.TreeItems = PoolTree; // Only needed if PoolTree instance changes
-        // BuildTree(ArsenalEquipment, ArsenalTree);
-        // ArsenalTreeViewModel.TreeItems = ArsenalTree; // Only needed if ArsenalTree instance changes
-        // _logger?.Log($"LoadAsync: PoolTree nodes: {PoolTree.Count}, ArsenalTree nodes: {ArsenalTree.Count}");
-        // // Seed shields in LoadAsync if ArsenalEquipment is empty
-        // if (ArsenalEquipment.Count == 0)
-        // {
-        //     _logger?.Log("DEBUG: ArsenalEquipment is empty, seeding test Weapon, Armour, and Shield");
-        //     ArsenalEquipment.Add(new EquipmentPiece {
-        //         Name = "DEBUG TEST SWORD",
-        //         Type = EquipmentType.Weapon,
-        //         Category = "Sword",
-        //         Subcategory = "Short Sword",
-        //         Condition = EquipmentCondition.Good,
-        //         Quality = EquipmentQuality.Common,
-        //         Rank = Rank.Inept,
-        //         Slot = EquipmentSlot.Hands,
-        //         Layer = null,
-        //         Stats = new Dictionary<StatType, float> { { StatType.Impact, 1.0f } }
-        //     });
-        //     ArsenalEquipment.Add(new EquipmentPiece {
-        //         Name = "DEBUG TEST CAP",
-        //         Type = EquipmentType.Armour,
-        //         Category = "Head",
-        //         Subcategory = "Cap",
-        //         Condition = EquipmentCondition.Good,
-        //         Quality = EquipmentQuality.Common,
-        //         Rank = Rank.Inept,
-        //         Slot = EquipmentSlot.Head,
-        //         Layer = ArmourLayer.Padding,
-        //         Stats = new Dictionary<StatType, float> { { StatType.ImpactResistance, 0.5f } }
-        //     });
-        //     ArsenalEquipment.Add(new EquipmentPiece {
-        //         Name = "DEBUG TEST SHIELD",
-        //         Type = EquipmentType.Shield,
-        //         Category = "Round Shield",
-        //         Subcategory = "Small Round Shield",
-        //         Condition = EquipmentCondition.Good,
-        //         Quality = EquipmentQuality.Common,
-        //         Rank = Rank.Inept,
-        //         Slot = EquipmentSlot.Hands,
-        //         Layer = null,
-        //         Stats = new Dictionary<StatType, float> { { StatType.Coverage, 0.8f } }
-        //     });
-        // }
     }
     private async Task FilterEquipment()
     {
@@ -426,11 +406,12 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     }
     private void BuildTree(ObservableCollection<EquipmentPiece> source, ObservableCollection<EquipmentTreeNodeViewModel> target)
     {
+        _logger.Log($"BuildTree: called for target {(target == ArsenalTree ? "ArsenalTree" : target == PoolTree ? "PoolTree" : target == MemberPoolTree ? "MemberPoolTree" : "Unknown")} with {source.Count} source items");
         target.Clear();
-        _logger.Log($"BuildTree: Building tree from {source.Count} equipment pieces.");
-        foreach (var eq in source)
+        if (source.Count == 0)
         {
-            _logger.Log($"BuildTree: Source item: Name={eq.Name}, Type={eq.Type}, Category={eq.Category}, Subcategory={eq.Subcategory}");
+            _logger.Log("BuildTree: source is empty, nothing to build");
+            return;
         }
 
         // Build a hierarchical tree: Type -> Category -> Subcategory -> EquipmentPiece
@@ -495,6 +476,8 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
             DumpTreeToLog(root, 0);
         }
         if (target == PoolTree) UpdatePoolTreeRootNames();
+        // At the end, log the number of root nodes
+        _logger.Log($"BuildTree: completed for target {(target == ArsenalTree ? "ArsenalTree" : target == PoolTree ? "PoolTree" : target == MemberPoolTree ? "MemberPoolTree" : "Unknown")} with {target.Count} root nodes");
     }
 
     // Recursively remove empty branches from the tree
@@ -1058,5 +1041,114 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                 InjectLeafActions(node.Children, label, command, useAsync);
             }
         }
+    }
+
+    // Loads the selected member's equipment pool and builds the tree
+    public async Task LoadMemberPoolAsync(int memberId)
+    {
+        // TODO: Replace with actual repository call
+        var memberEquipment = await _arsenalRepository.GetMemberEquipmentAsync(memberId, _equipmentRepository);
+        MemberPoolTree.Clear();
+        BuildTree(new ObservableCollection<EquipmentPiece>(memberEquipment), MemberPoolTree);
+        MemberPoolTreeViewModel.TreeItems = MemberPoolTree;
+    }
+
+    // Assigns an equipment piece from arsenal to the member
+    public async Task AssignToMemberAsync(int memberId, EquipmentPiece piece)
+    {
+        await _arsenalRepository.AssignToMemberAsync(memberId, piece.Id);
+        await LoadAsync(); // Reload arsenal
+        await LoadMemberPoolAsync(memberId); // Reload member pool
+    }
+
+    // Removes an equipment piece from the member and returns it to arsenal
+    public async Task RemoveFromMemberAsync(int memberId, EquipmentPiece piece)
+    {
+        await _arsenalRepository.RemoveFromMemberAsync(memberId, piece.Id);
+        await LoadAsync();
+        await LoadMemberPoolAsync(memberId);
+    }
+
+    // Inject action buttons for member pool tree
+    private void InjectMemberPoolActions(IEnumerable<EquipmentTreeNodeViewModel> nodes, int memberId)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.IsLeaf)
+            {
+                node.ActionButtons.Clear();
+                node.ActionButtons.Add(new ActionButtonViewModel {
+                    Label = "Remove from Member",
+                    Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
+                    {
+                        await RemoveFromMemberAsync(memberId, piece);
+                        PruneEmptyBranches(MemberPoolTree);
+                        PruneEmptyBranches(ArsenalTree);
+                    })
+                });
+            }
+            else if (node.Children != null && node.Children.Count > 0)
+            {
+                InjectMemberPoolActions(node.Children, memberId);
+            }
+        }
+    }
+
+    // Inject action buttons for arsenal tree to assign to member
+    private void InjectArsenalAssignActions(IEnumerable<EquipmentTreeNodeViewModel> nodes, int memberId)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.IsLeaf)
+            {
+                node.ActionButtons.Clear();
+                node.ActionButtons.Add(new ActionButtonViewModel {
+                    Label = "Add to Member",
+                    Command = new AsyncRelayCommand<EquipmentPiece>(async (piece) =>
+                    {
+                        await AssignToMemberAsync(memberId, piece);
+                        PruneEmptyBranches(MemberPoolTree);
+                        PruneEmptyBranches(ArsenalTree);
+                    })
+                });
+            }
+            else if (node.Children != null && node.Children.Count > 0)
+            {
+                InjectArsenalAssignActions(node.Children, memberId);
+            }
+        }
+    }
+
+    private int? selectedMemberId;
+    public int? SelectedMemberId
+    {
+        get => selectedMemberId;
+        set
+        {
+            if (selectedMemberId != value)
+            {
+                selectedMemberId = value;
+                OnPropertyChanged(nameof(SelectedMemberId));
+                if (selectedMemberId.HasValue)
+                {
+                    // Load and inject actions for the selected member
+                    _ = LoadAndInjectMemberTreesAsync(selectedMemberId.Value);
+                }
+                else
+                {
+                    MemberPoolTree.Clear();
+                    // Also clear member pool actions and reset arsenal tree actions
+                    InjectMemberPoolActions(MemberPoolTree, 0); // No member selected
+                    InjectArsenalAssignActions(ArsenalTree, 0); // No member selected
+                }
+            }
+        }
+    }
+
+    private async Task LoadAndInjectMemberTreesAsync(int memberId)
+    {
+        await LoadMemberPoolAsync(memberId);
+        InjectMemberPoolActions(MemberPoolTree, memberId);
+        InjectArsenalAssignActions(ArsenalTree, memberId);
     }
 }

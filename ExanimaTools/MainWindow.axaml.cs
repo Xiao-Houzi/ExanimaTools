@@ -38,6 +38,16 @@ public partial class MainWindow : Window
         }
         // Set the DataContext for the window so all bindings work
         this.DataContext = new ExanimaTools.ViewModels.CompanyViewModel();
+
+        // Ensure the property is set after everything is initialized
+        this.Opened += (_, __) =>
+        {
+            if (MemberManagementControl != null && this.DataContext is ExanimaTools.ViewModels.CompanyViewModel vm)
+            {
+                MemberManagementControl.ArsenalManagerViewModel = vm.ArsenalManagerViewModel;
+                System.Diagnostics.Debug.WriteLine("[DEBUG] ArsenalManagerViewModel set on MemberManagementControl: " + (vm.ArsenalManagerViewModel?.ToString() ?? "null"));
+            }
+        };
     }
 
     public string? StatusMessage { get; set; }
