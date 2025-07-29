@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace ExanimaTools.Controls
 {
@@ -17,7 +19,11 @@ namespace ExanimaTools.Controls
 
         public static readonly AvaloniaProperty<IDataTemplate?> ItemTemplateProperty = AvaloniaProperty.Register<UniversalTreeControl, IDataTemplate?>(nameof(ItemTemplate));
 
-        public static readonly AvaloniaProperty<string?> FilterProperty = AvaloniaProperty.Register<UniversalTreeControl, string?>(nameof(Filter));
+        public static readonly AvaloniaProperty<string?> FilterProperty = AvaloniaProperty.Register<UniversalTreeControl, string?>(nameof(Filter), defaultValue: "", defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
+
+        public static readonly AvaloniaProperty<Func<object, string, bool>?> FilterPredicateProperty = AvaloniaProperty.Register<UniversalTreeControl, Func<object, string, bool>?>(nameof(FilterPredicate));
+
+        public static readonly AvaloniaProperty<object?> OriginalTreeItemsProperty = AvaloniaProperty.Register<UniversalTreeControl, object?>(nameof(OriginalTreeItems));
 
         public object? TreeItems
         {
@@ -43,9 +49,146 @@ namespace ExanimaTools.Controls
             set => SetValue(FilterProperty, value);
         }
 
+        /// <summary>
+        /// Custom filter predicate that takes (item, filterText) and returns true if item should be visible.
+        /// If not set, default string-based filtering will be used.
+        /// </summary>
+        public Func<object, string, bool>? FilterPredicate
+        {
+            get => (Func<object, string, bool>?)GetValue(FilterPredicateProperty);
+            set => SetValue(FilterPredicateProperty, value);
+        }
+
+        /// <summary>
+        /// Stores the original unfiltered tree items for dynamic filtering
+        /// </summary>
+        public object? OriginalTreeItems
+        {
+            get => (object?)GetValue(OriginalTreeItemsProperty);
+            private set => SetValue(OriginalTreeItemsProperty, value);
+        }
+
         public UniversalTreeControl()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+            
+            if (change.Property == FilterProperty)
+            {
+                ApplyFilter();
+            }
+            else if (change.Property == TreeItemsProperty && change.NewValue != null)
+            {
+                // Only store as original if we're not in the middle of filtering
+                if (OriginalTreeItems == null)
+                {
+                    OriginalTreeItems = change.NewValue;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies the current filter to the tree items dynamically
+        /// </summary>
+        private void ApplyFilter()
+        {
+            if (OriginalTreeItems == null) return;
+
+            var filterText = Filter?.Trim() ?? "";
+            
+            if (string.IsNullOrEmpty(filterText))
+            {
+                // No filter - show original items
+                TreeItems = OriginalTreeItems;
+                return;
+            }
+
+            // Apply filtering based on FilterPredicate or default string matching
+            if (OriginalTreeItems is IEnumerable originalItems)
+            {
+                var filteredItems = FilterTreeItems(originalItems, filterText);
+                TreeItems = filteredItems;
+            }
+        }
+
+        /// <summary>
+        /// Recursively filters tree items based on the filter text
+        /// </summary>
+        private IEnumerable FilterTreeItems(IEnumerable items, string filterText)
+        {
+            var result = new ObservableCollection<object>();
+            
+            foreach (var item in items)
+            {
+                if (item == null) continue;
+
+                bool matchesFilter = false;
+                
+                // Use custom predicate if available, otherwise default string matching
+                if (FilterPredicate != null)
+                {
+                    matchesFilter = FilterPredicate(item, filterText);
+                }
+                else
+                {
+                    // Default: check if item's string representation contains filter text
+                    matchesFilter = item.ToString()?.Contains(filterText, StringComparison.OrdinalIgnoreCase) == true;
+                }
+
+                // Check if item has children and recursively filter them
+                var hasMatchingChildren = false;
+                IEnumerable? filteredChildren = null;
+                
+                if (item is IUniversalTreeNode treeNode && treeNode.Children.Any())
+                {
+                    filteredChildren = FilterTreeItems(treeNode.Children, filterText);
+                    hasMatchingChildren = filteredChildren.Cast<object>().Any();
+                }
+
+                // Include item if it matches filter OR has matching children
+                if (matchesFilter || hasMatchingChildren)
+                {
+                    // If it's a tree node with filtered children, update the children
+                    if (item is IUniversalTreeNode nodeWithChildren && filteredChildren != null)
+                    {
+                        // Create a copy of the node with filtered children
+                        var clonedNode = CloneTreeNode(nodeWithChildren);
+                        clonedNode.SetChildren(filteredChildren.Cast<object>());
+                        result.Add(clonedNode);
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a shallow copy of a tree node for filtering purposes
+        /// </summary>
+        private IUniversalTreeNode CloneTreeNode(IUniversalTreeNode original)
+        {
+            if (original is UniversalTreeNode universalNode)
+            {
+                var cloned = new UniversalTreeNode(universalNode.Data)
+                {
+                    Actions = new List<UniversalTreeNodeAction>(universalNode.Actions)
+                };
+                return cloned;
+            }
+            
+            // Fallback: create a new UniversalTreeNode with the original as data
+            return new UniversalTreeNode(original)
+            {
+                Actions = new List<UniversalTreeNodeAction>(original.Actions)
+            };
         }
     }
 }
