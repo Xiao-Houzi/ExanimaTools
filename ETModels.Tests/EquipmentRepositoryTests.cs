@@ -12,6 +12,14 @@ namespace ETModels.Tests;
 [TestClass]
 public class EquipmentRepositoryTests
 {
+    private class DummyLogger : ILoggingService
+    {
+        public void Log(string message) { }
+        public void LogOperation(string operation, string? details = null) { }
+        public void LogError(string message, System.Exception? ex = null) { }
+        public void LogInformation(string message) { }
+    }
+
     private string _dbPath = $"TestEquipment_{System.Guid.NewGuid()}.db";
     private string _connectionString => $"Data Source={_dbPath}";
     private SqliteConnection? _connection;
@@ -40,7 +48,8 @@ public class EquipmentRepositoryTests
 
     private EquipmentRepository GetTestEquipmentRepository()
     {
-        return DbManager.GetEquipmentRepository(new FileLoggingService("logs"), _connection);
+        // Use DummyLogger to avoid file conflicts during testing
+        return DbManager.GetEquipmentRepository(new DummyLogger(), _connection);
     }
 
     [TestMethod]

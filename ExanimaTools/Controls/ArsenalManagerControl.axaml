@@ -3,7 +3,7 @@
              xmlns:controls="clr-namespace:ExanimaTools.Controls"
              xmlns:local="clr-namespace:ExanimaTools.Controls"
              xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
-             xmlns:models="clr-namespace:ExanimaTools.Models"
+             xmlns:models="clr-namespace:ExanimaTools.Models;assembly=ExanimaTools.Models"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="ExanimaTools.Controls.ArsenalManagerControl"

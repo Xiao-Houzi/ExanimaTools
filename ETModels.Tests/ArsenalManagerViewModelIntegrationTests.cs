@@ -11,6 +11,14 @@ namespace ETModels.Tests
     [TestClass]
     public class ArsenalManagerViewModelIntegrationTests
     {
+        private class DummyLogger : ILoggingService
+        {
+            public void Log(string message) { }
+            public void LogOperation(string operation, string? details = null) { }
+            public void LogError(string message, System.Exception? ex = null) { }
+            public void LogInformation(string message) { }
+        }
+
         private string _dbPath = "TestArsenalVM.db";
         private string _connectionString => $"Data Source={_dbPath}";
 
@@ -24,7 +32,7 @@ namespace ETModels.Tests
             // No manual table creation! Let repository handle schema.
         }
 
-        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new DummyLogger());
         private ArsenalRepository GetTestArsenalRepository() => new ArsenalRepository(_connectionString);
 
         [TestMethod]
@@ -36,7 +44,7 @@ namespace ETModels.Tests
             var eq = new EquipmentPiece { Name = "Test Dagger", Type = EquipmentType.Weapon };
             await equipmentRepo.AddAsync(eq);
             var all = await equipmentRepo.GetAllAsync();
-            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new FileLoggingService("test_log.txt"));
+            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new DummyLogger());
             // Wait for async load
             await Task.Delay(100);
             // Add twice
@@ -70,20 +78,10 @@ namespace ETModels.Tests
                 new EquipmentPiece { Name = "Chest1", Type = EquipmentType.Armour, Category = "Armour", Subcategory = "Body", Condition = EquipmentCondition.Good, Rank = Rank.Master, Stats = new() { { StatType.ImpactResistance, 9 }, { StatType.Weight, 5 } } },
             };
             foreach (var eq in items) await equipmentRepo.AddAsync(eq);
-            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new FileLoggingService("test_log.txt"));
+            var vm = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, new DummyLogger());
             await Task.Delay(100); // Wait for async load
             var loadAsync = vm.GetType().GetMethod("LoadAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (loadAsync != null) await (Task)loadAsync.Invoke(vm, null)!;
-
-            // Helper to set filters and apply
-            void SetFilters(params EquipmentFilterViewModel[] filters)
-            {
-                vm.Filters.Clear();
-                foreach (var f in filters) vm.Filters.Add(f);
-                var applyFiltersMethod = vm.GetType().GetMethod("ApplyFilters", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                applyFiltersMethod?.Invoke(vm, null);
-                Task.Delay(50).Wait(); // Allow UI thread to process
-            }
 
             // Category Equals
             var filtered = ArsenalManagerViewModel.GetFilteredEquipment(items, new[] { new EquipmentFilterViewModel { FilterField = EquipmentFilterField.Category, Operator = EquipmentFilterOperator.Equals, Value = "Weapon" } });

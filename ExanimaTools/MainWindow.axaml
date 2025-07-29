@@ -27,7 +27,7 @@
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Arsenal">
-                    <controls:ArsenalManagerControl/>
+                    <controls:ArsenalManagerControl DataContext="{Binding ArsenalManagerViewModel}"/>
                 </TabItem>
             </TabControl>
             <!-- Main Content -->

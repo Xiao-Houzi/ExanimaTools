@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
@@ -11,6 +12,14 @@ namespace ETModels.Tests
     [TestClass]
     public class EquipmentManagerViewModelIntegrationTests
     {
+        private class DummyLogger : ILoggingService
+        {
+            public void Log(string message) { }
+            public void LogOperation(string operation, string? details = null) { }
+            public void LogError(string message, System.Exception? ex = null) { }
+            public void LogInformation(string message) { }
+        }
+
         private string _dbPath = "TestEquipmentVM.db";
         private string _connectionString => $"Data Source={_dbPath}";
 
@@ -23,20 +32,17 @@ namespace ETModels.Tests
             }
         }
 
-        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new FileLoggingService("logs"));
+        private EquipmentRepository GetTestEquipmentRepository() => new EquipmentRepository(_connectionString, new DummyLogger());
 
         [TestMethod]
         public async Task EditEquipment_UpdatesItemInDbAndCountUnchanged()
         {
             // Arrange
-            var logger = new FileLoggingService("logs");
+            var logger = new DummyLogger();
             var repo = GetTestEquipmentRepository();
-            var eq = new EquipmentPiece { Name = "TestSword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords", Rank = Rank.Novice, Points = 10, Weight = 0.5f };
+            var eq = new EquipmentPiece(logger) { Name = "TestSword", Type = EquipmentType.Weapon, Description = "Sharp", Category = "Weapon", Subcategory = "Swords", Rank = Rank.Novice, Points = 10, Weight = 0.5f };
             await repo.AddAsync(eq);
-            var vm = new EquipmentManagerViewModel(logger);
-            typeof(EquipmentManagerViewModel)
-                .GetField("_equipmentRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(vm, repo);
+            var vm = new EquipmentManagerViewModel(repo, logger);
             // Load equipment synchronously for test (avoid dispatcher)
             var loaded = await repo.GetAllAsync();
             vm.EquipmentList.Clear();

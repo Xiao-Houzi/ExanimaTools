@@ -1,3 +1,6 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using ExanimaTools.Models;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
@@ -52,7 +55,21 @@ public class ArsenalRepository
             CREATE TABLE IF NOT EXISTS MemberEquipment (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 MemberId INTEGER NOT NULL,
-                EquipmentId INTEGER NOT NULL
+                EquipmentId INTEGER NOT NULL,
+                Rank INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS MemberPersonalPool (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                MemberId INTEGER NOT NULL,
+                EquipmentId INTEGER NOT NULL,
+                UNIQUE(MemberId, EquipmentId)
+            );
+            CREATE TABLE IF NOT EXISTS MemberRankLoadout (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                MemberId INTEGER NOT NULL,
+                EquipmentId INTEGER NOT NULL,
+                Rank INTEGER NOT NULL,
+                UNIQUE(MemberId, EquipmentId, Rank)
             );";
             cmd.ExecuteNonQuery();
         } finally {
@@ -156,7 +173,7 @@ public class ArsenalRepository
         }
     }
 
-    public async Task<List<EquipmentPiece>> GetMemberEquipmentAsync(int memberId, EquipmentRepository equipmentRepo)
+    public async Task<List<EquipmentPiece>> GetMemberEquipmentAsync(int memberId, EquipmentRepository equipmentRepo, Rank? forRank = null)
     {
         var result = new List<EquipmentPiece>();
         bool shouldDispose;
@@ -165,8 +182,17 @@ public class ArsenalRepository
             if (conn.State != System.Data.ConnectionState.Open)
                 await conn.OpenAsync();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT EquipmentId FROM MemberEquipment WHERE MemberId = $memberId";
-            cmd.Parameters.AddWithValue("$memberId", memberId);
+            if (forRank.HasValue)
+            {
+                cmd.CommandText = "SELECT EquipmentId FROM MemberEquipment WHERE MemberId = $memberId AND Rank = $rank";
+                cmd.Parameters.AddWithValue("$memberId", memberId);
+                cmd.Parameters.AddWithValue("$rank", (int)forRank.Value);
+            }
+            else
+            {
+                cmd.CommandText = "SELECT EquipmentId FROM MemberEquipment WHERE MemberId = $memberId";
+                cmd.Parameters.AddWithValue("$memberId", memberId);
+            }
             using var reader = await cmd.ExecuteReaderAsync();
             var ids = new List<int>();
             while (await reader.ReadAsync())
@@ -184,7 +210,7 @@ public class ArsenalRepository
         return result;
     }
 
-    public async Task AssignToMemberAsync(int memberId, int equipmentId)
+    public async Task AssignToMemberAsync(int memberId, int equipmentId, Rank rank)
     {
         bool shouldDispose;
         var conn = GetConnection(out shouldDispose);
@@ -196,11 +222,12 @@ public class ArsenalRepository
             removeCmd.CommandText = "DELETE FROM Arsenal WHERE Id = (SELECT Id FROM Arsenal WHERE EquipmentId = $id LIMIT 1)";
             removeCmd.Parameters.AddWithValue("$id", equipmentId);
             await removeCmd.ExecuteNonQueryAsync();
-            // Add to MemberEquipment
+            // Add to MemberEquipment with rank
             var insertCmd = conn.CreateCommand();
-            insertCmd.CommandText = "INSERT INTO MemberEquipment (MemberId, EquipmentId) VALUES ($memberId, $equipmentId)";
+            insertCmd.CommandText = "INSERT INTO MemberEquipment (MemberId, EquipmentId, Rank) VALUES ($memberId, $equipmentId, $rank)";
             insertCmd.Parameters.AddWithValue("$memberId", memberId);
             insertCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            insertCmd.Parameters.AddWithValue("$rank", (int)rank);
             await insertCmd.ExecuteNonQueryAsync();
         } finally {
             if (shouldDispose && conn.State == System.Data.ConnectionState.Open)
@@ -233,6 +260,206 @@ public class ArsenalRepository
                 conn.Close();
             if (shouldDispose)
                 conn.Dispose();
+        }
+    }
+
+    public async Task<List<EquipmentPiece>> GetMemberEquipmentForRankAsync(int memberId, Rank rank, EquipmentRepository equipmentRepository)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        var result = new List<EquipmentPiece>();
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT EquipmentId FROM MemberEquipment WHERE MemberId = $memberId AND Rank = $rank";
+            cmd.Parameters.AddWithValue("$memberId", memberId);
+            cmd.Parameters.AddWithValue("$rank", (int)rank);
+            var reader = await cmd.ExecuteReaderAsync();
+            var ids = new List<int>();
+            while (await reader.ReadAsync())
+            {
+                ids.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+            // Get equipment details from the main repository
+            var allEquipment = await equipmentRepository.GetAllAsync();
+            foreach (var id in ids)
+            {
+                var eq = allEquipment.FirstOrDefault(e => e.Id == id);
+                if (eq != null)
+                    result.Add(eq);
+            }
+        } finally {
+            if (shouldDispose) conn.Dispose();
+        }
+        return result;
+    }
+
+    // Personal Pool Management Methods
+    public async Task AddToMemberPersonalPoolAsync(int memberId, int equipmentId)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            
+            // Remove from Arsenal if present
+            var removeCmd = conn.CreateCommand();
+            removeCmd.CommandText = "DELETE FROM Arsenal WHERE Id = (SELECT Id FROM Arsenal WHERE EquipmentId = $id LIMIT 1)";
+            removeCmd.Parameters.AddWithValue("$id", equipmentId);
+            await removeCmd.ExecuteNonQueryAsync();
+            
+            // Add to member's personal pool
+            var insertCmd = conn.CreateCommand();
+            insertCmd.CommandText = "INSERT OR IGNORE INTO MemberPersonalPool (MemberId, EquipmentId) VALUES ($memberId, $equipmentId)";
+            insertCmd.Parameters.AddWithValue("$memberId", memberId);
+            insertCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            await insertCmd.ExecuteNonQueryAsync();
+        } finally {
+            if (shouldDispose && conn.State == System.Data.ConnectionState.Open)
+                conn.Close();
+            if (shouldDispose) conn.Dispose();
+        }
+    }
+
+    public async Task<List<EquipmentPiece>> GetMemberPersonalPoolAsync(int memberId, EquipmentRepository equipmentRepository)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        var result = new List<EquipmentPiece>();
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT EquipmentId FROM MemberPersonalPool WHERE MemberId = $memberId";
+            cmd.Parameters.AddWithValue("$memberId", memberId);
+            var reader = await cmd.ExecuteReaderAsync();
+            var ids = new List<int>();
+            while (await reader.ReadAsync())
+            {
+                ids.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+            
+            // Get equipment details from the main repository
+            var allEquipment = await equipmentRepository.GetAllAsync();
+            foreach (var id in ids)
+            {
+                var eq = allEquipment.FirstOrDefault(e => e.Id == id);
+                if (eq != null)
+                    result.Add(eq);
+            }
+        } finally {
+            if (shouldDispose) conn.Dispose();
+        }
+        return result;
+    }
+
+    public async Task RemoveFromMemberPersonalPoolAsync(int memberId, int equipmentId)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            
+            // Remove from member's personal pool
+            var removeCmd = conn.CreateCommand();
+            removeCmd.CommandText = "DELETE FROM MemberPersonalPool WHERE MemberId = $memberId AND EquipmentId = $equipmentId";
+            removeCmd.Parameters.AddWithValue("$memberId", memberId);
+            removeCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            await removeCmd.ExecuteNonQueryAsync();
+            
+            // Add back to Arsenal
+            var insertCmd = conn.CreateCommand();
+            insertCmd.CommandText = "INSERT INTO Arsenal (EquipmentId) VALUES ($equipmentId)";
+            insertCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            await insertCmd.ExecuteNonQueryAsync();
+        } finally {
+            if (shouldDispose && conn.State == System.Data.ConnectionState.Open)
+                conn.Close();
+            if (shouldDispose) conn.Dispose();
+        }
+    }
+
+    // Rank Loadout Management Methods
+    public async Task AssignToMemberRankLoadoutAsync(int memberId, int equipmentId, Rank rank)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            
+            // Add to member's rank loadout (equipment must already be in their personal pool)
+            var insertCmd = conn.CreateCommand();
+            insertCmd.CommandText = "INSERT OR IGNORE INTO MemberRankLoadout (MemberId, EquipmentId, Rank) VALUES ($memberId, $equipmentId, $rank)";
+            insertCmd.Parameters.AddWithValue("$memberId", memberId);
+            insertCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            insertCmd.Parameters.AddWithValue("$rank", (int)rank);
+            await insertCmd.ExecuteNonQueryAsync();
+        } finally {
+            if (shouldDispose && conn.State == System.Data.ConnectionState.Open)
+                conn.Close();
+            if (shouldDispose) conn.Dispose();
+        }
+    }
+
+    public async Task<List<EquipmentPiece>> GetMemberRankLoadoutAsync(int memberId, Rank rank, EquipmentRepository equipmentRepository)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        var result = new List<EquipmentPiece>();
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT EquipmentId FROM MemberRankLoadout WHERE MemberId = $memberId AND Rank = $rank";
+            cmd.Parameters.AddWithValue("$memberId", memberId);
+            cmd.Parameters.AddWithValue("$rank", (int)rank);
+            var reader = await cmd.ExecuteReaderAsync();
+            var ids = new List<int>();
+            while (await reader.ReadAsync())
+            {
+                ids.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+            
+            // Get equipment details from the main repository
+            var allEquipment = await equipmentRepository.GetAllAsync();
+            foreach (var id in ids)
+            {
+                var eq = allEquipment.FirstOrDefault(e => e.Id == id);
+                if (eq != null)
+                    result.Add(eq);
+            }
+        } finally {
+            if (shouldDispose) conn.Dispose();
+        }
+        return result;
+    }
+
+    public async Task RemoveFromMemberRankLoadoutAsync(int memberId, int equipmentId, Rank rank)
+    {
+        bool shouldDispose;
+        var conn = GetConnection(out shouldDispose);
+        try {
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+            
+            // Remove from member's rank loadout (equipment remains in their personal pool)
+            var removeCmd = conn.CreateCommand();
+            removeCmd.CommandText = "DELETE FROM MemberRankLoadout WHERE MemberId = $memberId AND EquipmentId = $equipmentId AND Rank = $rank";
+            removeCmd.Parameters.AddWithValue("$memberId", memberId);
+            removeCmd.Parameters.AddWithValue("$equipmentId", equipmentId);
+            removeCmd.Parameters.AddWithValue("$rank", (int)rank);
+            await removeCmd.ExecuteNonQueryAsync();
+        } finally {
+            if (shouldDispose && conn.State == System.Data.ConnectionState.Open)
+                conn.Close();
+            if (shouldDispose) conn.Dispose();
         }
     }
 }

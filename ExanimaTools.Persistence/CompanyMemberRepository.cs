@@ -1,3 +1,6 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using ExanimaTools.Models;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
@@ -135,7 +138,8 @@ public class CompanyMemberRepository
             profileCmd.Parameters.AddWithValue("$cm", member.Name);
             profileCmd.Parameters.AddWithValue("$rank", (int)rank);
             profileCmd.Parameters.AddWithValue("$name", profile.Name);
-            var profileId = (long)await profileCmd.ExecuteScalarAsync();
+            var profileResult = await profileCmd.ExecuteScalarAsync();
+            var profileId = profileResult != null ? (long)profileResult : 0L;
             foreach (var (slot, items) in profile.EquippedItems)
             {
                 // Deduplicate by (Name, Type, Slot, Layer)
@@ -234,7 +238,8 @@ public class CompanyMemberRepository
             profileCmd.Parameters.AddWithValue("$cm", member.Name);
             profileCmd.Parameters.AddWithValue("$rank", (int)rank);
             profileCmd.Parameters.AddWithValue("$name", profile.Name);
-            var profileId = (long)await profileCmd.ExecuteScalarAsync();
+            var profileResult = await profileCmd.ExecuteScalarAsync();
+            var profileId = profileResult != null ? (long)profileResult : 0L;
             foreach (var (slot, items) in profile.EquippedItems)
             {
                 // Deduplicate by (Name, Type, Slot, Layer)

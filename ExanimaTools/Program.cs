@@ -1,26 +1,41 @@
-﻿using Avalonia;
+﻿// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
+using Avalonia;
 using System;
 using System.Threading.Tasks;
 using ExanimaTools;
+using ExanimaTools.Services;
 using static ExanimaTools.DbManager;
 using static ExanimaTools.DumpEquipmentDb;
 using static ExanimaTools.SeedEquipment;
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ExanimaTools;
 
 class Program
 {
     private static ExanimaTools.Models.ILoggingService? _logger;
+    private static IServiceProvider? _serviceProvider;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
-        // Set up logging service
-        _logger = new ExanimaTools.Models.FileLoggingService();
+        // Set up dependency injection container
+        var services = new ServiceCollection();
+        services.AddExanimaToolsServices();
+        services.AddSingleton<IServiceLocator, ServiceLocator>();
+        _serviceProvider = services.BuildServiceProvider();
+
+        // Get logger from DI container
+        _logger = _serviceProvider.GetRequiredService<ExanimaTools.Models.ILoggingService>();
+
         // Global exception handlers
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
@@ -58,7 +73,19 @@ class Program
             Console.Error.WriteLine($"Fatal error: {ex}");
             Environment.Exit(1);
         }
+        finally
+        {
+            // Dispose service provider
+            if (_serviceProvider is IDisposable disposableServiceProvider)
+            {
+                disposableServiceProvider.Dispose();
+            }
+        }
     }
+
+    public static IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("Service provider not initialized");
+
+    // ...existing code...
 
     private static void LogEnvironmentInfo()
     {

@@ -2,7 +2,21 @@
 
 ## Completed Stories
 
-### Team Member Repository & Persistence Refactor (3 points)
+### Three-Tier Equipment Management System (5 points) ✅ **ENHANCED**
+**As a user, I want to assign gear from my arsenal to team members for each rank, so I can manage their loadouts with maximum flexibility.**
+
+**Enhanced Implementation (Completed: July 29, 2025):**
+- **Three-tier workflow:** Company Arsenal → Member Personal Pool → Member Rank Loadout
+- **Superior UI design:** Tab-based rank selection with visual equipment flow
+- **Enhanced database:** Three-table architecture (Arsenal, MemberPersonalPool, MemberRankLoadout)
+- **Automatic action injection:** Context-aware buttons injected during tree building
+- **Optimized layout:** Side-by-side arsenal/personal pool, full-width rank loadout
+- **Equipment staging:** Personal pools allow equipment preparation before rank assignment
+- **All tests passing:** Enhanced system maintains 41/41 test pass rate
+
+**Key Achievement:** Exceeded original ticket requirements with a superior three-tier system that provides better UX, flexibility, and organization than the originally requested dialog-based approach.
+
+---
 **As a developer, I want the TeamMember repository and model to support layered, per-slot, per-rank equipment, so the system matches Exanima's rules.**
 - Refactor models and enums for new equipment system.
 - Update persistence and tests for nested/layered equipment profiles.

@@ -4,23 +4,27 @@
 using Avalonia.Controls;
 using ExanimaTools.Models;
 using ExanimaTools.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExanimaTools.Controls
 {
     public partial class EquipmentStatCardControl : UserControl
     {
+        private readonly ILoggingService _logger;
+
         public EquipmentStatCardControl()
         {
+            _logger = Program.ServiceProvider.GetRequiredService<ILoggingService>();
             InitializeComponent();
             this.DataContextChanged += (s, e) => {
                 var vm = this.DataContext;
                 if (vm != null)
                 {
-                    App.LoggingServiceInstance?.LogOperation("EquipmentStatCardControl.DataContextChanged", $"New DataContext: {vm.GetType().Name}");
+                    _logger.LogOperation("EquipmentStatCardControl.DataContextChanged", $"New DataContext: {vm.GetType().Name}");
                 }
                 else
                 {
-                    App.LoggingServiceInstance?.LogOperation("EquipmentStatCardControl.DataContextChanged", "New DataContext: null");
+                    _logger.LogOperation("EquipmentStatCardControl.DataContextChanged", "New DataContext: null");
                 }
             };
         }

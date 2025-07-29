@@ -1,3 +1,6 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using ExanimaTools.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;

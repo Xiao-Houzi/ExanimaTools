@@ -1,5 +1,8 @@
 // SeedEquipment.cs
 // Provides logic to seed the equipment database from a JSON file.
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using System;
 using System.Collections.Generic;
 using System.IO;

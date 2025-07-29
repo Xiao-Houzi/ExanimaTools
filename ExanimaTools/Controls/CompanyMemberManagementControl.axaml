@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:ExanimaTools.ViewModels"
+    xmlns:models="clr-namespace:ExanimaTools.Models;assembly=ExanimaTools.Models"
     xmlns:exanimaToolsControls="clr-namespace:ExanimaTools.Controls"
     xmlns:local="clr-namespace:ExanimaTools.Controls"
     mc:Ignorable="d">
@@ -33,21 +34,93 @@
                 </TabItem>
                 <TabItem Header="Equipment">
                     <StackPanel>
-                        <TextBlock Text="Company Arsenal (shared)" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="24">
+                        <!-- Top Section: Company Arsenal and Personal Pool -->
+                        <TextBlock Text="Company Arsenal → Personal Pool" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
                             <!-- Arsenal Tree (left) -->
-                            <Border BorderBrush="#444" BorderThickness="1" Padding="8" CornerRadius="4" Width="340" Height="400">
-                                <exanimaToolsControls:UniversalTreeControl
-                                    TreeItems="{Binding Data.ArsenalTreeViewModel.TreeItems, ElementName=ArsenalManagerProxy}"
-                                    SelectedItem="{Binding Data.ArsenalTreeViewModel.SelectedTreeItem, Mode=TwoWay, ElementName=ArsenalManagerProxy}"/>
+                            <Border BorderBrush="#444" BorderThickness="1" Padding="8" CornerRadius="4" Width="400" Height="350">
+                                <DockPanel>
+                                    <TextBlock Text="Company Arsenal" FontWeight="Bold" Margin="0,0,0,8" DockPanel.Dock="Top"/>
+                                    <exanimaToolsControls:UniversalTreeControl
+                                        TreeItems="{Binding Data.ArsenalTreeViewModel.TreeItems, ElementName=ArsenalManagerProxy}"
+                                        SelectedItem="{Binding Data.ArsenalTreeViewModel.SelectedTreeItem, Mode=TwoWay, ElementName=ArsenalManagerProxy}"
+                                        VerticalAlignment="Stretch"/>
+                                </DockPanel>
                             </Border>
-                            <!-- Member Pool Tree (right) -->
-                            <Border BorderBrush="#444" BorderThickness="1" Padding="8" CornerRadius="4" Width="340" Height="400">
-                                <exanimaToolsControls:UniversalTreeControl
-                                    TreeItems="{Binding Data.MemberPoolTreeViewModel.TreeItems, ElementName=ArsenalManagerProxy}"
-                                    SelectedItem="{Binding Data.MemberPoolTreeViewModel.SelectedTreeItem, Mode=TwoWay, ElementName=ArsenalManagerProxy}"/>
+                            <!-- Member Personal Pool Tree (right) -->
+                            <Border BorderBrush="#444" BorderThickness="1" Padding="8" CornerRadius="4" Width="400" Height="350">
+                                <DockPanel>
+                                    <TextBlock Text="Personal Pool" FontWeight="Bold" Margin="0,0,0,8" DockPanel.Dock="Top"/>
+                                    <exanimaToolsControls:UniversalTreeControl
+                                        TreeItems="{Binding Data.MemberPersonalPoolTreeViewModel.TreeItems, ElementName=ArsenalManagerProxy}"
+                                        SelectedItem="{Binding Data.MemberPersonalPoolTreeViewModel.SelectedTreeItem, Mode=TwoWay, ElementName=ArsenalManagerProxy}"
+                                        VerticalAlignment="Stretch"/>
+                                </DockPanel>
                             </Border>
                         </StackPanel>
+                        
+                        <!-- Bottom Section: Rank Selection and Loadout -->
+                        <TextBlock Text="Rank Loadout" FontWeight="Bold" Margin="0,0,0,8"/>
+                        
+                        <!-- Rank Loadout Selection Tabs -->
+                        <Border Background="#333" 
+                                Padding="8" 
+                                CornerRadius="4" 
+                                Margin="0,0,0,12">
+                            <StackPanel Orientation="Vertical" Spacing="8">
+                                <TextBlock Text="Select Rank Loadout:" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="Orange"/>
+                                           
+                                <!-- Rank Selection Tabs -->
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <RadioButton GroupName="RankTabs" Content="Inept"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Inept}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                        <RadioButton GroupName="RankTabs" Content="Aspirant"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Aspirant}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                        <RadioButton GroupName="RankTabs" Content="Novice"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Novice}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                        <RadioButton GroupName="RankTabs" Content="Adept"
+                                                     IsChecked="True"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Adept}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                        <RadioButton GroupName="RankTabs" Content="Expert"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Expert}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                        <RadioButton GroupName="RankTabs" Content="Master"
+                                                     Command="{Binding Data.SetSelectedRankCommand, ElementName=ArsenalManagerProxy}" 
+                                                     CommandParameter="{x:Static models:Rank.Master}"
+                                                     Background="#444" Foreground="White" Padding="12,6"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                                
+                                <!-- Current Rank Loadout Display -->
+                                <TextBlock Text="{Binding Data.SelectedAssignmentRank, StringFormat='Current Loadout: {0}', ElementName=ArsenalManagerProxy}" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="Orange"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Rank Loadout Tree (Full Width) -->
+                        <Border BorderBrush="#444" BorderThickness="1" Padding="8" CornerRadius="4" Height="300" Margin="0,0,0,16">
+                            <DockPanel>
+                                <TextBlock Text="{Binding Data.SelectedAssignmentRank, StringFormat='Equipment for Rank: {0}', ElementName=ArsenalManagerProxy}" 
+                                           FontWeight="Bold" Margin="0,0,0,8" DockPanel.Dock="Top"/>
+                                <exanimaToolsControls:UniversalTreeControl
+                                    TreeItems="{Binding Data.MemberRankLoadoutTreeViewModel.TreeItems, ElementName=ArsenalManagerProxy}"
+                                    SelectedItem="{Binding Data.MemberRankLoadoutTreeViewModel.SelectedTreeItem, Mode=TwoWay, ElementName=ArsenalManagerProxy}"
+                                    VerticalAlignment="Stretch"/>
+                            </DockPanel>
+                        </Border>
                     </StackPanel>
                 </TabItem>
             </TabControl>

@@ -1,49 +1,89 @@
-<!-- Completed tickets moved to history on 2025-06-03 -->
+<!-- Completed tickets moved to history on 2025-07-29 -->
 
 ---
 
-# Assign Gear from Arsenal to Team Members (per Rank) (Active)
-
-**Goal:** Allow users to assign gear from the arsenal to team members for each rank, managing their loadouts.
-
-**Background:**
-- Users need to select equipment from the arsenal for each team member and rank.
-- Assigned gear should update the team member’s equipment profile and be visible in their display.
-
-**Requirements:**
-- Allow selecting equipment from the arsenal for each team member and rank.
-- Update the team member’s equipment profile accordingly.
-- Show assigned gear in the team member’s display.
-
-#### Subtask: Arsenal Selection UI (2 points)
-- UI for searching/selecting equipment from arsenal for assignment.
-- Prevent duplicate assignments.
-
-**Acceptance Criteria:**
-- Users can assign gear from the arsenal to team members for each rank.
-- Assigned gear is reflected in the team member’s display and data model.
-- UI prevents duplicate assignments and supports searching/selecting equipment.
-- All changes are persisted and tested.
-
-(See agile_stories.md for backlog and future stories.)
-
-## Universal Tree Control (Reusable, Builder-based, Filterable)
+# Universal Tree Control (Reusable, Builder-based, Filterable) 🎯 **ACTIVE**
 
 **Goal:** Create a universal tree control that can be tailored to any current or future tree view in the app, with a silver border, injectable item view, and filter-driven content.
 
+**Status:** 🎯 **ACTIVE** - In development (Started: July 29, 2025)
+
+**Background:**
+Currently, the application has multiple tree implementations (Equipment Pool, Arsenal, Member Personal Pool, Member Rank Loadout) that share similar patterns but have different implementations. A universal tree control would:
+- Reduce code duplication
+- Provide consistent UI/UX across all tree views
+- Make future tree implementations easier
+- Enable better maintainability and testing
+
+**Implementation Status:**
+- ✅ **Partially Complete:** UniversalTreeControl.axaml already exists and is being used
+- ✅ **Partially Complete:** UniversalTreeBuilder<T> exists with basic functionality
+- 🔄 **In Progress:** Action button injection system is working but could be enhanced
+- ❌ **Pending:** Silver border styling implementation
+- ❌ **Pending:** Enhanced filter support and dynamic updates
+- ❌ **Pending:** Comprehensive documentation
+
 **Acceptance Criteria:**
-- A new Avalonia control (UniversalTreeControl) exists in Controls/.
-- The control uses a builder pattern to generate its tree structure from any data source.
-- The item view/template is injectable, allowing custom display for any node type.
-- The control has a silver border by default (Avalonia styling).
-- The control exposes a filter property or delegate, and updates its content dynamically based on the filter (compatible with existing filter viewmodels).
-- Existing tree views (e.g., Arsenal, Equipment, Company) can be migrated to use this control with minimal changes.
-- Usage and extension are documented for future developers.
+- ✅ A new Avalonia control (UniversalTreeControl) exists in Controls/
+- ✅ The control uses a builder pattern to generate its tree structure from any data source
+- ✅ The item view/template is injectable, allowing custom display for any node type
+- ❌ The control has a silver border by default (Avalonia styling)
+- ❌ The control exposes a filter property or delegate, and updates its content dynamically based on the filter (compatible with existing filter viewmodels)
+- ✅ Existing tree views (e.g., Arsenal, Equipment, Company) can be migrated to use this control with minimal changes
+- ❌ Usage and extension are documented for future developers
 
-**Steps:**
-1. Design and implement UniversalTreeControl.axaml/.cs with border and template injection.
-2. Implement UniversalTreeBuilder<T> to generate tree structures from flat or hierarchical data.
-3. Add filter support (property or delegate) and ensure dynamic updates.
-4. Replace one existing tree view as a proof of concept.
-5. Document usage and extension in the project-management folder.
+**Implementation Steps:**
+1. ✅ Design and implement UniversalTreeControl.axaml/.cs with border and template injection
+2. ✅ Implement UniversalTreeBuilder<T> to generate tree structures from flat or hierarchical data
+3. ❌ Add silver border styling to the control
+4. ❌ Add enhanced filter support (property or delegate) and ensure dynamic updates
+5. ❌ Document usage and extension in the project-management folder
+6. ❌ Enhance action button injection system for better reusability
 
+**Next Actions:**
+1. Add silver border styling to UniversalTreeControl
+2. Enhance filter support with dynamic updates
+3. Create comprehensive documentation
+4. Refactor existing tree usage for better consistency
+
+---
+
+## Current Development Status
+
+**Project Health:** ✅ Excellent
+- **Build Status:** ✅ All projects building successfully on .NET 9
+- **Test Status:** ✅ All 41 tests passing
+- **Application Status:** ✅ Application launches and runs correctly
+- **Architecture:** ✅ Dependency injection fully implemented and working
+- **Features:** ✅ Enhanced three-tier equipment management system operational
+- **Current Focus:** 🎯 Universal Tree Control enhancements and documentation
+
+**Recent Achievements:**
+- ✅ **July 29, 2025:** Three-tier equipment system completed with enhanced UI and functionality
+- ✅ **July 29, 2025:** Action button injection system working across all tree types
+- ✅ **July 29, 2025:** UI layout optimized for better visual hierarchy
+
+**Last Updated:** July 29, 2025
+
+---
+
+## Next Priority Backlog Items
+
+### Team Display UI (3 points)
+**As a user, I want to see a list of all team members, each represented by a TeamMember control, so I can view and manage my team at a glance.**
+- Display all team members in a scrollable list or panel on the Team Manager tab
+- Each member should use the CompanyMember control, showing their characteristics and loadout dropdown
+- Support editing and removing team members from the list
+
+### BUG: Pip stat editor UI does not log pip click events or update stats in some cases
+**As a user, I expect clicking on a pip (or half-pip) in the stat editor to always log the event and update the stat value in the model and UI.**
+- Severity: Medium (affects usability and auditability of stat editing)
+- Sometimes, clicking a pip does not trigger a log entry or stat update
+- May indicate a bug in pointer event routing, DataContext, or event handler binding in PipDisplayControl
+- Expected: Every pip click should log an operation and update the stat value
+
+### Display Loadout and Final Stats (5 points)
+**As a user, I want to view a team member's current loadout and see the final stats for each attribute, summed from all equipment worn.**
+- Display a summary of all equipped items for the selected rank
+- Calculate and show the total stats (e.g., total Impact, Cut, Pierce, etc.) by summing all equipped pieces
+- Update the display dynamically as loadout changes

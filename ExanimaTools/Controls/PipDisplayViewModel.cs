@@ -1,7 +1,12 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using ExanimaTools.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExanimaTools.Controls
 {
@@ -84,10 +89,8 @@ namespace ExanimaTools.Controls
         {
             float newValue = isHalf ? pipIndex + 0.5f : pipIndex + 1f;
             // Log pip click if logger is available
-            if (ExanimaTools.App.LoggingServiceInstance is ExanimaTools.Models.ILoggingService logger)
-            {
-                logger.LogOperation("Pip Click", $"pipIndex={pipIndex}, isHalf={isHalf}, newValue={newValue}");
-            }
+            var logger = Program.ServiceProvider.GetRequiredService<ILoggingService>();
+            logger.LogOperation("Pip Click", $"pipIndex={pipIndex}, isHalf={isHalf}, newValue={newValue}");
             Value = newValue;
             _onValueChanged?.Invoke(Value);
         }

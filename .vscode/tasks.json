@@ -4,8 +4,8 @@
 		{
 			"type": "shell",
 			"label": "Run ExanimaTools",
-			"command": "dotnet run",
-			"args": [],
+			"command": "C:\\Program Files\\dotnet\\dotnet.exe",
+			"args": ["run"],
 			"group": "test",
 			"problemMatcher": [
 				"$msCompile"
@@ -15,7 +15,8 @@
 		{
 			"type": "shell",
 			"label": "Build ExanimaTools",
-			"command": "dotnet build",
+			"command": "C:\\Program Files\\dotnet\\dotnet.exe",
+			"args": ["build"],
 			"group": "build",
 			"problemMatcher": ["$msCompile"]
 		}

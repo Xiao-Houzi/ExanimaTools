@@ -1,3 +1,7 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,19 +11,25 @@ using System.Windows.Input;
 using ExanimaTools.Models;
 using ExanimaTools.Persistence;
 using System.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExanimaTools.ViewModels;
 
 public class CompanyViewModel : INotifyPropertyChanged
 {
     private readonly CompanyMemberRepository _companyMemberRepository;
-    private readonly ILoggingService? _logger;
+    private readonly ILoggingService _logger;
+    private readonly ArsenalManagerViewModel _arsenalManagerViewModel;
 
-    public CompanyViewModel(ILoggingService? logger = null)
+    public CompanyViewModel(
+        CompanyMemberRepository companyMemberRepository,
+        ArsenalManagerViewModel arsenalManagerViewModel,
+        ILoggingService logger)
     {
-        _logger = logger;
-        var dbPath = DbManager.GetDbPath();
-        _companyMemberRepository = new CompanyMemberRepository($"Data Source={dbPath}");
+        _companyMemberRepository = companyMemberRepository ?? throw new ArgumentNullException(nameof(companyMemberRepository));
+        _arsenalManagerViewModel = arsenalManagerViewModel ?? throw new ArgumentNullException(nameof(arsenalManagerViewModel));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
         companyMembers = new ObservableCollection<CompanyMember>();
         NewCompanyMember = new CompanyMemberViewModel();
         OpenAddManagerDialogCommand = new SimpleCommand(OpenAddManagerDialog);
@@ -27,14 +37,14 @@ public class CompanyViewModel : INotifyPropertyChanged
         OpenAddHirelingDialogCommand = new SimpleCommand(OpenAddHirelingDialog);
         CloseAddDialogCommand = new SimpleCommand(CloseAddDialog);
         AddCompanyMemberCommand = new SimpleCommand(AddCompanyMember);
-        var equipmentRepo = DbManager.GetEquipmentRepository(_logger ?? ExanimaTools.App.LoggingServiceInstance!);
-        var arsenalRepo = DbManager.GetArsenalRepository();
-        _arsenalManagerViewModel = new ArsenalManagerViewModel(equipmentRepo, arsenalRepo, _logger ?? ExanimaTools.App.LoggingServiceInstance!);
-        _logger?.LogOperation("CompanyViewModel", "Created");
+        
+        _logger.LogOperation("CompanyViewModel", "Created via DI");
         _ = InitializeAndLoadAsync();
     }
 
-    public CompanyViewModel() : this(ExanimaTools.App.LoggingServiceInstance) { }
+    public ArsenalManagerViewModel ArsenalManagerViewModel => _arsenalManagerViewModel;
+
+    // ...existing code...
 
     private async Task InitializeAndLoadAsync()
     {
@@ -258,13 +268,6 @@ public class CompanyViewModel : INotifyPropertyChanged
         ErrorMessage = null;
         OnPropertyChanged(nameof(CanAddManager));
         OnPropertyChanged(nameof(CanAddNonManager));
-    }
-
-    private ArsenalManagerViewModel _arsenalManagerViewModel;
-    public ArsenalManagerViewModel ArsenalManagerViewModel
-    {
-        get => _arsenalManagerViewModel;
-        set { if (_arsenalManagerViewModel != value) { _arsenalManagerViewModel = value; OnPropertyChanged(nameof(ArsenalManagerViewModel)); } }
     }
 
     public string DebugArsenalManagerVM => ArsenalManagerViewModel == null ? "null" : ArsenalManagerViewModel.GetType().Name;

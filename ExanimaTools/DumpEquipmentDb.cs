@@ -1,3 +1,6 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using System;
 using System.IO;
 using System.Threading.Tasks;

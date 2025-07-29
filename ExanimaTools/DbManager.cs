@@ -1,3 +1,6 @@
+// No work should be done in this file without understanding the development practices.
+// See: project-management/development_practices.md
+
 using System;
 using System.IO;
 using ExanimaTools.Persistence;
@@ -39,6 +42,14 @@ public static string DbFileName { get; } = "exanima_tools.db";
                 return new ArsenalRepository(connection);
             var dbPath = GetDbPath();
             return new ArsenalRepository($"Data Source={dbPath}");
+        }
+
+        public static CompanyMemberRepository GetCompanyMemberRepository(ILoggingService logger, SqliteConnection? connection = null)
+        {
+            if (connection != null)
+                return new CompanyMemberRepository(connection);
+            var dbPath = GetDbPath();
+            return new CompanyMemberRepository($"Data Source={dbPath}");
         }
     }
 }
