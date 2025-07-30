@@ -7,7 +7,7 @@
         <TextBlock Text="{Binding EquipmentPiece.Quality}" Width="80" IsVisible="{Binding IsLeaf}"/>
         <TextBlock Text="{Binding EquipmentPiece.Condition}" Width="80" IsVisible="{Binding IsLeaf}"/>
         <!-- Render a button for each injected action on leaf nodes -->
-        <ItemsControl ItemsSource="{Binding DataContext.ActionButtons, RelativeSource={RelativeSource AncestorType=UserControl}}" IsVisible="{Binding IsLeaf}">
+        <ItemsControl ItemsSource="{Binding ActionButtons}" IsVisible="{Binding IsLeaf}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Content="{Binding Label}"
