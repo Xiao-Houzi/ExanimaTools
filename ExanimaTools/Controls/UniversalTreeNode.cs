@@ -37,7 +37,26 @@ namespace ExanimaTools.Controls
             Children = new List<object>(children);
         }
 
-        string IUniversalTreeNode.DisplayName => Data?.ToString() ?? string.Empty;
+        string IUniversalTreeNode.DisplayName
+        {
+            get
+            {
+                if (Data == null) return string.Empty;
+                
+                // Handle specific types with name properties
+                if (Data is ExanimaTools.Models.EquipmentPiece equipment)
+                    return equipment.Name;
+                    
+                if (Data is ExanimaTools.Models.CompanyMember member)
+                    return member.Name;
+                    
+                if (Data is ExanimaTools.Models.Arsenal arsenal)
+                    return $"Arsenal ({arsenal.Equipment.Count} items)";
+                
+                // Fallback to ToString for other types
+                return Data.ToString() ?? string.Empty;
+            }
+        }
         bool IUniversalTreeNode.IsExpanded { get; set; }
         IList<IUniversalTreeNode> IUniversalTreeNode.Children => Children.ConvertAll(child => (IUniversalTreeNode)child);
     }

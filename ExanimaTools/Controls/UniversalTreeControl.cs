@@ -65,7 +65,7 @@ namespace ExanimaTools.Controls
         public object? OriginalTreeItems
         {
             get => (object?)GetValue(OriginalTreeItemsProperty);
-            private set => SetValue(OriginalTreeItemsProperty, value);
+            set => SetValue(OriginalTreeItemsProperty, value);
         }
 
         public UniversalTreeControl()
