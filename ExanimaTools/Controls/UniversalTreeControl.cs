@@ -77,16 +77,29 @@ namespace ExanimaTools.Controls
         {
             base.OnPropertyChanged(change);
             
+            // Safety check: ensure we're properly attached to visual tree
+            if (!IsInitialized || Parent == null)
+                return;
+            
             if (change.Property == FilterProperty)
             {
                 ApplyFilter();
             }
-            else if (change.Property == TreeItemsProperty && change.NewValue != null)
+            else if (change.Property == TreeItemsProperty)
             {
-                // Only store as original if we're not in the middle of filtering
-                if (OriginalTreeItems == null)
+                // Handle TreeItems change safely
+                if (change.NewValue != null)
                 {
-                    OriginalTreeItems = change.NewValue;
+                    // Only store as original if we're not in the middle of filtering
+                    if (OriginalTreeItems == null)
+                    {
+                        OriginalTreeItems = change.NewValue;
+                    }
+                }
+                else
+                {
+                    // Clear both original and current when TreeItems is set to null
+                    OriginalTreeItems = null;
                 }
             }
         }
@@ -96,7 +109,9 @@ namespace ExanimaTools.Controls
         /// </summary>
         private void ApplyFilter()
         {
-            if (OriginalTreeItems == null) return;
+            // Safety checks to prevent crashes during disposal or tab switching
+            if (OriginalTreeItems == null || !IsInitialized || Parent == null) 
+                return;
 
             var filterText = Filter?.Trim() ?? "";
             

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using ExanimaTools.Models;
@@ -59,10 +60,44 @@ namespace ExanimaTools
                     return;
                 }
                 logger.LogOperation("SeedEquipment", $"Loaded {items.Count} equipment items from JSON");
+                
+                // Deduplicate items by name - take the first occurrence of each name
+                var uniqueItems = items.GroupBy(item => item.Name)
+                                      .Select(group => group.First())
+                                      .ToList();
+                logger.LogOperation("SeedEquipment", $"Deduplicated to {uniqueItems.Count} unique equipment items");
+                
+                // Generate rank variants to ensure all ranks have equipment available
+                var expandedItems = new List<JsonEquipmentSeed>();
+                foreach (var item in uniqueItems)
+                {
+                    // Always create an Inept (rank 0) version for basic equipment access
+                    var ineptVersion = CloneItemForRank(item, 0, "Crude");
+                    expandedItems.Add(ineptVersion);
+                    
+                    // Add the original item at its intended rank
+                    if (item.MinRank > 0)
+                    {
+                        expandedItems.Add(item);
+                    }
+                    
+                    // For weapons and shields, create additional quality variants at higher ranks
+                    if (item.TopType?.Contains("Weapon") == true || item.TopType?.Contains("Shield") == true)
+                    {
+                        if (item.MinRank < 3) // Add a better version for higher ranks
+                        {
+                            var betterVersion = CloneItemForRank(item, Math.Max(item.MinRank + 2, 3), "Well Made");
+                            expandedItems.Add(betterVersion);
+                        }
+                    }
+                }
+                
+                logger.LogOperation("SeedEquipment", $"Generated {expandedItems.Count} rank-variant equipment items");
+                
                 await repo.DeleteAllAsync();
                 int addCount = 0;
                 int skipCount = 0;
-                foreach (var item in items)
+                foreach (var item in expandedItems)
                 {
                     EquipmentPiece? eq = null;
                     try {
@@ -97,6 +132,51 @@ namespace ExanimaTools
                 System.Diagnostics.Debug.WriteLine($"[SeedEquipment] Error: {ex.Message}\n{ex.StackTrace}");
                 File.AppendAllText("seed_error.log", $"[{DateTime.Now}] {ex.Message}\n{ex.StackTrace}\n");
             }
+        }
+
+        /// <summary>
+        /// Creates a clone of an equipment item for a specific rank with adjusted quality
+        /// </summary>
+        private static JsonEquipmentSeed CloneItemForRank(JsonEquipmentSeed original, int rank, string quality)
+        {
+            var clone = new JsonEquipmentSeed
+            {
+                Name = rank == 0 ? $"{original.Name} (Basic)" : 
+                       rank > original.MinRank ? $"{original.Name} (Fine)" : original.Name,
+                Type = original.Type,
+                TopType = original.TopType,
+                MinRank = rank,
+                Quality = quality,
+                Condition = original.Condition,
+                Category = original.Category,
+                Subcategory = original.Subcategory,
+                Description = original.Description,
+                Stats = new Dictionary<string, float>(original.Stats)
+            };
+            
+            // Adjust stats based on rank/quality
+            if (rank == 0) // Inept versions have reduced stats
+            {
+                foreach (var key in clone.Stats.Keys.ToList())
+                {
+                    if (key != "Weight") // Don't reduce weight
+                    {
+                        clone.Stats[key] *= 0.8f; // 20% reduction for basic versions
+                    }
+                }
+            }
+            else if (rank > original.MinRank) // Better versions have improved stats
+            {
+                foreach (var key in clone.Stats.Keys.ToList())
+                {
+                    if (key != "Weight") // Don't increase weight
+                    {
+                        clone.Stats[key] *= 1.2f; // 20% improvement for fine versions
+                    }
+                }
+            }
+            
+            return clone;
         }
 
         // Helper class for JSON mapping
@@ -162,10 +242,31 @@ namespace ExanimaTools
             }
             private EquipmentQuality ParseQuality(string? quality, ILoggingService logger)
             {
-                if (!string.IsNullOrWhiteSpace(quality) && Enum.TryParse<EquipmentQuality>(quality.Replace(" ", ""), true, out var result))
-                    return result;
-                logger.LogError($"SeedEquipment: Unknown or missing quality '{quality}' for item '{Name}' in JSON. Defaulting to Common.");
-                return EquipmentQuality.Common;
+                if (string.IsNullOrWhiteSpace(quality))
+                {
+                    logger.LogError($"SeedEquipment: Missing quality for item '{Name}' in JSON. Defaulting to Common.");
+                    return EquipmentQuality.Common;
+                }
+
+                // Map known alternate quality names
+                var normalizedQuality = quality.Replace(" ", "").ToLowerInvariant();
+                switch (normalizedQuality)
+                {
+                    case "crude":
+                        return EquipmentQuality.Poor;
+                    case "decent":
+                        return EquipmentQuality.Common;
+                    case "wellmade":
+                    case "well-made":
+                        return EquipmentQuality.WellMade;
+                    default:
+                        // Try normal enum parsing
+                        if (Enum.TryParse<EquipmentQuality>(quality.Replace(" ", ""), true, out var result))
+                            return result;
+                        
+                        logger.LogError($"SeedEquipment: Unknown quality '{quality}' for item '{Name}' in JSON. Defaulting to Common.");
+                        return EquipmentQuality.Common;
+                }
             }
             private EquipmentCondition ParseCondition(string? condition, ILoggingService logger)
             {
