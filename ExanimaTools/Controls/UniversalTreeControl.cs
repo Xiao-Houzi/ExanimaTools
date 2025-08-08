@@ -75,32 +75,44 @@ namespace ExanimaTools.Controls
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            base.OnPropertyChanged(change);
-            
-            // Safety check: ensure we're properly attached to visual tree
-            if (!IsInitialized || Parent == null)
+            // Early safety check: ensure we're properly attached to visual tree
+            if (!IsInitialized)
                 return;
-            
-            if (change.Property == FilterProperty)
+
+            try
             {
-                ApplyFilter();
-            }
-            else if (change.Property == TreeItemsProperty)
-            {
-                // Handle TreeItems change safely
-                if (change.NewValue != null)
+                base.OnPropertyChanged(change);
+                
+                // Additional safety check after base call
+                if (Parent == null)
+                    return;
+                
+                if (change.Property == FilterProperty)
                 {
-                    // Only store as original if we're not in the middle of filtering
-                    if (OriginalTreeItems == null)
+                    ApplyFilter();
+                }
+                else if (change.Property == TreeItemsProperty)
+                {
+                    // Handle TreeItems change safely
+                    if (change.NewValue != null)
                     {
-                        OriginalTreeItems = change.NewValue;
+                        // Only store as original if we're not in the middle of filtering
+                        if (OriginalTreeItems == null)
+                        {
+                            OriginalTreeItems = change.NewValue;
+                        }
+                    }
+                    else
+                    {
+                        // Clear both original and current when TreeItems is set to null
+                        OriginalTreeItems = null;
                     }
                 }
-                else
-                {
-                    // Clear both original and current when TreeItems is set to null
-                    OriginalTreeItems = null;
-                }
+            }
+            catch (Exception)
+            {
+                // Silently handle visual tree disposal issues during tab switching
+                // This prevents crashes when the control is being disposed
             }
         }
 
@@ -109,24 +121,31 @@ namespace ExanimaTools.Controls
         /// </summary>
         private void ApplyFilter()
         {
-            // Safety checks to prevent crashes during disposal or tab switching
-            if (OriginalTreeItems == null || !IsInitialized || Parent == null) 
-                return;
-
-            var filterText = Filter?.Trim() ?? "";
-            
-            if (string.IsNullOrEmpty(filterText))
+            try
             {
-                // No filter - show original items
-                TreeItems = OriginalTreeItems;
-                return;
+                // Safety checks to prevent crashes during disposal or tab switching
+                if (OriginalTreeItems == null || !IsInitialized || Parent == null) 
+                    return;
+
+                var filterText = Filter?.Trim() ?? "";
+                
+                if (string.IsNullOrEmpty(filterText))
+                {
+                    // No filter - show original items
+                    TreeItems = OriginalTreeItems;
+                    return;
+                }
+
+                // Apply filtering based on FilterPredicate or default string matching
+                if (OriginalTreeItems is IEnumerable originalItems)
+                {
+                    var filteredItems = FilterTreeItems(originalItems, filterText);
+                    TreeItems = filteredItems;
+                }
             }
-
-            // Apply filtering based on FilterPredicate or default string matching
-            if (OriginalTreeItems is IEnumerable originalItems)
+            catch (Exception)
             {
-                var filteredItems = FilterTreeItems(originalItems, filterText);
-                TreeItems = filteredItems;
+                // Silently handle any filtering issues during disposal
             }
         }
 

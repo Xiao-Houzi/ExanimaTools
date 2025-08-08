@@ -1238,12 +1238,19 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
                 }
                 else
                 {
-                    MemberPersonalPoolTree.Clear();
-                    MemberRankLoadoutTree.Clear();
-                    // Also clear member pool actions and reset arsenal tree actions
-                    InjectMemberPersonalPoolActions(MemberPersonalPoolTree, 0); // No member selected
-                    InjectMemberRankLoadoutActions(MemberRankLoadoutTree, 0); // No member selected
-                    InjectArsenalAssignActions(ArsenalTree, 0); // No member selected
+                    try
+                    {
+                        MemberPersonalPoolTree.Clear();
+                        MemberRankLoadoutTree.Clear();
+                        // Also clear member pool actions and reset arsenal tree actions
+                        InjectMemberPersonalPoolActions(MemberPersonalPoolTree, 0); // No member selected
+                        InjectMemberRankLoadoutActions(MemberRankLoadoutTree, 0); // No member selected
+                        InjectArsenalAssignActions(ArsenalTree, 0); // No member selected
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Error clearing member trees during deselection: {ex.Message}", ex);
+                    }
                 }
             }
         }
@@ -1295,21 +1302,35 @@ public class ArsenalManagerViewModel : INotifyPropertyChanged
     // Loads the selected member's personal pool and builds the tree
     public async Task LoadMemberPersonalPoolAsync(int memberId)
     {
-        var memberEquipment = await _arsenalRepository.GetMemberPersonalPoolAsync(memberId, _equipmentRepository);
-        MemberPersonalPoolTree.Clear();
-        BuildTree(new ObservableCollection<EquipmentPiece>(memberEquipment), MemberPersonalPoolTree);
-        MemberPersonalPoolTreeViewModel.TreeItems = MemberPersonalPoolTree;
-        _logger.Log($"LoadMemberPersonalPoolAsync: Loaded {memberEquipment.Count} items for member {memberId}");
+        try
+        {
+            var memberEquipment = await _arsenalRepository.GetMemberPersonalPoolAsync(memberId, _equipmentRepository);
+            MemberPersonalPoolTree.Clear();
+            BuildTree(new ObservableCollection<EquipmentPiece>(memberEquipment), MemberPersonalPoolTree);
+            MemberPersonalPoolTreeViewModel.TreeItems = MemberPersonalPoolTree;
+            _logger.Log($"LoadMemberPersonalPoolAsync: Loaded {memberEquipment.Count} items for member {memberId}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error loading member personal pool: {ex.Message}", ex);
+        }
     }
 
     // Loads the selected member's rank loadout and builds the tree
     public async Task LoadMemberRankLoadoutAsync(int memberId, Rank rank)
     {
-        var memberEquipment = await _arsenalRepository.GetMemberRankLoadoutAsync(memberId, rank, _equipmentRepository);
-        MemberRankLoadoutTree.Clear();
-        BuildTree(new ObservableCollection<EquipmentPiece>(memberEquipment), MemberRankLoadoutTree);
-        MemberRankLoadoutTreeViewModel.TreeItems = MemberRankLoadoutTree;
-        _logger.Log($"LoadMemberRankLoadoutAsync: Loaded {memberEquipment.Count} items for member {memberId} rank {rank}");
+        try
+        {
+            var memberEquipment = await _arsenalRepository.GetMemberRankLoadoutAsync(memberId, rank, _equipmentRepository);
+            MemberRankLoadoutTree.Clear();
+            BuildTree(new ObservableCollection<EquipmentPiece>(memberEquipment), MemberRankLoadoutTree);
+            MemberRankLoadoutTreeViewModel.TreeItems = MemberRankLoadoutTree;
+            _logger.Log($"LoadMemberRankLoadoutAsync: Loaded {memberEquipment.Count} items for member {memberId} rank {rank}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error loading member rank loadout: {ex.Message}", ex);
+        }
     }
 
     // Assigns equipment from arsenal to member's personal pool
